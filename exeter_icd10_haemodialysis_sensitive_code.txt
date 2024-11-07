@@ -1,4 +1,6 @@
 ICD10	Term_description
+N18.0	End-stage renal disease
+Z49.0	Preparatory care for dialysis
 T824 Mechanical complication of vascular dialysis catheter
 Y602 Unintentional cut/puncture/perforation or haemorrhage during surgical and medical care - during dialysis or other perfusion
 Y612 Foreign object accidentally left in body during medical care - during kidney dialysis or other perfusion
