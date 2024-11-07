@@ -1,0 +1,8 @@
+ICD10	Term_description
+F01	Vascular dementia
+F01.0	Vascular dementia of acute onset
+F01.1	Multi-infarct dementia
+F01.2	Subcortical vascular dementia
+F01.3	Mixed cortical and subcortical vascular dementia
+F01.8	Other vascular dementia
+F01.9	"Vascular dementia, unspecified"
