@@ -1,0 +1,61 @@
+medcodeid	term_medcode
+7174851000006111	CKD stage 5
+304111000000114	Chronic kidney disease stage 5
+2767154014	Chronic kidney disease stage 5
+641471000006117	End stage renal failure
+641491000006116	End-stage renal disease
+11924551000006114	End-stage renal disease
+3245861000006116	ESCRF - End stage chronic renal failure
+215521000000116	End stage renal disease
+3245871000006111	ESRD - End stage renal disease
+3245841000006115	End stage kidney disease
+12704471000006116	End-stage renal disease
+3245881000006114	End stage chronic renal failure
+3245851000006118	ESRF - End stage renal failure
+5094151000006116	End stage renal failure untreated by renal replacement therapy
+3935781000006116	Hypercalcaemia associated with chronic dialysis
+5095641000006112	Long-term disorder of dialysis
+354586017	Adynamic bone disease
+5095841000006113	Aplastic bone disease
+618511000000119	CKD stage 5 with proteinuria
+8104511000006111	CKD (chronic kidney disease) stage 5 with proteinuria
+596321000000110	Chronic kidney disease stage 5 with proteinuria
+596401000000111	Chronic kidney disease stage 5 without proteinuria
+618521000000113	CKD stage 5 without proteinuria
+8104551000006112	CKD (chronic kidney disease) stage 5 without proteinuria
+284213011	Renal transplant planned
+4218231000006113	Kidney transplant evaluation
+7094321000006114	Pretransplant evaluation of kidney recipient
+7970081000006117	Patient awaiting renal transplant
+7970091000006119	Awaiting renal transplant
+8047971000006118	Malignant hypertensive chronic kidney disease stage 5
+8087651000006114	Malignant hypertensive end stage renal disease
+7966621000006118	Diabetic stage 5 chronic renal impairment due to type 2 diabetes mellitus
+7966631000006115	Chronic kidney disease stage 5 due to type II diabetes mellitus
+7966611000006114	Chronic kidney disease stage 5 due to type 2 diabetes mellitus
+8040671000006114	Chronic kidney disease stage 5 due to hypertension
+8030411000006118	Hypertensive heart AND chronic kidney disease stage 5
+8001631000006110	Hypertensive heart AND chronic kidney disease with congestive heart failure
+8044011000006117	Hypertension in chronic kidney disease stage 5 due to type 2 diabetes mellitus
+8044021000006113	Hypertension in chronic kidney disease stage 5 due to type II diabetes mellitus
+8027491000006113	Chronic kidney disease stage 5 due to type 1 diabetes mellitus
+8027501000006117	Chronic kidney disease stage 5 due to type I diabetes mellitus
+7510311000006111	Benign hypertensive renal disease with renal failure
+7513101000006118	Hypertensive renal disease with end stage renal failure
+8048001000006110	End stage renal disease on dialysis due to hypertension
+7615391000006116	Anemia co-occurrent and due to end stage renal disease
+7615401000006119	Anaemia co-occurrent and due to end stage renal disease
+7615371000006117	Anaemia in end stage renal disease
+7615381000006119	Anemia in end stage renal disease
+7507461000006117	Awaiting transplantation of kidney
+7507471000006112	Awaiting renal transplant
+8087091000006113	Chronic kidney disease stage 5 due to benign hypertension
+7691501000006119	ESRD (End stage renal disease) due to benign hypertension
+7691491000006110	End stage renal disease due to benign hypertension
+8035251000006111	End stage renal disease due to hypertension
+8035261000006113	ESRD (End stage renal disease) due to hypertension
+8212361000006113	Anaemia in chronic kidney disease stage 5
+8212371000006118	Anemia co-occurrent and due to chronic kidney disease stage 5
+8212381000006115	Anaemia co-occurrent and due to chronic kidney disease stage 5
+8212391000006117	Anemia in chronic kidney disease stage 5
+7484191000006117	Mode of dialysis access by patient choice
