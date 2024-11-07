@@ -1,8 +1,4 @@
 Code Product Description Molecule Dose, format and route
-38976 Memantine 5mg+10mg+15mg+20mg Tablet Memantine Hydrochloride 5mg+10mg+15mg+20mg, Tablet, Oral
-6225 Memantine 10mg tablets Memantine hydrochloride 10mg, Tablet, Oral
-39240 Memantine 20mg tablets Memantine hydrochloride 20mg, Tablet, Oral
-11837 Memantine 10mg/ml oral solution sugar free Memantine hydrochloride 10mg/1ml, Oral drops, Oral
 7329 Galantamine 20mg/5ml oral solution sugar free Galantamine hydrobromide 4mg/1ml, Oral solution, Oral
 10255 Galantamine 8mg modified-release capsules Galantamine Hydrobromide 8mg, Modified Release Capsules, Oral
 11635 Galantamine 12mg tablets Galantamine hydrobromide 12mg, Tablet, Oral
@@ -11,32 +7,3 @@ Code Product Description Molecule Dose, format and route
 7361 Galantamine 24mg modified-release capsules Galantamine hydrobromide 24mg, Modified-release capsule, Oral
 14309 Galantamine 16mg modified-release capsules Galantamine Hydrobromide 16mg, Modified Release Capsules, Oral
 36976 Rivastigmine 4.6mg/24hours transdermal patches Rivastigmine 4.6mg/24 Hours, Transdermal Patch, Transdermal
-33007 RIVASTIGMINE Unknown Unknown
-56771 Rivastigmine 3mg capsules (Dr Reddy's Laboratories (UK) Ltd) Rivastigmine hydrogen tartrate 3mg, Capsule, Oral
-11751 Rivastigmine 3mg capsules Rivastigmine hydrogen tartrate 3mg, Capsule, Oral
-33008 RIVASTIGMINE Unknown Unknown
-33009 RIVASTIGMINE Unknown Unknown
-60723 Rivastigmine 6mg capsules (Waymade Healthcare Plc) Rivastigmine hydrogen tartrate 6mg, Capsule, Oral
-11752 Rivastigmine 4.5mg capsules Rivastigmine hydrogen tartrate 4.5mg, Capsule, Oral
-53882 Rivastigmine 2mg/ml oral solution Rivastigmine hydrogen tartrate 2mg/1ml, Oral solution, Oral
-56631 Rivastigmine 13.3mg/24hours transdermal patches Rivastigmine 13.3mg/24hour, Transdermal patch, Transdermal
-63951 Rivastigmine 9.5mg/24hours transdermal patches (Actavis UK Ltd) Rivastigmine 9.5mg/24hour, Transdermal patch, Transdermal
-11827 Rivastigmine 2mg/ml oral solution sugar free Rivastigmine hydrogen tartrate 2mg/1ml, Oral solution, Oral
-58969 Rivastigmine 4.6mg/24hours transdermal patches (A A H Pharmaceuticals Ltd) Rivastigmine 4.6mg/24hour, Transdermal patch, Transdermal
-4597 Rivastigmine 1.5mg capsules Rivastigmine hydrogen tartrate 1.5mg, Capsule, Oral
-9786 Rivastigmine 6mg capsules Rivastigmine hydrogen tartrate 6mg, Capsule, Oral
-37132 Rivastigmine 9.5mg/24hours transdermal patches Rivastigmine 9.5mg/24hour, Transdermal patch, Transdermal
-53922 Donepezil 10mg orodispersible tablets (Consilient Health Ltd) Donepezil hydrochloride 10mg, Orodispersible tablet, Oral
-56600 Donepezil 5mg tablets (Zentiva) Donepezil hydrochloride 5mg, Tablet, Oral 
-48443 Donepezil 10mg orodispersible tablets Donepezil hydrochloride 10mg, Orodispersible tablet, Oral
-2931 Donepezil 10mg tablets Donepezil hydrochloride 10mg, Tablet, Oral
-63217 Donepezil 5mg tablets (A A H Pharmaceuticals Ltd) Donepezil hydrochloride 5mg, Tablet, Oral
-35088 Donepezil 10mg orodispersible tablets sugar free Donepezil Hydrochloride 10mg, Orodispersible Tablet, Oral
-60107 Donepezil 5mg tablets (Alliance Healthcare (Distribution) Ltd) Donepezil Hydrochloride 5mg, tablet, Oral
-59871 Donepezil 10mg/5ml oral suspension Donepezil hydrochloride 2mg/1ml, Oral suspension, Oral
-2930 Donepezil 5mg tablets Donepezil hydrochloride 5mg, Tablet, Oral
-35179 Donepezil 5mg orodispersible tablets sugar free Donepezil hydrochloride 5mg, Orodispersible tablet, Oral
-61676 Donepezil 1mg/ml oral solution sugar free Donepezil hydrochloride 1mg/1ml, Oral solution, Oral
-58947 Donepezil 10mg tablets (Accord Healthcare Ltd) Donepezil hydrochloride 10mg, Tablet, Oral
-58709 Donepezil 10mg tablets (A A H Pharmaceuticals Ltd) Donepezil hydrochloride 10mg, Tablet, Oral
-48442 Donepezil 5mg orodispersible tablets Donepezil hydrochloride 5mg, Orodispersible tablet, Oral
