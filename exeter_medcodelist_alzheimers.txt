@@ -1,0 +1,110 @@
+MedCodeId	Term
+1971771000006112	Dementia in Alzheimer's disease with early onset, other symptoms, predominantly hallucinatory
+1972171000006117	Dementia in Alzheimer's disease with late onset, without additional symptoms
+1972181000006119	Dementia in Alzheimer's disease with late onset, other symptoms, predominantly delusional
+1972451000006118	Dementia in Alzheimer's disease, unspecified, other symptoms, predominantly depressive
+299325013	[X]Other Alzheimer's disease
+423351000006115	[X]Presenile dementia,Alzheimer's type
+423381000006111	[X]Primary degen dementia of Alzheimer's type, senile onset
+423391000006114	[X]Primary degen dementia, Alzheimer's type, presenile onset
+425901000006116	[X]Senile dementia,Alzheimer's type
+6897251000006116	Presenile dementia, Alzheimer's type
+6900191000006112	Primary degenerative dementia of the Alzheimer type, late onset
+6900221000006117	SDAT - Senile dementia, Alzheimer's type
+6897221000006113	Primary degenerative dementia of the Alzheimer type, early onset
+8032931000006117	Early onset Alzheimers disease with behavioral disturbance
+5005541000006113	Familial Alzheimer's disease of late onset
+7969281000006110	Dementia of the Alzheimer type with behavioural disturbance
+8032911000006111	Early onset Alzheimer's disease with behavioural disturbance
+5005591000006116	Focal Alzheimer disease
+9896131000006110	Behavioural disturbance co-occurrent and due to late onset Alzheimer dementia
+5005561000006112	Non-familial Alzheimer's disease of late onset
+5005571000006117	Non-familial Alzheimer disease of late onset
+8030811000006115	Altered behavior in Alzheimer disease
+8044911000006116	Delusions in Alzheimer's disease
+8044921000006112	Delusions in Alzheimers disease
+3384371000006119	Primary degenerative dementia of the Alzheimer type, presenile onset, with delusions
+2575751000006110	Dementia Alzheimers type, late onset with delirium
+7813831000006118	Familial Alzheimer-like prion disease
+5005721000006110	Progressive aphasia in Alzheimer disease
+2575731000006115	Primary degenerative dementia of the Alzheimer type, senile onset, with delirium
+3392881000006115	Primary degenerative dementia of the Alzheimer type, senile onset, with delusions
+11914891000006110	[X]Dementia in Alzheimer's dis, atypical or mixed type
+2603281000006113	Dementia of the Alzheimer's type, with early onset, uncomplicated
+8044931000006110	Delusions in Alzheimer disease
+7834071000006116	Non-amnestic Alzheimer disease
+2603271000006110	Primary degenerative dementia of the Alzheimer type, presenile onset, uncomplicated
+5005551000006110	Familial Alzheimer disease of late onset
+8044941000006117	Depressed mood in Alzheimer's disease
+5005531000006115	Non-familial Alzheimer disease of early onset
+376531000006119	Dementia in Alzheimer's disease with early onset
+3575041000006117	Primary degenerative dementia of the Alzheimer type, senile onset, uncomplicated
+3575051000006115	Dementia of the Alzheimer's type, with late onset, uncomplicated
+5005521000006118	Non-familial Alzheimer's disease of early onset
+2667431000006115	Primary degenerative dementia of the Alzheimer type, presenile onset, with depression
+2575741000006113	Dementia of the Alzheimer's type, with late onset, with delirium
+6897271000006114	Dementia in Alzheimer's disease - type 2
+6897241000006118	Dementia of the Alzheimers type with early onset
+2931231000006118	AD - Alzheimer's disease
+6900181000006114	Primary degenerative dementia of the Alzheimer type, senile onset
+295668011	[X]Dementia in Alzheimer's disease
+295672010	[X]Dementia in Alzheimer's disease, unspecified
+1971401000006111	Dementia in Alzheimer's disease with early onset, without additional symptoms
+1972311000006112	Dementia in Alzheimer's dis, atypical or mixed type, other symptoms, predominantly depressive
+1972341000006111	Dementia in Alzheimer's dis, atypical or mixed type, other mixed symptoms
+1972371000006115	Dementia in Alzheimer's disease, unspecified, without additional symptoms
+914951000006114	[D] Dementia in Alzheimer's disease
+7969291000006113	Dementia of the Alzheimer type with behavioral disturbance
+3558411000006119	Dementia of the Alzheimer's type, with early onset, with delirium
+2929951000006117	Alzheimers dementia, late onset, with depressive mood
+7515131000006110	Primary degenerative dementia of the Alzheimer type, presenile onset in remission
+8030801000006118	Altered behavior in Alzheimer's disease
+2667441000006113	Dementia of the Alzheimer's type, with early onset, with depressive mood
+6900201000006110	Dementia of the Alzheimers type, late onset
+1972401000006117	Dementia in Alzheimer's disease, unspecified, other symptoms, predominantly delusional
+1972421000006110	Dementia in Alzheimer's disease, unspecified, other symptoms, predominantly hallucinatory
+8032921000006115	Early onset Alzheimer's disease with behavioral disturbance
+5005501000006111	Familial Alzheimer's disease of early onset
+2667451000006110	Alzheimers dementia, early onset, with depressed mood
+5005581000006119	Focal Alzheimer's disease
+2929931000006112	Primary degenerative dementia of the Alzheimer type, senile onset, with depression
+6897211000006117	Primary degenerative dementia of the Alzheimer type, presenile onset
+295671015	[X]Dementia in Alzheimer's dis, atypical or mixed type
+1972191000006116	Dementia in Alzheimer's disease with late onset, other symptoms, predominantly hallucinatory
+3384381000006116	Dementia of the Alzheimer's type, with early onset, with delusions
+3392891000006117	Dementia of the Alzheimer's type, with late onset, with delusions
+905791000006115	[RFC] Alzheimer's disease
+8044981000006111	Alzheimer's disease co-occurrent with delirium
+9896141000006117	Behavioral disturbance co-occurrent and due to late onset Alzheimer dementia
+5005511000006114	Familial Alzheimer disease of early onset
+363021000006113	[X]Alzheimer's dementia unspec
+363041000006118	[X]Alzheimer's disease type 2
+1949661000006112	Dementia stage at diagnosis - undetermined
+1971541000006114	Dementia in Alzheimer's disease with early onset, other symptoms, predominantly delusional
+1972201000006118	Dementia in Alzheimer's disease with late onset, other symptoms, predominantly depressive
+1972211000006115	Dementia in Alzheimer's disease with late onset, other mixed symptoms
+1972291000006113	Dementia in Alzheimer's dis, atypical or mixed type, other symptoms, predominantly hallucinatory
+376541000006112	Dementia in Alzheimer's disease with late onset
+499946014	Alzheimer's disease with early onset
+500317011	Alzheimer's disease with late onset
+45046017	Alzheimer's disease
+12370651000006112	MVAD - Mixed vascular Alzheimer dementia
+8030791000006119	Altered behaviour in Alzheimer's disease
+8044951000006115	Alzheimers dementia with depressed mood
+8032941000006110	Early onset Alzheimer disease with behavioral disturbance
+2929941000006119	Dementia of the Alzheimer's type, with late onset, with depressive mood
+3392901000006118	Alzheimers dementia, late onset, with delusions
+8030821000006111	Altered behavior in Alzheimers disease
+7515121000006112	Primary degenerative dementia of the Alzheimer type, senile onset in remission
+8044961000006118	Depressed mood in Alzheimer disease
+3558401000006117	Primary degenerative dementia of the Alzheimer type, presenile onset, with delirium
+2931241000006111	Alzheimer disease
+2931251000006113	Alzheimer dementia
+363031000006111	[X]Alzheimer's disease type 1
+1972131000006115	Dementia in Alzheimer's disease with early onset, other symptoms, predominantly depressive
+1972141000006113	Dementia in Alzheimer's disease with early onset, other mixed symptoms
+1972231000006114	Dementia in Alzheimer's dis, atypical or mixed type, without additional symptoms
+1972251000006119	Dementia in Alzheimer's dis, atypical or mixed type, other symptoms, predominantly delusional
+1972471000006111	Dementia in Alzheimer's disease, unspecified, other mixed symptoms
+1576281000006119	Cause of Death- Alzheimer'S Disease
+6900241000006112	Dementia in Alzheimer's disease - type 1
