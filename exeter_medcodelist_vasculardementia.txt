@@ -1,0 +1,56 @@
+MedCodeId	Term
+294652012	Uncomplicated arteriosclerotic dementia
+294653019	Arteriosclerotic dementia with delirium
+294654013	Arteriosclerotic dementia with paranoia
+294655014	Arteriosclerotic dementia with depression
+1972521000006114	Vascular dementia of acute onset, other symptoms, predominantly hallucinatory
+1972571000006110	Vascular dementia of acute onset, other mixed symptoms
+1972751000006114	Subcortical vascular dementia, other symptoms, predominantly hallucinatory
+1972831000006110	Mixed cortical and subcortical vascular dementia, other symptoms, predominantly delusional
+1972871000006113	Mixed cortical and subcortical vascular dementia, other symptoms, predominantly hallucinatory
+1972911000006111	Mixed cortical and subcortical vascular dementia, other symptoms, predominantly depressive
+1972931000006117	Mixed cortical and subcortical vascular dementia, other mixed symptoms
+1973501000006113	Vascular dementia, unspecified, other symptoms, predominantly delusional
+295680015	[X]Other vascular dementia
+8089241000006117	Vascular dementia with behavioral disturbance
+2664621000006113	Multi infarct dementia with delirium
+2722941000006116	Vascular dementia, with depressive mood
+3653681000006111	Vascular dementia, uncomplicated
+8033251000006110	Multi infarct dementia with atherosclerosis
+2912331000006111	Vascular dementia, with delusions
+428201000006119	Subcortical vascular dementia
+431681000006117	Vascular dementia
+431691000006119	Vascular dementia of acute onset
+1972501000006116	Vascular dementia of acute onset, other symptoms, predominantly delusional
+1973381000006112	Other vascular dementia, other symptoms, predominantly depressive
+914921000006117	[D] Vascular dementia
+9902261000006115	Vascular dementia without behavioral disturbance
+9902251000006117	Vascular dementia without behavioural disturbance
+2664611000006117	Vascular dementia, with delirium
+7840631000006118	Ischaemic vascular dementia
+1972641000006118	Multi-infarct dementia, other symptoms, predominantly hallucinatory
+1972681000006112	Multi-infarct dementia, other mixed symptoms
+1973551000006112	Vascular dementia, unspecified, other symptoms, predominantly depressive
+1976831000006111	Vascular dementia, unspecified, other mixed symptoms
+3653691000006114	Multi infarct dementia, uncomplicated
+2912341000006118	Multi infarct dementia with delusions
+1972601000006115	Multi-infarct dementia, without additional symptoms
+1972791000006115	Subcortical vascular dementia, other mixed symptoms
+1972821000006112	Mixed cortical and subcortical vascular dementia, without additional symptoms
+1973341000006118	Other vascular dementia, other symptoms, predominantly hallucinatory
+1973461000006113	Vascular dementia, unspecified, without additional symptoms
+1973531000006117	Vascular dementia, unspecified, other symptoms, predominantly hallucinatory
+1972541000006119	Vascular dementia of acute onset, other symptoms, predominantly depressive
+8033241000006113	Multi-infarct dementia due to atherosclerosis
+7840641000006111	Ischemic vascular dementia
+398571000006112	Mixed cortical and subcortical vascular dementia
+295681016	[X]Vascular dementia, unspecified
+1972481000006114	Vascular dementia of acute onset, without additional symptoms
+1972621000006113	Multi-infarct dementia, other symptoms, predominantly delusional
+1972661000006119	Multi-infarct dementia, other symptoms, predominantly depressive
+1972711000006113	Subcortical vascular dementia, without additional symptoms
+1972731000006119	Subcortical vascular dementia, other symptoms, predominantly delusional
+1973221000006118	Other vascular dementia, without additional symptoms
+1973271000006117	Other vascular dementia, other symptoms, predominantly delusional
+1973401000006112	Other vascular dementia, other mixed symptoms
+3653671000006113	Multi-infarct dementia, uncomplicated
