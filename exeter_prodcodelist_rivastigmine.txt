@@ -1,0 +1,17 @@
+Code Product Description Molecule Dose, format and route
+36976 Rivastigmine 4.6mg/24hours transdermal patches Rivastigmine 4.6mg/24 Hours, Transdermal Patch, Transdermal
+33007 RIVASTIGMINE Unknown Unknown
+56771 Rivastigmine 3mg capsules (Dr Reddy's Laboratories (UK) Ltd) Rivastigmine hydrogen tartrate 3mg, Capsule, Oral
+11751 Rivastigmine 3mg capsules Rivastigmine hydrogen tartrate 3mg, Capsule, Oral
+33008 RIVASTIGMINE Unknown Unknown
+33009 RIVASTIGMINE Unknown Unknown
+60723 Rivastigmine 6mg capsules (Waymade Healthcare Plc) Rivastigmine hydrogen tartrate 6mg, Capsule, Oral
+11752 Rivastigmine 4.5mg capsules Rivastigmine hydrogen tartrate 4.5mg, Capsule, Oral
+53882 Rivastigmine 2mg/ml oral solution Rivastigmine hydrogen tartrate 2mg/1ml, Oral solution, Oral
+56631 Rivastigmine 13.3mg/24hours transdermal patches Rivastigmine 13.3mg/24hour, Transdermal patch, Transdermal
+63951 Rivastigmine 9.5mg/24hours transdermal patches (Actavis UK Ltd) Rivastigmine 9.5mg/24hour, Transdermal patch, Transdermal
+11827 Rivastigmine 2mg/ml oral solution sugar free Rivastigmine hydrogen tartrate 2mg/1ml, Oral solution, Oral
+58969 Rivastigmine 4.6mg/24hours transdermal patches (A A H Pharmaceuticals Ltd) Rivastigmine 4.6mg/24hour, Transdermal patch, Transdermal
+4597 Rivastigmine 1.5mg capsules Rivastigmine hydrogen tartrate 1.5mg, Capsule, Oral
+9786 Rivastigmine 6mg capsules Rivastigmine hydrogen tartrate 6mg, Capsule, Oral
+37132 Rivastigmine 9.5mg/24hours transdermal patches Rivastigmine 9.5mg/24hour, Transdermal patch, Transdermal
