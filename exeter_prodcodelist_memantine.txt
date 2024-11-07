@@ -1,0 +1,5 @@
+Code Product Description Molecule Dose, format and route
+38976 Memantine 5mg+10mg+15mg+20mg Tablet Memantine Hydrochloride 5mg+10mg+15mg+20mg, Tablet, Oral
+6225 Memantine 10mg tablets Memantine hydrochloride 10mg, Tablet, Oral
+39240 Memantine 20mg tablets Memantine hydrochloride 20mg, Tablet, Oral
+11837 Memantine 10mg/ml oral solution sugar free Memantine hydrochloride 10mg/1ml, Oral drops, Oral
