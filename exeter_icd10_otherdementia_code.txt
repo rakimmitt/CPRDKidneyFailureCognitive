@@ -1,0 +1,13 @@
+ICD10	Term_description
+G31.0	Circumscribed brain atrophy
+F05.1	Delirium superimposed on dementia
+F02.1	Dementia in Creutzfeldt-Jakob disease
+F02.4	Dementia in human immunodeficiency virus [HIV] disease
+F02.2	Dementia in Huntington disease
+F02.3	Dementia in Parkinson disease
+F02.0	Dementia in Pick disease
+F01.1	Predominantly cortical dementia
+G31.8	Other specified degenerative diseases of nervous system
+F02.8	Dementia in other specified diseases classified elsewhere
+F02	Dementia in other diseases classified elsewhere
+F03	Unspecified dementia
