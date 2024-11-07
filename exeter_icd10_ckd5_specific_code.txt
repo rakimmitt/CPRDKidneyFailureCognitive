@@ -6,3 +6,12 @@ T86.1	Kidney transplant failure and rejection
 Z49.0	Preparatory care for dialysis
 Z49.2	Other dialysis
 Z94.0	Kidney transplant status
+Z492 Other dialysis
+Z493 Encounter for adequacy testing for dialysis
+Z992 Dependence on renal dialysis
+Z49.02 Encounter for fitting and adjustment of peritoneal dialysis catheter 
+R88.0 Cloudy (hemodialysis) (peritoneal) dialysis effluent
+T85.691 - Other mechanical complication of intraperitoneal dialysis catheter
+T85.71 - Infection and inflammatory reaction due to peritoneal dialysis catheter
+T85.611 - Breakdown (mechanical) of intraperitoneal dialysis catheter
+T85.631 - Leakage of intraperitoneal dialysis catheter
