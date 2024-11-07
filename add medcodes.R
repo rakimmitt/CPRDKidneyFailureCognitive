@@ -1,7 +1,7 @@
 library(aurum)
 library(tidyverse)
 
-cprd = CPRDData$new(cprdEnv = "diabetes-2020",cprdConf = "C:/Users/tj358/OneDrive - University of Exeter/CPRD/aurum.yaml")
+cprd = CPRDData$new(cprdEnv = "diabetes-2020",cprdConf = "C:/Users/rakim/Documents/.aurum.yaml")
 
 codesets = cprd$codesets()
 codesets$listCodeSets() %>% print(n=300)
@@ -12,23 +12,36 @@ codesets$deleteCodeSet("icd10_kf_death")
 codesets$deleteCodeSet("ckd5_code") 
 
 #load medcodelists
-icd10_ckd5_code = readr::read_tsv(
-  here::here("C:/Users/tj358/OneDrive - University of Exeter/CPRD/Aurum codelists/medcodes/exeter_icd10_ckd5_code.txt"),
+
+icd10_haemodialysis_sensitive_code = readr::read_tsv(
+  here::here("https://github.com/rakimmitt/CPRDKidneyFailureCognitive/blob/main/exeter_icd10_haemodialysis_sensitive_code.txt"),
   col_types = cols(.default=col_character()))
 
-icd10_ckd5_code %>% codesets$loadICD10CodeSet(name = "icd10_ckd5_code",version="31/10/2021",colname="ICD10")
+icd10_haemodialysis_sensitive_code %>% codesets$loadICD10CodeSet(name = "icd10_haemodialysis_sensitive_code",version="31/10/2021",colname="ICD10")
 
-icd10_kf_death = readr::read_tsv(
-  here::here("C:/Users/tj358/OneDrive - University of Exeter/CPRD/Aurum codelists/medcodes/exeter_icd10_kf_death.txt"),
+icd10_peritoneal_sensitive_code = readr::read_tsv(
+  here::here("https://github.com/rakimmitt/CPRDKidneyFailureCognitive/blob/main/exeter_icd10_peritoneal_sensitive_code.txt"),
   col_types = cols(.default=col_character()))
 
-icd10_kf_death %>% codesets$loadICD10CodeSet(name = "icd10_kf_death",version="31/10/2021", colname="ICD10")
+icd10_peritoneal_sensitive_code %>% codesets$loadICD10CodeSet(name = "icd10_peritoneal_sensitive_code",version="31/10/2021",colname="ICD10")
 
- ckd5_code = readr::read_tsv(
-   here::here("C:/Users/tj358/OneDrive - University of Exeter/CPRD/Aurum codelists/medcodes/exeter_medcodelist_ckd5_code.txt"),
+icd10_transplant_sensitive_code = readr::read_tsv(
+  here::here("https://github.com/rakimmitt/CPRDKidneyFailureCognitive/blob/main/exeter_icd10_transplant_sensitive_code.txt"),
+  col_types = cols(.default=col_character()))
+
+icd10_transplant_sensitive_code %>% codesets$loadICD10CodeSet(name = "icd10_transplant_sensitive_code",version="31/10/2021",colname="ICD10")
+
+icd10_eskdnos_sensitive_code = readr::read_tsv(
+  here::here("https://github.com/rakimmitt/CPRDKidneyFailureCognitive/blob/main/exeter_icd10_eskdnos_sensitive_code.txt"),
+  col_types = cols(.default=col_character()))
+
+icd10_eskdnos_sensitive_code %>% codesets$loadICD10CodeSet(name = "icd10_eskdnos_sensitive_code",version="31/10/2021",colname="ICD10")
+
+haemodialysis_code = readr::read_tsv(
+   here::here("https://github.com/rakimmitt/CPRDKidneyFailureCognitive/blob/main/exeter_medcodelist_haemodialysis.txt"),
    col_types = cols(.default=col_character()))
 
- ckd5_code %>% codesets$loadMedCodeSet(name = "ckd5_code",version="31/10/2021",colname="medcodeid")
+haemodialysis_code %>% codesets$loadMedCodeSet(name = "haemodialysis_code",version="31/10/2021",colname="medcodeid")
 
  codesets$listCodeSets() %>% print(n=300)
  
