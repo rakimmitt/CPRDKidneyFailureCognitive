@@ -38,6 +38,7 @@
 
 # Algorithm: https://github.com/Exeter-Diabetes/CPRD-Codelists/blob/main/readme.md#ethnicity
 
+# Note, the final table is called "rk_ethnicity" whereas the original was "ethnicity"
 
 ############################################################################################
 
@@ -48,9 +49,7 @@ library(EHRBiomarkr)
 rm(list=ls())
 
 
-cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:/Users/tj358/OneDrive - University of Exeter/CPRD/aurum.yaml")
-
-
+cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "~/.aurum.yaml")
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
@@ -200,4 +199,4 @@ ethnicity <- cprd$tables$patient %>%
   
   select(patid, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2) %>%
   
-  analysis$cached("ethnicity", unique_indexes="patid")
+  analysis$cached("rk_ethnicity", unique_indexes="patid")
