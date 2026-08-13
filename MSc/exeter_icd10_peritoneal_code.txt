@@ -1,9 +1,0 @@
-ICD10	Term_description
-Z49.32 Encounter for adequacy testing for peritoneal dialysis
-Z492 Other dialysis
-Z49.02 Encounter for fitting and adjustment of peritoneal dialysis catheter 
-R88.0 Cloudy (hemodialysis) (peritoneal) dialysis effluent
-T85.691 - Other mechanical complication of intraperitoneal dialysis catheter
-T85.71 - Infection and inflammatory reaction due to peritoneal dialysis catheter
-T85.611 - Breakdown (mechanical) of intraperitoneal dialysis catheter
-T85.631 - Leakage of intraperitoneal dialysis catheter

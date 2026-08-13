@@ -1,0 +1,3 @@
+ICD10	Term_description
+Z49.2 Other dialysis (Peritoneal dialysis)
+R88.0 Cloudy (hemodialysis) (peritoneal) dialysis effluent
