@@ -1,5 +1,5 @@
 
-# Produces all_patid_townsend_deprivation_score table
+# Produces all_patid_rk_townsend_deprivation_score table
 
 # See: https://github.com/drkgyoung/Exeter_Diabetes_codelists/blob/main/readme.md#townsend-deprivation-scores
 
@@ -12,7 +12,7 @@ library(aurum)
 library(tidyverse)
 library(readxl)
 
-cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:/Users/tj358/OneDrive - University of Exeter/CPRD/aurum.yaml")
+cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "~/.aurum.yaml")
 
 analysis = cprd$analysis("all_patid")
 
@@ -21,7 +21,7 @@ analysis = cprd$analysis("all_patid")
 
 ##################### IMPORT IMD/TDS/LSOA LOOKUPS ##############################################################################
 
-setwd("C:/Users/tj358/OneDrive - University of Exeter/CPRD/2024/Scripts/CPRD-Thijs-CKD-cohort/townsend/")
+setwd("C:/Users/rk535/OneDrive/1 - PhD/Data Science/CPRD/Deprivation source files")
 
 imd_lsoa <- read_excel("File_1_-_IMD2019_Index_of_Multiple_Deprivation.xlsx", sheet="IMD2019") %>%
   select(lsoa_2011='LSOA code (2011)',
@@ -51,4 +51,4 @@ imd_townsend <- imd_lsoa %>%
 townsend_score <- cprd$tables$patientImd %>%
   select(patid, imd_decile) %>%
   inner_join(imd_townsend, by="imd_decile", copy=TRUE) %>%
-  analysis$cached("townsend_score", unique_index="patid")
+  analysis$cached("rk_townsend_score", unique_index="patid")
