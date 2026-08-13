@@ -6,17 +6,14 @@ library(aurum)
 library(EHRBiomarkr)
 rm(list=ls())
 
-
-cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:/Users/tj358/OneDrive - University of Exeter/CPRD/aurum.yaml")
-
+cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "~/.aurum.yaml")
 
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-
 analysis_prefix <- "ckd"
 
-#Data quality check - should only include acceptable' patients (see CPRD data specification for definition)
+#Data quality check - should only include 'acceptable' patients (see CPRD data specification for definition)
 cprd$tables$patient %>% count() #45,037,869 - total patient count in download
 cprd$tables$patient %>% filter(acceptable ==1) %>% count() #45,037,869
 cprd$tables$patient %>% filter(patienttypeid ==3) %>% count() #45,037,869
@@ -163,7 +160,7 @@ ckd_cohort <- ckd_ids %>%
   mutate(with_hes=ifelse(is.na(with_hes), 0L, 1L)) %>%
   left_join(ethnicity, by="patid") %>%
   select(patid, gender, dob, pracid, prac_region=region, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2, imd_decile, regstartdate, gp_end_date, death_date=reg_date_of_death, with_hes, hes_end_date, first_ckd_date) %>%
-  analysis$cached("ckd_cohort", unique_indexes="patid", indexes=c("gender", "dob"))
+  analysis$cached("rk_ckd_cohort", unique_indexes="patid", indexes=c("gender", "dob"))
                   
                   
 ckd_cohort %>% count() # 1,452,649
