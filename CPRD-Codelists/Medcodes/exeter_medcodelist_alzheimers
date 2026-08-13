@@ -1,0 +1,83 @@
+MedCodeId	Term	Observations_jun24	old_2021	new_2024
+45046017	Alzheimer's disease	1033803	1	1
+295668011	[X]Dementia in Alzheimer's disease	355634	1	1
+376541000006112	Dementia in Alzheimer's disease with late onset	96892	1	1
+363021000006113	[X]Alzheimer's dementia unspec	60594	1	1
+425901000006116	[X]Senile dementia,Alzheimer's type	27298	1	1
+499946014	Alzheimer's disease with early onset	25542	1	1
+500317011	Alzheimer's disease with late onset	22053	1	1
+295672010	[X]Dementia in Alzheimer's disease, unspecified	19739	1	1
+376531000006119	Dementia in Alzheimer's disease with early onset	10981	1	1
+6900181000006114	Primary degenerative dementia of the Alzheimer type, senile onset	6881	1	1
+2931251000006113	Alzheimer dementia	2963	1	1
+6897211000006117	Primary degenerative dementia of the Alzheimer type, presenile onset	1114	1	1
+423351000006115	[X]Presenile dementia,Alzheimer's type	538	1	1
+299325013	[X]Other Alzheimer's disease	486	1	1
+7969281000006110	Dementia of the Alzheimer type with behavioural disturbance	409	1	1
+6897271000006114	Dementia in Alzheimer's disease - type 2	377	1	1
+2931241000006111	Alzheimer disease	373	1	1
+423381000006111	[X]Primary degen dementia of Alzheimer's type, senile onset	257	1	1
+6897251000006116	Presenile dementia, Alzheimer's type	191	1	1
+6900201000006110	Dementia of the Alzheimers type, late onset	187	1	1
+5005711000006119	Progressive aphasia in Alzheimer's disease	172	1	1
+363031000006111	[X]Alzheimer's disease type 1	167	1	1
+6900241000006112	Dementia in Alzheimer's disease - type 1	149	1	1
+3575041000006117	Primary degenerative dementia of the Alzheimer type, senile onset, uncomplicated	149	1	1
+6900221000006117	SDAT - Senile dementia, Alzheimer's type	136	1	1
+8044941000006117	Depressed mood in Alzheimer's disease	125	1	1
+8044911000006116	Delusions in Alzheimer's disease	88	1	1
+423391000006114	[X]Primary degen dementia, Alzheimer's type, presenile onset	83	1	1
+2667431000006115	Primary degenerative dementia of the Alzheimer type, presenile onset, with depression	74	1	1
+8044981000006111	Alzheimer's disease co-occurrent with delirium	70	1	1
+2603271000006110	Primary degenerative dementia of the Alzheimer type, presenile onset, uncomplicated	59	1	1
+363041000006118	[X]Alzheimer's disease type 2	54	1	1
+8030791000006119	Altered behaviour in Alzheimer's disease	54	1	1
+8032911000006111	Early onset Alzheimer's disease with behavioural disturbance	43	1	1
+5005581000006119	Focal Alzheimer's disease	31	1	1
+2929931000006112	Primary degenerative dementia of the Alzheimer type, senile onset, with depression	29	1	1
+2575731000006115	Primary degenerative dementia of the Alzheimer type, senile onset, with delirium	28	1	1
+5005501000006111	Familial Alzheimer's disease of early onset	24	1	1
+5005561000006112	Non-familial Alzheimer's disease of late onset	24	1	1
+6897241000006118	Dementia of the Alzheimers type with early onset	24	1	1
+2931231000006118	AD - Alzheimer's disease	18	1	1
+5005541000006113	Familial Alzheimer's disease of late onset	11	1	1
+5005521000006118	Non-familial Alzheimer's disease of early onset	7	1	1
+3392881000006115	Primary degenerative dementia of the Alzheimer type, senile onset, with delusions	4	1	1
+3384371000006119	Primary degenerative dementia of the Alzheimer type, presenile onset, with delusions	3	1	1
+8030801000006118	Altered behavior in Alzheimer's disease	2	1	1
+8032931000006117	Early onset Alzheimers disease with behavioral disturbance	1	1	1
+8044951000006115	Alzheimers dementia with depressed mood	1	1	1
+2575741000006113	Dementia of the Alzheimer's type, with late onset, with delirium	1	1	1
+3392901000006118	Alzheimers dementia, late onset, with delusions	1	1	1
+3558401000006117	Primary degenerative dementia of the Alzheimer type, presenile onset, with delirium	1	1	1
+7515121000006112	Primary degenerative dementia of the Alzheimer type, senile onset in remission	1	1	1
+2667441000006113	Dementia of the Alzheimer's type, with early onset, with depressive mood	NA	1	0
+2667451000006110	Alzheimers dementia, early onset, with depressed mood	NA	1	0
+8032921000006115	Early onset Alzheimer's disease with behavioral disturbance	NA	1	0
+8032941000006110	Early onset Alzheimer disease with behavioral disturbance	NA	1	0
+8044921000006112	Delusions in Alzheimers disease	NA	1	0
+8044931000006110	Delusions in Alzheimer disease	NA	1	0
+8044961000006118	Depressed mood in Alzheimer disease	NA	1	0
+7969291000006113	Dementia of the Alzheimer type with behavioral disturbance	NA	1	0
+9896141000006117	Behavioral disturbance co-occurrent and due to late onset Alzheimer dementia	NA	1	0
+5005511000006114	Familial Alzheimer disease of early onset	NA	1	0
+5005531000006115	Non-familial Alzheimer disease of early onset	NA	1	0
+5005551000006110	Familial Alzheimer disease of late onset	NA	1	0
+5005571000006117	Non-familial Alzheimer disease of late onset	NA	1	0
+5005591000006116	Focal Alzheimer disease	NA	1	0
+5005721000006110	Progressive aphasia in Alzheimer disease	NA	1	0
+2929951000006117	Alzheimers dementia, late onset, with depressive mood	NA	1	0
+2929941000006119	Dementia of the Alzheimer's type, with late onset, with depressive mood	NA	1	0
+6897221000006113	Primary degenerative dementia of the Alzheimer type, early onset	NA	1	0
+6900191000006112	Primary degenerative dementia of the Alzheimer type, late onset	NA	1	0
+2575751000006110	Dementia Alzheimers type, late onset with delirium	NA	1	0
+3384381000006116	Dementia of the Alzheimer's type, with early onset, with delusions	NA	1	0
+3392891000006117	Dementia of the Alzheimer's type, with late onset, with delusions	NA	1	0
+2603281000006113	Dementia of the Alzheimer's type, with early onset, uncomplicated	NA	1	0
+3558411000006119	Dementia of the Alzheimer's type, with early onset, with delirium	NA	1	0
+3575051000006115	Dementia of the Alzheimer's type, with late onset, uncomplicated	NA	1	0
+7515131000006110	Primary degenerative dementia of the Alzheimer type, presenile onset in remission	NA	1	0
+3894371000006118	Alzheimer's neurofibrillary degeneration	NA	1	0
+3894381000006115	Alzheimer's neurofibrillary change	NA	1	0
+8030811000006115	Altered behavior in Alzheimer disease	NA	1	0
+8030821000006111	Altered behavior in Alzheimers disease	NA	1	0
