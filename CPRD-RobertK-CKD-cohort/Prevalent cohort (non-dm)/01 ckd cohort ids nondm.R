@@ -1,11 +1,10 @@
-############################################################################################
+#########################################################################################
 
 # Setup
 library(tidyverse)
 library(aurum)
 library(EHRBiomarkr)
 rm(list=ls())
-
 cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "~/.aurum.yaml")
 
 codesets = cprd$codesets()
