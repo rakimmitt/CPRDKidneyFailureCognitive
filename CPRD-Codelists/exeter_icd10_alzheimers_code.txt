@@ -1,0 +1,3 @@
+ICD10	Term_description
+G30	Alzheimer disease
+F00	Dementia in Alzheimer disease
