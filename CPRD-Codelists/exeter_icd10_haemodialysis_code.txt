@@ -1,0 +1,3 @@
+ICD10	Term_description
+T82.4 Mechanical complication of vascular dialysis catheter
+Z49.1 Extracorporeal dialysis
