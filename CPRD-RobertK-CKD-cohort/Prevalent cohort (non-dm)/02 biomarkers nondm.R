@@ -7,7 +7,7 @@ library(EHRBiomarkr)
 rm(list=ls())
 
 
-cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:/Users/tj358/OneDrive - University of Exeter/CPRD/aurum.yaml")
+cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "~/.aurum.yaml")
 
 
 codesets = cprd$codesets()
@@ -249,6 +249,6 @@ for (d in date_strings) {
   
   baseline_biomarkers <- baseline_biomarkers %>%
     left_join(baseline_height, by="patid") %>%
-    analysis$cached(paste0(d, "_baseline_biomarkers"), unique_indexes="patid")
+    analysis$cached(paste0("rk_", d, "_baseline_biomarkers"), unique_indexes="patid")
   
 }
