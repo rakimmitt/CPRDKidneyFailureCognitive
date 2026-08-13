@@ -2,5 +2,3 @@ ICD10	Term_description
 N16.5	Renal tubulo-interstitial disorders in transplant rejection
 T86.1	Kidney transplant failure and rejection
 Z94.0	Kidney transplant status
-Z940 Kidney transplant status
-T861 Kidney transplant failure and rejection
