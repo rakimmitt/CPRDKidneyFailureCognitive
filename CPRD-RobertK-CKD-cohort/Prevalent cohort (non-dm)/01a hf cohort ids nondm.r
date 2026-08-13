@@ -6,13 +6,10 @@ library(aurum)
 library(EHRBiomarkr)
 rm(list=ls())
 
-
-cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:/Users/tj358/OneDrive - University of Exeter/CPRD/aurum.yaml")
-
+cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "~/.aurum.yaml")
 
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
-
 
 analysis_prefix <- "ckd"
 
@@ -142,7 +139,7 @@ hf_cohort <- hf_ids %>%
   left_join(ethnicity, by="patid") %>%
   select(patid, gender, dob, pracid, prac_region=region, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2, 
   imd_decile, regstartdate, gp_end_date, death_date=reg_date_of_death, with_hes, hes_end_date, first_hf_date) %>%
-  analysis$cached("hf_cohort", unique_indexes="patid", indexes=c("gender", "dob"))
+  analysis$cached("rk_hf_cohort", unique_indexes="patid", indexes=c("gender", "dob"))
                   
                   
 hf_cohort %>% count() # 1,349,229
