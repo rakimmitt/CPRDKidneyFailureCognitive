@@ -1,0 +1,13 @@
+5095841000006113	Aplastic bone disease
+6024541000006117	Donor renal transplantation
+3727281000006114	Acquired arteriovenous fistula of heart
+3660511000006118	Repair of arteriovenous fistula by occlusion
+354417015	Acute-on-chronic renal failure
+8001631000006110	Hypertensive heart AND chronic kidney disease with congestive heart failure
+1548781000006111	Percutaneous transluminal arterial embolisation of dural arteriovenous fistula
+7643081000006112	Percutaneous transluminal arterial embolization of dural arteriovenous fistula
+7643131000006112	Percutaneous transluminal arterial and venous embolization of dural arteriovenous fistula
+1548771000006113	Percutaneous transluminal arterial and venous embolisation of dural arteriovenous fistula
+7643111000006118	Percutaneous transluminal venous embolization of dural arteriovenous fistula
+1548791000006114	Percutaneous transluminal venous embolisation of dural arteriovenous fistula
+7700671000006112	Cadaver donor for kidney transplant
