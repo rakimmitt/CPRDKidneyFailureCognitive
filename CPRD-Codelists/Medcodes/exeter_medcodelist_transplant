@@ -1,0 +1,166 @@
+medcodeid	term_medcode
+251923016	H/O: kidney recipient
+4542501000006119	History of renal transplant
+4542521000006112	History of - kidney recipient
+460644012	History of renal transplant
+4669011000006116	Live donor renal allotransplant
+4669031000006110	Live donor renal allograft
+272320011	Allotransplantation of kidney from live donor
+90471000006113	Live donor renal transplant
+272325018	Cadaveric renal transplant
+478131000006115	Allotransplantation of kidney from cadaver
+4669061000006118	Cadaver renal allograft
+90461000006118	Transplantation of kidney from cadaver
+4669051000006115	Cadaver renal allotransplant
+399381000000115	Allotransplantation of kidney from cadaver NEC
+117168016	Renal transplant
+272326017	Other specified transplantation of kidney
+272327014	Transplantation of kidney NOS
+3647071000006110	Tx - Kidney transplantation
+3647061000006115	Kidney transplant
+3647051000006117	Tx - Renal transplantation
+501594013	Transplantation of kidney
+3647091000006111	Renal graft
+3647031000006112	Kidney transplantation
+3647021000006114	Transplant of kidney
+7688001000006116	Allotransplantation of kidney with DBD (donation after brain stem death)
+372621000000114	Allotransplantation of kidney from beating heart cadaver
+1549841000006116	Allotransplantation of kidney from non-beating heart cadaver
+7688041000006119	Allotransplantation of kidney with DCD (donation after cardiac death)
+5486891000006118	Removal of transplanted kidney
+394365013	Transplant nephrectomy
+1905531000006112	Excision of rejected transplanted kidney
+5686451000006112	Removal of rejected kidney
+422992018	Excision of rejected transplanted kidney
+272389014	Exploration of renal transplant
+4669451000006113	Exploration of kidney transplant
+380101000000116	Examination of recipient after kidney transplant
+7091541000006113	Post-transplantation of kidney examination of recipient
+380061000000118	Interventions associated with transplantation of kidney NOS
+7688541000006114	Transplantation of kidney regime
+1550021000006110	OS interventions associated with transplantation of kidney
+366671000000118	Interventions associated with transplantation of kidney
+324973015	Kidney transplant failure and rejection
+988961000006115	Renal transplant rejected
+354628010	Acute-on-chronic rejection of renal transplant
+354616019	Acute rejection of renal transplant - grade I
+354617011	Acute rejection of renal transplant - grade II
+354618018	Acute rejection of renal transplant - grade III
+354615015	Acute rejection of renal transplant
+354621016	Chronic transplant nephropathy
+5096141000006114	Chronic allograft nephropathy
+354619014	Chronic rejection of renal transplant
+413415016	Unexplained episode of renal transplant dysfunction
+354610013	Renal transplant rejection
+615611000006116	Det.ren.func.after ren.transpl
+900121000006113	Renal transplant rejected
+354613010	Very mild acute rejection of renal transplant
+354614016	Borderline changes of acute rejection
+353974015	Xenograft renal transplant
+5094171000006114	End stage renal failure with renal transplant
+7103511000006119	Disorder related to renal transplantation
+5096031000006117	Primary non-function of renal transplant
+5096051000006112	Hyperacute rejection of renal transplant
+354612017	Accelerated rejection of renal transplant
+5096171000006118	Mild chronic transplant nephropathy
+354623018	Chronic rejection of renal transplant - grade 1
+5096191000006117	Moderate chronic transplant nephropathy
+354624012	Chronic rejection of renal transplant - grade II
+354627017	Chronic rejection of renal transplant - grade III
+5096211000006116	Severe chronic transplant nephropathy
+5096231000006110	Failed renal transplant
+5096241000006117	Perfusion injury of renal transplant
+5096271000006113	Transplant glomerulopathy
+5096281000006111	Transplant glomerulopathy - early form
+5096291000006114	Transplant glomerulopathy - late form
+5096641000006119	Perirenal and periureteric post-transplant lymphocele
+5593651000006110	Pre-existing disease in renal transplant
+6024541000006117	Donor renal transplantation
+2198141000000110	Stenosis of vein of transplanted kidney
+2189151000000117	Urological complication of renal transplant
+2191221000000118	Vascular complication of renal transplant
+177251000006119	Renal transplant with complication, without blame
+754061000006111	Kidney transplant with complication, without blame
+2197961000000113	Rupture of artery of transplanted kidney
+2198001000000111	Rupture of vein of transplanted kidney
+2209021000000112	Aneurysm of vein of transplanted kidney
+2209101000000119	Aneurysm of artery of transplanted kidney
+2234541000000115	Thrombosis of artery of transplanted kidney
+2234621000000111	Thrombosis of vein of transplanted kidney
+2238021000000114	Stenosis of dialysis arteriovenous shunt
+2238261000000112	Thrombosis of dialysis arteriovenous graft
+2238341000000116	Thrombosis of dialysis arteriovenous shunt
+2238461000000111	Occlusion of dialysis arteriovenous shunt
+2240741000000115	Infection of dialysis arteriovenous shunt
+2240831000000118	Haemorrhage of dialysis arteriovenous graft
+2240911000000119	Haemorrhage of dialysis arteriovenous shunt
+2253631000000110	Stenosis of arterial side of dialysis arteriovenous shunt
+2253671000000112	Stenosis of venous side of dialysis arteriovenous shunt
+3292751000006114	Renal homotransplantation with unilateral recipient nephrectomy
+3455171000006118	Disorder of transplanted kidney
+3455181000006115	Complication of transplanted kidney
+3653831000006114	Structure of transplanted kidney
+3653841000006116	Transplanted kidney
+284213011	Renal transplant planned
+424791000006110	[X]Renal tubulo-interstitial disorders/transplant rejection
+177341000006111	Renal tubulo-interstitial disorders in transplant rejection
+5157591000006112	Renal transplant arteriogram
+5157601000006116	Renal transplant venogram
+5157611000006118	Renal transplant venous sampling
+5161291000006110	Ultrasound scan of transplant kidney
+5161281000006112	US scan of transplant kidney
+5647621000006110	Entire transplant kidney
+5647611000006119	Entire transplanted kidney
+2868911000006114	Anesthesia for renal transplant, recipient
+2868901000006111	Anaesthesia for renal transplant, recipient
+5059341000006114	Transplant renal vein thrombosis
+4218231000006113	Kidney transplant evaluation
+3346301000006113	Renal homotransplantation excluding donor and recipient nephrectomy
+6948351000006111	Renal transplant venogram
+6948341000006114	Fluoroscopic venography of renal transplant
+6932441000006115	Renal transplant angiogram
+6932431000006113	Fluoroscopic angiography of renal transplant
+6933861000006111	Fluoroscopy and angioplasty of renal transplant
+6933851000006114	Fluoroscopic angioplasty of renal transplant
+7094321000006114	Pretransplant evaluation of kidney recipient
+7090481000006112	Hypertension secondary to kidney transplant
+7182701000006116	Fluoroscopy guided percutaneous thrombolysis of transplanted renal artery
+7182721000006114	Fluoroscopic guidance for percutaneous thrombolysis of transplanted renal artery
+7150611000006118	Doppler ultrasonography (US) of transplanted kidney
+7150631000006112	Doppler ultrasound scan of transplanted kidney
+7150641000006119	Doppler ultrasound of transplanted kidney
+7150621000006114	Doppler ultrasonography of transplanted kidney
+7150601000006116	US doppler scan of transplanted kidney
+7214301000006113	Tissue specimen from transplanted kidney
+7238481000006111	Ultrasonography guided biopsy of transplanted kidney
+7238471000006113	Biopsy of transplanted kidney using ultrasound guidance
+7237331000006116	MR angiography of transplanted kidney
+7237321000006119	Magnetic resonance angiography of transplanted kidney
+7212371000006110	Specimen from transplanted kidney obtained by biopsy
+7212381000006113	Renal transplant biopsy sample
+7279701000006119	Radionuclide imaging of transplanted kidney
+7279711000006116	Radionuclide study of transplanted kidney
+7484221000006112	Normal renal function of transplanted kidney
+7569841000006114	Vesicoureteric reflux after renal transplant
+7569831000006116	Post-renal transplant vesicoureteric reflux
+7613121000006116	Recurrent post-transplant renal disease
+7700671000006112	Cadaver donor for kidney transplant
+7710041000006114	Transplant renal artery stenosis
+7710051000006111	Renal artery stenosis of transplanted kidney
+7710031000006116	Structure of renal artery of transplanted kidney
+7714931000006110	Chronic kidney disease 5t
+7714921000006112	Chronic kidney disease stage 5 with transplant
+7714941000006117	CKD (chronic kidney disease) stage 5t
+7766401000006118	Retrograde insertion of ureteric stent into ureter of transplanted kidney using fluoroscopic guidance
+7766391000006115	Fluoroscopy guided retrograde insertion of ureteric stent into ureter of transplanted kidney
+7766381000006118	Antegrade insertion of ureteric stent into ureter of transplanted kidney using fluoroscopic guidance
+7766371000006116	Fluoroscopy guided antegrade insertion of ureteric stent into ureter of transplanted kidney
+7985891000006113	Transplantation of kidney and pancreas
+7985971000006118	Laparoscopic biopsy of transplanted kidney
+7785581000006115	Kidney transplant recipient
+7932051000006112	Entire renal artery of transplanted kidney
+3527360016	Transplanted kidney present
+12019461000006111	Fluoroscopy guided removal of nephrostomy tube from transplanted kidney
+12019471000006116	Removal of nephrostomy tube from transplanted kidney using fluoroscopic guidance
+12031641000006115	Allotransplantation of left kidney
+12031651000006118	Allotransplantation of right kidney
