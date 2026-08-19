@@ -1,0 +1,40 @@
+ProdCodeId	dmdid	Term from EMIS	ProductName	Formulation	RouteOfAdministration	DrugSubstanceName	SubstanceStrength	BNFChapter	DrugIssues
+1609241000033116	3757911000001101	Exelon 1.5mg capsules (Novartis Pharmaceuticals UK Ltd)	Exelon 1.5mg capsules	Capsule/ Oral capsule	Oral	Rivastigmine hydrogen tartrate	1.500mg		1938
+1609341000033114	3758511000001107	Exelon 3mg capsules (Novartis Pharmaceuticals UK Ltd)	Exelon 3mg capsules	Capsule/ Oral capsule	Oral	Rivastigmine hydrogen tartrate	3.000mg		2574
+1609441000033115	3889111000001100	Exelon 4.5mg capsules (Novartis Pharmaceuticals UK Ltd)	Exelon 4.5mg capsules	Capsule/ Oral capsule	Oral	Rivastigmine hydrogen tartrate	4.500mg		1519
+1609541000033119	3889911000001102	Exelon 6mg capsules (Novartis Pharmaceuticals UK Ltd)	Exelon 6mg capsules	Capsule/ Oral capsule	Oral	Rivastigmine hydrogen tartrate	6.000mg		1226
+1673341000033115	42041311000001100	Rivastigmine 1.5mg capsules	Rivastigmine 1.5mg capsules	Capsule/ Oral capsule	Oral	Rivastigmine hydrogen tartrate	1.500mg	04110000	284539
+1673441000033114	42041511000001106	Rivastigmine 3mg capsules	Rivastigmine 3mg capsules	Capsule/ Oral capsule	Oral	Rivastigmine hydrogen tartrate	3.000mg	04110000	376957
+1673541000033110	42041611000001105	Rivastigmine 4.5mg capsules	Rivastigmine 4.5mg capsules	Capsule/ Oral capsule	Oral	Rivastigmine hydrogen tartrate	4.500mg	04110000	146804
+1673641000033111	42041711000001101	Rivastigmine 6mg capsules	Rivastigmine 6mg capsules	Capsule/ Oral capsule	Oral	Rivastigmine hydrogen tartrate	6.000mg	04110000	127145
+2656441000033116	4340311000001102	Rivastigmine 2mg/ml oral solution sugar free	Rivastigmine 2mg/ml oral solution sugar free	Oral solution	Oral	Rivastigmine hydrogen tartrate	2.000mg/1.000ml	04110000	14628
+2656541000033115	4333811000001103	Exelon 2mg/ml oral solution (Novartis Pharmaceuticals UK Ltd)	Exelon 2mg/ml oral solution	Oral solution	Oral	Rivastigmine hydrogen tartrate	2.000mg/1.000ml		355
+4321241000033114	12315111000001105	Rivastigmine 4.6mg/24hours transdermal patches	Rivastigmine 4.6mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	4.600mg/24.000hour	04110000	185404
+4321541000033111	12315211000001104	Rivastigmine 9.5mg/24hours transdermal patches	Rivastigmine 9.5mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	9.500mg/24.000hour	04110000	398383
+4322041000033111	12234911000001107	Exelon 4.6mg/24hours transdermal patches (Novartis Pharmaceuticals UK Ltd)	Exelon 4.6mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	4.600mg/24.000hour		5916
+4322641000033117	12235211000001102	Exelon 9.5mg/24hours transdermal patches (Novartis Pharmaceuticals UK Ltd)	Exelon 9.5mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	9.500mg/24.000hour		16353
+6469441000033118	19722211000001107	Nimvastid 1.5mg capsules (Krka UK Ltd)	Nimvastid 1.5mg capsules	Capsule/ Oral capsule	Oral	Rivastigmine hydrogen tartrate	1.500mg		2
+6469641000033116	19722911000001103	Nimvastid 4.5mg capsules (Krka UK Ltd)	Nimvastid 4.5mg capsules	Capsule/ Oral capsule	Oral	Rivastigmine hydrogen tartrate	4.500mg		50
+6469741000033113	19723711000001108	Nimvastid 6mg capsules (Krka UK Ltd)	Nimvastid 6mg capsules	Capsule/ Oral capsule	Oral	Rivastigmine hydrogen tartrate	6.000mg		1
+8271941000033112	22054811000001105	Kerstipon 6mg capsules (Aspire Pharma Ltd)	Kerstipon 6mg capsules	Capsule/ Oral capsule	Oral	Rivastigmine hydrogen tartrate	6.000mg		1
+8348041000033112	22403511000001106	Rivastigmine 13.3mg/24hours transdermal patches	Rivastigmine 13.3mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	13.300mg/24.000hour	04110000	31687
+8348141000033111	22384311000001109	Exelon 13.3mg/24hours transdermal patches (Novartis Pharmaceuticals UK Ltd)	Exelon 13.3mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	13.300mg/24.000hour		1543
+8349341000033119	22351011000001101	Voleze 4.6mg/24hours transdermal patches (Advanz Pharma)	Voleze 4.6mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	4.600mg/24.000hour		79
+8349441000033113	22351211000001106	Voleze 9.5mg/24hours transdermal patches (Focus Pharmaceuticals Ltd)	Voleze 9.5mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	9.500mg/24.000hour		144
+9073441000033113	22515611000001104	Erastig 4.6mg/24hours transdermal patches (Teva UK Ltd)	Erastig 4.6mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	4.600mg/24.000hour		53
+9073541000033114	22513611000001103	Erastig 9.5mg/24hours transdermal patches (Teva UK Ltd)	Erastig 9.5mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	9.500mg/24.000hour		106
+9165441000033111	24435711000001104	Alzest 4.6mg/24hours transdermal patches (Dr Reddy's Laboratories (UK) Ltd)	Alzest 4.6mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	4.600mg/24.000hour		50096
+9165541000033112	24435911000001102	Alzest 9.5mg/24hours transdermal patches (Dr Reddy's Laboratories (UK) Ltd)	Alzest 9.5mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	9.500mg/24.000hour		70317
+9366241000033112	25556011000001109	Somniton 4.6mg/24hours transdermal patches (Zentiva Pharma UK Ltd)	Somniton 4.6mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	4.600mg/24.000hour		2
+9366841000033111	25556211000001104	Somniton 9.5mg/24hours transdermal patches (Zentiva Pharma UK Ltd)	Somniton 9.5mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	9.500mg/24.000hour		5
+9411841000033112	25467111000001107	Prometax 4.6mg/24hours transdermal patches (Sandoz Ltd)	Prometax 4.6mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	4.600mg/24.000hour		396
+9412041000033110	25466511000001100	Prometax 9.5mg/24hours transdermal patches (Sandoz Ltd)	Prometax 9.5mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	9.500mg/24.000hour		1011
+10642641000033112	30765911000001103	Erastig 13.3mg/24hours transdermal patches (Teva UK Ltd)	Erastig 13.3mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	13.300mg/24.000hour		246
+10674541000033119	27375811000001109	Eluden 4.6mg/24hours transdermal patches (Viatris UK Healthcare Ltd)	Eluden 4.6mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	4.600mg/24.000hour		4
+10674641000033118	27376011000001107	Eluden 9.5mg/24hours transdermal patches (Viatris UK Healthcare Ltd)	Eluden 9.5mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	9.500mg/24.000hour		1
+11403041000033111	32429911000001108	Voleze 13.3mg/24hours transdermal patches (Advanz Pharma)	Voleze 13.3mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	13.300mg/24.000hour		2
+12198541000033112	34228311000001107	Almuriva 4.6mg/24hours transdermal patches (Sandoz Ltd)	Almuriva 4.6mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	4.600mg/24.000hour		180
+12198741000033116	34228511000001101	Almuriva 9.5mg/24hours transdermal patches (Sandoz Ltd)	Almuriva 9.5mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	9.500mg/24.000hour		725
+13812141000033117	39538711000001103	Alzest 13.3mg/24hours transdermal patches (Dr Reddy's Laboratories (UK) Ltd)	Alzest 13.3mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	13.300mg/24.000hour		1155
+14116041000033112	41090211000001106	Almuriva 13.3mg/24hours transdermal patches (Sandoz Ltd)	Almuriva 13.3mg/24hours transdermal patches	Transdermal patch	Transdermal	Rivastigmine	13.300mg/24.000hour		3
+14242141000033118	42255011000001108	Zeyzelf 9.5mg/24hours twice weekly transdermal patches (Luye Pharma Ltd)	Zeyzelf 9.5mg/24hours twice weekly transdermal patches	Transdermal patch	Transdermal	Rivastigmine	9.500mg/24.000hour		2
