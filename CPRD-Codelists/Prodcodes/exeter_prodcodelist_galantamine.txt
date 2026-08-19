@@ -1,0 +1,51 @@
+ProdCodeId	dmdid	Term from EMIS	ProductName	Formulation	RouteOfAdministration	DrugSubstanceName	SubstanceStrength	BNFChapter	DrugIssues
+2191341000033112	42036411000001102	Galantamine 4mg tablets	Galantamine 4mg tablets	Tablet/ Oral Tablet	Oral	Galantamine hydrobromide	4.000mg	04110000	16319
+2191441000033118	42036511000001103	Galantamine 8mg tablets	Galantamine 8mg tablets	Tablet/ Oral Tablet	Oral	Galantamine hydrobromide	8.000mg	04110000	76489
+2191541000033117	42036311000001109	Galantamine 12mg tablets	Galantamine 12mg tablets	Tablet/ Oral Tablet	Oral	Galantamine hydrobromide	12.000mg	04110000	85946
+2191641000033116	3761211000001106	Reminyl 4mg tablets (Shire Pharmaceuticals Ltd)	Reminyl 4mg tablets	Tablet/ Oral Tablet	Oral	Galantamine hydrobromide	4.000mg		1127
+2191741000033113	3761511000001109	Reminyl 8mg tablets (Shire Pharmaceuticals Ltd)	Reminyl 8mg tablets	Tablet/ Oral Tablet	Oral	Galantamine hydrobromide	8.000mg		2939
+2191841000033115	3761811000001107	Reminyl 12mg tablets (Shire Pharmaceuticals Ltd)	Reminyl 12mg tablets	Tablet/ Oral Tablet	Oral	Galantamine hydrobromide	12.000mg		5219
+2801441000033112	3462711000001102	Galantamine 20mg/5ml oral solution sugar free	Galantamine 20mg/5ml oral solution sugar free	Oral solution	Oral	Galantamine hydrobromide	4.000mg/1.000ml	04110000	19301
+2801541000033113	3444811000001109	Reminyl 4mg/ml oral solution (Takeda UK Ltd)	Reminyl 4mg/ml oral solution	Oral solution	Oral	Galantamine hydrobromide	4.000mg/1.000ml		2650
+3293541000033114	9306011000001105	Galantamine 8mg modified-release capsules	Galantamine 8mg modified-release capsules	Modified-release capsule	Oral	Galantamine hydrobromide	8.000mg	04110000	97377
+3293641000033110	9305811000001107	Galantamine 16mg modified-release capsules	Galantamine 16mg modified-release capsules	Modified-release capsule	Oral	Galantamine hydrobromide	16.000mg	04110000	252631
+3293741000033118	9305911000001102	Galantamine 24mg modified-release capsules	Galantamine 24mg modified-release capsules	Modified-release capsule	Oral	Galantamine hydrobromide	24.000mg	04110000	368221
+3293841000033111	9303011000001102	Reminyl XL 8mg capsules (Takeda UK Ltd)	Reminyl XL 8mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	8.000mg		6234
+3293941000033115	9302411000001102	Reminyl XL 16mg capsules (Takeda UK Ltd)	Reminyl XL 16mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	16.000mg		11815
+3294041000033118	9303311000001104	Reminyl XL 24mg capsules (Takeda UK Ltd)	Reminyl XL 24mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	24.000mg		27216
+6435841000033110	19481711000001108	Galsya XL 8mg capsules (Krka UK Ltd)	Galsya XL 8mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	8.000mg		100
+6435941000033119	19482311000001100	Galsya XL 16mg capsules (Krka UK Ltd)	Galsya XL 16mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	16.000mg		33
+6436041000033112	19482511000001106	Galsya XL 24mg capsules (Krka UK Ltd)	Galsya XL 24mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	24.000mg		370
+6529241000033116	19962311000001100	Zeebral XL 8mg capsules (Teva UK Ltd)	Zeebral XL 8mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	8.000mg		6
+6529341000033114	19958411000001104	Zeebral XL 16mg capsules (Teva UK Ltd)	Zeebral XL 16mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	16.000mg		14
+6529441000033115	19959311000001100	Zeebral XL 24mg capsules (Teva UK Ltd)	Zeebral XL 24mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	24.000mg		46
+7690141000033115	20354611000001104	Acumor XL 24mg capsules (Viatris UK Healthcare Ltd)	Acumor XL 24mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	24.000mg		316
+7690441000033111	20354411000001102	Acumor XL 16mg capsules (Viatris UK Healthcare Ltd)	Acumor XL 16mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	16.000mg		138
+7690641000033113	20354211000001101	Acumor XL 8mg capsules (Viatris UK Healthcare Ltd)	Acumor XL 8mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	8.000mg		198
+8127241000033112	21384011000001105	Gatalin XL 8mg capsules (Aspire Pharma Ltd)	Gatalin XL 8mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	8.000mg		27942
+8127341000033119	21385211000001104	Gatalin XL 16mg capsules (Aspire Pharma Ltd)	Gatalin XL 16mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	16.000mg		74772
+8127441000033113	21386611000001107	Gatalin XL 24mg capsules (Aspire Pharma Ltd)	Gatalin XL 24mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	24.000mg		101723
+8242941000033118	21709411000001102	Lotprosin XL 8mg capsules (Accord-UK Ltd)	Lotprosin XL 8mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	8.000mg		11
+8243041000033111	21709911000001105	Lotprosin XL 16mg capsules (Accord-UK Ltd)	Lotprosin XL 16mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	16.000mg		60
+8243141000033110	21710111000001104	Lotprosin XL 24mg capsules (Accord-UK Ltd)	Lotprosin XL 24mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	24.000mg		61
+8305441000033119	22358411000001103	Elmino XL 16mg capsules (Zentiva Pharma UK Ltd)	Elmino XL 16mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	16.000mg		3
+8306941000033118	22358211000001102	Elmino XL 24mg capsules (Zentiva Pharma UK Ltd)	Elmino XL 24mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	24.000mg		16
+9104741000033116		Galantex Xl  M/R capsules  8 mg							403
+9104841000033114		Galantex Xl  M/R capsules  16 mg							1028
+9104941000033118		Galantex Xl  M/R capsules  24 mg							655
+9679141000033112	26525211000001109	Luventa XL 24mg capsules (Fontus Health Ltd)	Luventa XL 24mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	24.000mg		33500
+9679241000033117	26524811000001109	Luventa XL 8mg capsules (Fontus Health Ltd)	Luventa XL 8mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	8.000mg		7127
+9679341000033110	26525011000001104	Luventa XL 16mg capsules (Fontus Health Ltd)	Luventa XL 16mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	16.000mg		26654
+9699241000033110	27424811000001100	Gazylan XL 16mg capsules (Teva UK Ltd)	Gazylan XL 16mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	16.000mg		14984
+9699441000033111	27425011000001105	Gazylan XL 24mg capsules (Teva UK Ltd)	Gazylan XL 24mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	24.000mg		17077
+9699541000033112	27424611000001104	Gazylan XL 8mg capsules (Teva UK Ltd)	Gazylan XL 8mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	8.000mg		4182
+10217341000033112	28882411000001101	Consion XL 8mg capsules (Dr Reddy's Laboratories (UK) Ltd)	Consion XL 8mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	8.000mg		56
+10217441000033118	28882611000001103	Consion XL 16mg capsules (Dr Reddy's Laboratories (UK) Ltd)	Consion XL 16mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	16.000mg		72
+10217541000033117	28882811000001104	Consion XL 24mg capsules (Dr Reddy's Laboratories (UK) Ltd)	Consion XL 24mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	24.000mg
+11825741000033113	24020111000001103	Galzemic XL 8mg capsules (Zentiva Pharma UK Ltd)	Galzemic XL 8mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	8.000mg		3981
+11825841000033115	24020511000001107	Galzemic XL 16mg capsules (Zentiva Pharma UK Ltd)	Galzemic XL 16mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	16.000mg		9164
+11825941000033111	24021211000001103	Galzemic XL 24mg capsules (Zentiva Pharma UK Ltd)	Galzemic XL 24mg capsules	Modified-release capsule	Oral	Galantamine hydrobromide	24.000mg		6818
+12603841000033115	35312411000001109	Galzemic 4mg/ml oral solution (Zentiva Pharma UK Ltd)	Galzemic 4mg/ml oral solution	Oral solution	Oral	Galantamine hydrobromide	4.000mg/1.000ml		289
+12640941000033113	35795211000001100	Gaalin 16mg modified-release capsules (Milpharm Ltd)	Gaalin 16mg modified-release capsules	Modified-release capsule	Oral	Galantamine hydrobromide	16.000mg		34
+12641041000033115	35796711000001104	Gaalin 24mg modified-release capsules (Milpharm Ltd)	Gaalin 24mg modified-release capsules	Modified-release capsule	Oral	Galantamine hydrobromide	24.000mg		5
+12641141000033116	35795411000001101	Gaalin 8mg modified-release capsules (Milpharm Ltd)	Gaalin 8mg modified-release capsules	Modified-release capsule	Oral	Galantamine hydrobromide	8.000mg		12
