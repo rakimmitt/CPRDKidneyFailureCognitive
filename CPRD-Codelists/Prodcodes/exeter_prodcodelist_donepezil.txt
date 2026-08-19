@@ -1,0 +1,11 @@
+ProdCodeId	dmdid	Term from EMIS	ProductName	Formulation	RouteOfAdministration	DrugSubstanceName	SubstanceStrength	BNFChapter	DrugIssues
+81041000033119	161911000001104	Aricept 10mg tablets (Eisai Ltd)	Aricept 10mg tablets	Tablet/ Oral Tablet	Oral	Donepezil hydrochloride	10.000mg		139407
+81141000033115	734511000001105	Aricept 5mg tablets (Eisai Ltd)	Aricept 5mg tablets	Tablet/ Oral Tablet	Oral	Donepezil hydrochloride	5.000mg		64556
+479941000033116	42035511000001105	Donepezil 10mg tablets	Donepezil 10mg tablets	Tablet/ Oral Tablet	Oral	Donepezil hydrochloride	10.000mg	04110000	7045732
+480041000033117	42035611000001109	Donepezil 5mg tablets	Donepezil 5mg tablets	Tablet/ Oral Tablet	Oral	Donepezil hydrochloride	5.000mg	04110000	2553579
+4022041000033110	11140411000001108	Donepezil 5mg orodispersible tablets sugar free	Donepezil 5mg orodispersible tablets sugar free	Orodispersible tablet	Oral	Donepezil hydrochloride	5.000mg	04110000	51039
+4022141000033114	11140311000001101	Donepezil 10mg orodispersible tablets sugar free	Donepezil 10mg orodispersible tablets sugar free	Orodispersible tablet	Oral	Donepezil hydrochloride	10.000mg	04110000	127148
+4022241000033119	11133311000001106	Aricept Evess 5mg orodispersible tablets (Eisai Ltd)	Aricept Evess 5mg orodispersible tablets	Orodispersible tablet	Oral	Donepezil hydrochloride	5.000mg		1313
+4022341000033112	11133611000001101	Aricept Evess 10mg orodispersible tablets (Eisai Ltd)	Aricept Evess 10mg orodispersible tablets	Orodispersible tablet	Oral	Donepezil hydrochloride	10.000mg		3356
+9302241000033114	24687811000001109	Donepezil 1mg/ml oral solution sugar free	Donepezil 1mg/ml oral solution sugar free	Oral solution	Oral	Donepezil hydrochloride	1.000mg/1.000ml	04110000	6692
+14265641000033111	20346711000001101	Donepezil 10mg orodispersible tablets	Donepezil 10mg orodispersible tablets	Orodispersible tablet	Oral	Donepezil hydrochloride	10.000mg	04110000	57
