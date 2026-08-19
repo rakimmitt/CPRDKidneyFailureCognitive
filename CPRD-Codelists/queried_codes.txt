@@ -1,3 +1,4 @@
+medcodeid	term_medcode
 5095841000006113	Aplastic bone disease
 6024541000006117	Donor renal transplantation
 3727281000006114	Acquired arteriovenous fistula of heart
@@ -11,3 +12,6 @@
 7643111000006118	Percutaneous transluminal venous embolization of dural arteriovenous fistula
 1548791000006114	Percutaneous transluminal venous embolisation of dural arteriovenous fistula
 7700671000006112	Cadaver donor for kidney transplant
+
+OPCS4	Term_description
+M011	Autotransplantation of kidney
