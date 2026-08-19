@@ -1,0 +1,7 @@
+OPCS4	Term_description
+X402	Peritoneal dialysis NEC
+X405	Automated peritoneal dialysis
+X406	Continuous ambulatory peritoneal dialysis
+X411	Insertion of ambulatory peritoneal dialysis catheter
+X412	Removal of ambulatory peritoneal dialysis catheter
+X421	Insertion of temporary peritoneal dialysis catheter
