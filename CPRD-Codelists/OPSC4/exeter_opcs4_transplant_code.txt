@@ -1,0 +1,14 @@
+OPCS4	Term_description
+M012	Allotransplantation of kidney from live donor
+M013	Allotransplantation of kidney from cadaver NEC
+M014	Allotransplantation of kidney from cadaver heart beating
+M015	Allotransplantation of kidney from cadaver heart non-beating
+M018	Other specified transplantation of kidney
+M019	Unspecified transplantation of kidney
+M026	Excision of rejected transplanted kidney
+M027	Excision of transplanted kidney NEC
+M084	Exploration of transplanted kidney
+M172	Pre-transplantation of kidney work-up - recipient
+M174	Post-transplantation of kidney examination - recipient
+M178	Other specified interventions associated with transplantation of kidney
+M179	Unspecified interventions associated with transplantation of kidney
