@@ -1,0 +1,2 @@
+ICD10	Term_description
+F06.7	Mild cognitive disorder

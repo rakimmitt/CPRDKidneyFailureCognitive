@@ -1,0 +1,29 @@
+ICD10	Term_description
+N16.5	Renal tubulo-interstitial disorders in transplant rejection
+N18.0	End-stage renal disease
+N18.5	Chronic kidney disease, stage 5
+T86.1	Kidney transplant failure and rejection
+Z49.0	Preparatory care for dialysis
+Z49.2	Other dialysis
+Z94.0	Kidney transplant status
+T824 Mechanical complication of vascular dialysis catheter
+Y602 Unintentional cut/puncture/perforation or haemorrhage during surgical and medical care - during dialysis or other perfusion
+Y612 Foreign object accidentally left in body during medical care - during kidney dialysis or other perfusion
+Y622 Failure of sterile precautions during surgical or medical care- during kidney dialysis or other perfusion
+Y841 Other medical procedures as the cause of abnormal reactions of the patient, or of later complication, without mention of
+misadventure at the time of the procedure - kidney dialysis
+Z49 Care involving dialysis
+Z49.31 Encounter for adequacy testing for haemodialysis
+Z49.32 Encounter for adequacy testing for peritoneal dialysis
+Z491 Extracorporeal dialysis
+Z492 Other dialysis
+Z493 Encounter for adequacy testing for dialysis
+Z992 Dependence on renal dialysis
+Z940 Kidney transplant status
+T861 Kidney transplant failure and rejection
+Z49.02 Encounter for fitting and adjustment of peritoneal dialysis catheter 
+R88.0 Cloudy (hemodialysis) (peritoneal) dialysis effluent
+T85.691 - Other mechanical complication of intraperitoneal dialysis catheter
+T85.71 - Infection and inflammatory reaction due to peritoneal dialysis catheter
+T85.611 - Breakdown (mechanical) of intraperitoneal dialysis catheter
+T85.631 - Leakage of intraperitoneal dialysis catheter

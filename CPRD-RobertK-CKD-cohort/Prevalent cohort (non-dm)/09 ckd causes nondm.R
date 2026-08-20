@@ -23,7 +23,7 @@ library(tidyverse)
 library(aurum)
 rm(list=ls())
 
-cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024", cprdConf = "C:/Users/tj358/OneDrive - University of Exeter/CPRD/aurum.yaml")
+cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024", cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
 
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
