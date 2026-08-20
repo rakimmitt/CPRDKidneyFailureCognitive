@@ -1,3 +1,5 @@
+In CKD5:
+
 medcodeid	term_medcode
 5095841000006113	Aplastic bone disease
 6024541000006117	Donor renal transplantation
@@ -15,3 +17,10 @@ medcodeid	term_medcode
 
 OPCS4	Term_description
 M011	Autotransplantation of kidney
+
+In UTI:
+
+ICD10	Term_description
+N10	Acute tubulo-interstitial nephritis
+N12	Tubulo-interstitial nephritis, not specified as acute or chronic
+N15.9	Renal tubulo-interstitial disease, unspecified
