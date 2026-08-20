@@ -14,11 +14,16 @@ M172	Pre-transplantation of kidney work-up - recipient
 M174	Post-transplantation of kidney examination - recipient
 M178	Other specified interventions associated with transplantation of kidney
 M179	Unspecified interventions associated with transplantation of kidney
+X40   Dialysis NEC
 X401	Renal dialysis
 X402	Peritoneal dialysis NEC
 X403	Haemodialysis NEC
 X405	Automated peritoneal dialysis
 X406	Continuous ambulatory peritoneal dialysis
+X408	Other specified compensation for renal failure
+X409	Unspecified compensation for renal failure
+X41	  Placement of ambulatory apparatus for compensation for renal failure
 X411	Insertion of ambulatory peritoneal dialysis catheter
 X412	Removal of ambulatory peritoneal dialysis catheter
+X42	  Placement of other apparatus for compensation for renal failure
 X421	Insertion of temporary peritoneal dialysis catheter
