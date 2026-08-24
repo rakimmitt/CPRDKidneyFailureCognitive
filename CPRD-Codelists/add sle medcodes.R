@@ -1,3 +1,5 @@
+## Thijs' code for searching through medcode lists for a specific condition
+
 library(aurum)
 library(tidyverse)
 
