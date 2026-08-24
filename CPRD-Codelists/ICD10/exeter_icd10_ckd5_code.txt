@@ -9,6 +9,4 @@ Y84.1 Other medical procedures as the cause of abnormal reactions of the patient
 misadventure at the time of the procedure - kidney dialysis
 Z49 Care involving dialysis
 Z99.2 Dependence on renal dialysis
-Z94.0 Kidney transplant status
-T86.1 Kidney transplant failure and rejection 
 R88.0 Cloudy (hemodialysis) (peritoneal) dialysis effluent
