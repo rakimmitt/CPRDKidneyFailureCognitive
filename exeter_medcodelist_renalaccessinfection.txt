@@ -1,0 +1,25 @@
+MedCodeId	Observations	OriginalReadCode	CleansedReadCode	Term	SnomedCTConceptId	SnomedCTDescriptionId	Release	EmisCodeCategoryId
+272140010	65	7A603	7A60300	Removal of infected arteriovenous shunt	175780001	272140010	NA	32
+454251017	669	SP335	SP33500	Infection of intravenous catheter	310643001	454251017	NA	32
+3516642017	4	^ESCT1166393		CLABSI - central line associated bloodstream infection	736152001	3516642017	NA	31
+1174091000000116	30	SP06A	SP06A00	Infection associated with totally implantable venous access device	473052005	2956155016	NA	32
+1174101000000112	42	SP06A-1	SP06A11	Infection of implantable venous access port	473052005	2956155016	NA	32
+1709131000006113	42	EMISNQIN41		Infection of implantable venous access port	1709131000006109	1709131000006113	NA	32
+1870801000006111	159	Gy41	Gy41.00	Infection of haemodialysis arteriovenous fistula	449288005	2901095010	NA	32
+2237861000000114	66	Gy4	Gy4..00	Infection of dialysis vascular access	865781000000101	2237861000000114	NA	32
+2240321000000114	20	Gy40	Gy40.00	Infection of dialysis arteriovenous graft	430332005	2240321000000114	NA	32
+2240741000000115	9	Gy42	Gy42.00	Infection of dialysis arteriovenous shunt	866951000000102	2240741000000115	NA	32
+2304661000000115	667	2F1H	2F1H.00	Cannulation site infection	895661000000102	2304661000000115	NA	27
+5061491000006119	2	^ESCTAR506149		Arteriovenous fistula infection	234206008	350893015	NA	31
+5095881000006119	2	^ESCTPE509588		Peritoneal dialysis catheter exit site infection	236557008	354592011	NA	31
+5095891000006116	1	^ESCTPE509589		Peritoneal dialysis cannula exit site infection	236557008	354593018	NA	31
+5095901000006117	1	^ESCTPE509590		Peritoneal dialysis catheter tunnel infection	236558003	354595013	NA	31
+5645881000006118	1	^ESCTAR564588		Arteriovenous graft infection	280973003	418859015	NA	31
+7129071000006110	3	^ESCTCE712907		Central venous catheter exit site infection	430957008	2764442013	NA	31
+7129081000006113	1	^ESCTIN712908		Infection of peritoneal dialysis catheter	430958003	2764444014	NA	31
+7148101000006112	2	^ESCTPE714810		Peritonitis due to infected peritoneal dialysis catheter	431873008	2770082015	NA	31
+7240401000006117	16	^ESCTIN724040		Infection associated with catheter	440653007	2792658012	NA	31
+7323011000006110	1	^ESCTIN732301		Infection of catheter exit site	446340009	2882909011	NA	31
+7481941000006114	1	^ESCTIN748194		Infection of tunnel site of tunnelled central venous catheter	473054006	2956082014	NA	31
+7481961000006113	1	^ESCTIN748196		Infection of tunnel site of tunneled central venous catheter	473054006	2955900012	NA	31
+8014771000006115	2	^ESCTLI801477		Line sepsis associated with dialysis catheter	32751000119100	3312030016	NA	31
