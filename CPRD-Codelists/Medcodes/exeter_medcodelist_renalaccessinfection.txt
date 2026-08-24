@@ -19,3 +19,8 @@ MedCodeId	Observations	OriginalReadCode	CleansedReadCode	Term	SnomedCTConceptId	
 7481941000006114	1	^ESCTIN748194		Infection of tunnel site of tunnelled central venous catheter	473054006	2956082014	NA	31
 7481961000006113	1	^ESCTIN748196		Infection of tunnel site of tunneled central venous catheter	473054006	2955900012	NA	31
 8014771000006115	2	^ESCTLI801477		Line sepsis associated with dialysis catheter	32751000119100	3312030016	NA	31
+453312018	809	SP056-3	SP05613	Peritoneal dialysis-associated peritonitis	276883000	413231010		32
+1743241000006119	19	SP06B	SP06B00	Continuous ambulatory peritoneal dialysis associated peritonitis	699235009	2983127018		32
+7482531000006115	2	^ESCTIN748253		Infection associated with vascular device	473083009	2956093011		31
+359251000006117	556	SyuK5-1	SyuK511	[X] Vascular graft infection	35688006	59527012		32
+389721000006111	193	SyuK5	SyuK500	[X]Infect/inflam react due oth card/vasc device/impl/grafts	35688006	59527012		32
