@@ -1,4 +1,4 @@
-In CKD5:
+Medcodes/Comorbidities/exeter_medcodelist_ckd5_code.txt:
 
 medcodeid	term_medcode
 5095841000006113	Aplastic bone disease
@@ -15,10 +15,13 @@ medcodeid	term_medcode
 1548791000006114	Percutaneous transluminal venous embolisation of dural arteriovenous fistula
 7700671000006112	Cadaver donor for kidney transplant
 
+OPCS4/exeter_opcs4_ckd5_code.txt:
+
 OPCS4	Term_description
 M011	Autotransplantation of kidney
 
-In UTI:
+
+ICD10/Infections/exeter_icd10_UTI.txt:
 
 ICD10	Term_description
 N10	Acute tubulo-interstitial nephritis
