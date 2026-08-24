@@ -6,6 +6,8 @@ T86.1	Kidney transplant failure and rejection
 Z94.0	Kidney transplant status
 T82.4 Mechanical complication of vascular dialysis catheter
 Y84.1 Other medical procedures as the cause of abnormal reactions of the patient, or of later complication, without mention of misadventure at the time of the procedure - kidney dialysis
-Z49 Care involving dialysis
+Z49.0	Preparatory care for dialysis
+Z49.1	Extracorporeal dialysis
+Z49.2	Other dialysis (peritoneal dialysis)
 Z99.2 Dependence on renal dialysis
 R88.0 Cloudy (hemodialysis) (peritoneal) dialysis effluent
