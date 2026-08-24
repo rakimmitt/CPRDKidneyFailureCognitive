@@ -1,3 +1,4 @@
 ICD10	Term_description
 N18.0	End-stage renal disease
 N18.5	Chronic kidney disease, stage 5
+Z49.0	Preparatory care for dialysis
