@@ -1,3 +1,5 @@
 ICD10	Term_description
 T82.4 Mechanical complication of vascular dialysis catheter
-Z49.1 Extracorporeal dialysis
+Y84.1 Other medical procedures as the cause of abnormal reactions of the patient, or of later complication, without mention of misadventure at the time of the procedure - kidney dialysis
+Z49 Care involving dialysis
+Z99.2 Dependence on renal dialysis
