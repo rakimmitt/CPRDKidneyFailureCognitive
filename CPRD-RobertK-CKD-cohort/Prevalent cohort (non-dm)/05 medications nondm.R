@@ -11,16 +11,10 @@ cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-# Load dementia-medication product-code lists
-
-# Use a medication-specific version so this does not also retrieve the custom
-# diagnostic codelists loaded by the comorbidity script
-dementia_meds_version <- "rk_dementia_meds_2026-08-26"
+# Read dementia-medication product-code lists locally
 
 dementia_meds_directory <- paste0(
-  "C:/Users/rk535/OneDrive/1 - PhD/Data Science/CPRD/",
-  "Github clone/CPRDKidneyFailureCognitive/CPRD-Codelists/",
-  "Prodcodes/Dementia medications"
+  "C:/Users/rk535/OneDrive/1 - PhD/Data Science/CPRD/Github clone/CPRDKidneyFailureCognitive/CPRD-Codelists/Prodcodes/Dementia medications"
 )
 
 if (!dir.exists(dementia_meds_directory)) {
@@ -30,43 +24,69 @@ if (!dir.exists(dementia_meds_directory)) {
   )
 }
 
-# Load all compatible .txt product-code files in this folder
-codesets$loadAll(
-  paths = dementia_meds_directory,
-  version = dementia_meds_version
+dementia_medication_files <- list.files(
+  dementia_meds_directory,
+  pattern = "\\.txt$",
+  recursive = TRUE,
+  full.names = TRUE
 )
 
-# Retrieve database-backed versions of the newly loaded lists
-dementia_medication_codes <- codesets$getAllCodeSetVersion(
-  version = dementia_meds_version
-)
-
-if (length(dementia_meds) == 0) {
+if (length(dementia_medication_files) == 0) {
   stop(
-    "No product-code codelists were loaded. ",
-    "Check that the files are .txt files and contain a prodcodeid column."
+    "No .txt codelist files were found in: ",
+    dementia_meds_directory
   )
 }
 
-# Add them to the standard codelist collection
-for (code_name in dementia_meds) {
+read_dementia_medication_file <- function(file) {
 
-  if (code_name %in% names(codes)) {
+  codelist <- readr::read_tsv(
+    file,
+    col_types = readr::cols(.default = readr::col_character()),
+    show_col_types = FALSE,
+    progress = FALSE
+  ) %>%
+    rename_with(stringr::str_to_lower)
 
-    # Combine standard and custom definitions if the name already exists
-    codes[[code_name]] <- dplyr::union(
-      codes[[code_name]] %>% select(prodcodeid),
-      dementia_medication_codes[[code_name]] %>% select(prodcodeid)
+  if (!"prodcodeid" %in% names(codelist)) {
+    stop(
+      "The following file does not contain a prodcodeid column: ",
+      file
     )
-
-  } else {
-
-    codes[[code_name]] <- dementia_medication_codes[[code_name]]
-
   }
+
+  codelist %>%
+    transmute(
+      prodcodeid = stringr::str_remove_all(
+        prodcodeid,
+        "[^0-9]"
+      )
+    ) %>%
+    filter(
+      !is.na(prodcodeid),
+      prodcodeid != ""
+    ) %>%
+    mutate(
+      prodcodeid = bit64::as.integer64(prodcodeid)
+    )
 }
 
-print(dementia_meds)
+dementia_medication_codes <- purrr::map_dfr(
+  dementia_medication_files,
+  read_dementia_medication_file
+) %>%
+  distinct(prodcodeid)
+
+if (nrow(dementia_medication_codes) == 0) {
+  stop("The dementia-medication codelist contains no valid product codes")
+}
+
+print(
+  paste(
+    nrow(dementia_medication_codes),
+    "unique dementia-medication product codes loaded"
+  )
+)
 
 analysis_prefix <- "ckd"
 
@@ -87,9 +107,8 @@ meds <- c("ace_inhibitors",
           "loop_diuretics",
           "ksparing_diuretics",
           "definite_genital_infection_meds",
-          "topical_candidal_meds")
-
-meds <- unique(c(meds, dementia_meds))
+          "topical_candidal_meds",
+          "dementia_medications")
 
 ############################################################################################
 
@@ -104,6 +123,20 @@ for (i in meds) {
   
   raw_tablename <- paste0("raw_", i, "_prodcodes")
   
+if (i == "dementia_medications") {
+
+    # This codelist is stored locally, so copy=TRUE is required
+    code_list <- dementia_medication_codes
+    copy_code_list <- TRUE
+
+  } else {
+
+    # All other lists are database-backed standard codelists
+    code_list <- codes[[i]]
+    copy_code_list <- FALSE
+  }
+
+
     if (is.null(codes[[i]])) {
     stop("No product-code codelist was found for medication: ", i)
   }
