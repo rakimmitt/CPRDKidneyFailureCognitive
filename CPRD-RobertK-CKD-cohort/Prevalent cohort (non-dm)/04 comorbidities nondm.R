@@ -6,12 +6,66 @@ library(aurum)
 library(EHRBiomarkr)
 rm(list=ls())
 
-
 cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
-
 
 codesets = cprd$codesets()
 codes1 = codesets$getAllCodeSetVersion(v = "01/06/2024")
+
+# Load Robert's additional codelists
+
+# Use a new version name whenever the contents of your codelists change
+custom_version <- "rk_2026-08-25"
+
+# Replace this with the exact path copied from File Explorer
+codelist_root <- paste0(
+  "C:/Users/rk535/OneDrive/1 - PhD/Data Science/CPRD/Github clone/CPRDKidneyFailureCognitive/CPRD-Codelists"
+)
+
+custom_codelist_directories <- c(
+  file.path(codelist_root, "Medcodes"),
+  file.path(codelist_root, "ICD10"),
+  file.path(codelist_root, "OPCS4")
+)
+
+missing_directories <- custom_codelist_directories[
+  !dir.exists(custom_codelist_directories)
+]
+
+if (length(missing_directories) > 0) {
+  stop(
+    "The following codelist directories were not found: ",
+    paste(missing_directories, collapse = ", ")
+  )
+}
+
+# Reads compatible .txt files and loads them into the analysis database
+codesets$loadAll(
+  paths = custom_codelist_directories,
+  version = custom_version
+)
+
+# Obtain database-backed versions of the newly loaded codelists
+custom_codes <- codesets$getAllCodeSetVersion(
+  version = custom_version
+)
+
+# Add new codelists to codes_2024.
+# If a name already exists, combine the standard and custom lists.
+for (code_name in names(custom_codes)) {
+
+  if (code_name %in% names(codes_2024)) {
+
+    codes_2024[[code_name]] <- dplyr::union(
+      codes_2024[[code_name]],
+      custom_codes[[code_name]]
+    )
+
+  } else {
+
+    codes_2024[[code_name]] <- custom_codes[[code_name]]
+
+  }
+}
 
 analysis_prefix <- "ckd"
 
@@ -63,14 +117,69 @@ comorbids <- c("acutepancreatitis",
                "urinary_frequency",
                "volume_depletion",
                "genital_infection",
-               "genital_infection_nonspec"
+               "genital_infection_nonspec",
+               "aav",
+               "adpkd",
+               "alport",
+               "antigbm",
+               "fabry",
+               "fsgs",
+               "gn_nos",
+               "haemorrhagicstroke",
+               "igan",
+               "incident_stroke",
+               "incident_mi",
+               "ischaemicstroke",
+               "kfdeath",
+               "mcd",
+               "membranous",
+               "mpgn",
+               "other_pkd",
+               "sle",
+               "GIinfection",
+               "LRTI",
+               "URTI",
+               "UTI",
+               "acutecholecystitis",
+               "acutesinusitis",
+               "boneinfection",
+               "candidiasis",
+               "cellulitis",
+               "covid",
+               "endocarditis",
+               "eyeinfection",
+               "infectiveotitisexterna",
+               "influenza",
+               "jointinfection",
+               "meningitis",
+               "otherfungalinfection",
+               "otherskininfection",
+               "pneumonia",
+               "sepsis",
+               "surgicalsiteinfection",
+               "tuberculosis"
+)
+
+custom_comorbids <- c(
+               "all dementia",
+               "alzheimers",
+               "ckd5_noKRT",
+               "ckd5",
+               "delirium",
+               "haemodialysis",
+               "mci",
+               "peritoneal_dialysis",
+               "renalaccessinfection",
+               "transplant",
+               "vascular_dementia",
+               "uti",
+               "skininfection",
+               "respiratorytractinfection"
 )
 
 # pull in codelists for ckd causes from local drive
 
 codes2 <- list()
-
-
 
 ############################################################################################
 
@@ -80,7 +189,6 @@ codes2 <- list()
 ## Can also decide whether only want primary reasons for hospitalisation (d_order=1) for ICD10 codes - see bottom of this section
 
 analysis = cprd$analysis("all_patid")
-
 
 for (i in comorbids) {
   
