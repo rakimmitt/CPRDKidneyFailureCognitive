@@ -11,14 +11,11 @@ cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535
 codesets = cprd$codesets()
 codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-# Load Robert's additional codelists
+# Load Robert's additional codelists locally
 
-# Use a new version name whenever the contents of your codelists change
-custom_version <- "rk_2026-08-25"
-
-# Replace this with the exact path copied from File Explorer
 codelist_root <- paste0(
-  "C:/Users/rk535/OneDrive/1 - PhD/Data Science/CPRD/Github clone/CPRDKidneyFailureCognitive/CPRD-Codelists"
+  "C:/Users/rk535/OneDrive/1 - PhD/Data Science/CPRD/",
+  "Github clone/CPRDKidneyFailureCognitive/CPRD-Codelists"
 )
 
 custom_codelist_directories <- c(
@@ -38,34 +35,76 @@ if (length(missing_directories) > 0) {
   )
 }
 
-# Reads compatible .txt files and loads them into the analysis database
-codesets$loadAll(
-  paths = custom_codelist_directories,
-  version = custom_version
-)
+read_local_codelists <- function(directories) {
 
-# Obtain database-backed versions of the newly loaded codelists
-custom_codes <- codesets$getAllCodeSetVersion(
-  version = custom_version
-)
+  files <- unlist(
+    lapply(
+      directories,
+      list.files,
+      pattern = "\\.txt$",
+      recursive = TRUE,
+      full.names = TRUE
+    )
+  )
 
-# Add new codelists to codes_2024.
-# If a name already exists, combine the standard and custom lists.
-for (code_name in names(custom_codes)) {
+  output <- list()
 
-  if (code_name %in% names(codes_2024)) {
+  for (file in files) {
 
-    codes_2024[[code_name]] <- dplyr::union(
-      codes_2024[[code_name]],
-      custom_codes[[code_name]]
+    codelist <- readr::read_tsv(
+      file,
+      col_types = readr::cols(.default = readr::col_character()),
+      show_col_types = FALSE,
+      progress = FALSE
+    ) %>%
+      rename_with(stringr::str_to_lower)
+
+    code_columns <- intersect(
+      names(codelist),
+      c("medcodeid", "icd10", "opcs4")
     )
 
-  } else {
+    if (length(code_columns) != 1) {
+      warning(
+        "Skipping ", file,
+        ": expected exactly one of medcodeid, icd10 or opcs4"
+      )
+      next
+    }
 
-    codes_2024[[code_name]] <- custom_codes[[code_name]]
+    code_column <- code_columns[[1]]
 
+    codelist <- codelist %>%
+      filter(
+        !is.na(.data[[code_column]]),
+        .data[[code_column]] != ""
+      )
+
+    code_name <- file %>%
+      basename() %>%
+      tools::file_path_sans_ext() %>%
+      stringr::str_to_lower() %>%
+      stringr::str_remove("^exeter_medcodelist_") %>%
+      stringr::str_remove("^exeter_")
+
+    if (code_name %in% names(output)) {
+      stop(
+        "More than one local codelist generated the name: ",
+        code_name
+      )
+    }
+
+    output[[code_name]] <- codelist
   }
+
+  output
 }
+
+custom_codes <- read_local_codelists(
+  custom_codelist_directories
+)
+
+sort(names(custom_codes))
 
 analysis_prefix <- "ckd"
 
@@ -161,9 +200,9 @@ comorbids <- c("acutepancreatitis",
 )
 
 custom_comorbids <- c(
-               "all dementia",
+               "alldementia",
                "alzheimers",
-               "ckd5_noKRT",
+               "ckd5_nokrt",
                "ckd5",
                "delirium",
                "haemodialysis",
@@ -190,26 +229,35 @@ analysis = cprd$analysis("all_patid")
 
 for (i in comorbids) {
   
+  use_local_codes <- i %in% custom_comorbids
+
+  if (use_local_codes) {
+    codes <- custom_codes
+  } else {
+    codes <- codes_2024
+  }
+
+  #medcodes
   if (length(codes_2024[[i]]) > 0) {
     print(paste("making", i, "medcode table"))
     
     raw_tablename <- paste0("raw_", i, "_medcodes")
     
     data <- cprd$tables$observation %>%
-      inner_join(codes_2024[[i]], by="medcodeid", copy = T) %>% # include copy = T so that local data gets copied into mysql table
+      inner_join(codes_2024[[i]], by="medcodeid", copy = ) %>% # include copy = T so that local data gets copied into mysql table
       analysis$cached(raw_tablename, indexes=c("patid", "obsdate"))
     
     assign(raw_tablename, data)
     
   }
   
-  if (length(codes[[paste0("icd10_", i)]]) > 0 & i!="hypertension") {
+  if (length(codes_2024[[paste0("icd10_", i)]]) > 0 & i!="hypertension") {
     print(paste("making", i, "ICD10 code table"))
     
     raw_tablename <- paste0("raw_", i, "_icd10")
     
     data <- cprd$tables$hesDiagnosisEpi %>%
-      inner_join(codes_2024[[paste0("icd10_",i)]], sql_on="LHS.ICD LIKE CONCAT(icd10,'%')", copy = T) %>% # include copy = T so that local data gets copied into mysql table
+      inner_join(codes_2024[[paste0("icd10_",i)]], sql_on="LHS.ICD LIKE CONCAT(icd10,'%')", copy = use_local_codes) %>% # include copy = T so that local data gets copied into mysql table
       analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
     
     assign(raw_tablename, data)
@@ -222,7 +270,7 @@ for (i in comorbids) {
     raw_tablename <- paste0("raw_", i, "_opcs4")
     
     data <- cprd$tables$hesProceduresEpi %>%
-      inner_join(codes[[paste0("opcs4_",i)]], sql_on="LHS.OPCS LIKE CONCAT(opcs4,'%')") %>%
+      inner_join(codes_2024[[paste0("opcs4_",i)]], sql_on="LHS.OPCS LIKE CONCAT(opcs4,'%')", copy = use_local_codes) %>%
       analysis$cached(raw_tablename, indexes=c("patid", "evdate"))
     
     assign(raw_tablename, data)
