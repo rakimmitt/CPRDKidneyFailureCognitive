@@ -10,9 +10,65 @@ cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\O
 codesets = cprd$codesets()
 codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
+# Load Robert's additional codelists
+
+# Use a new version name whenever the contents of your codelists change
+custom_version <- "rk_2026-08-25"
+
+# Replace this with the exact path copied from File Explorer
+codelist_root <- paste0(
+  "C:/Users/rk535/OneDrive/1 - PhD/Data Science/CPRD/Github clone/CPRDKidneyFailureCognitive/CPRD-Codelists"
+)
+
+custom_codelist_directories <- c(
+  file.path(codelist_root, "Medcodes"),
+  file.path(codelist_root, "ICD10"),
+  file.path(codelist_root, "OPCS4")
+)
+
+missing_directories <- custom_codelist_directories[
+  !dir.exists(custom_codelist_directories)
+]
+
+if (length(missing_directories) > 0) {
+  stop(
+    "The following codelist directories were not found: ",
+    paste(missing_directories, collapse = ", ")
+  )
+}
+
+# Reads compatible .txt files and loads them into the analysis database
+codesets$loadAll(
+  paths = custom_codelist_directories,
+  version = custom_version
+)
+
+# Obtain database-backed versions of the newly loaded codelists
+custom_codes <- codesets$getAllCodeSetVersion(
+  version = custom_version
+)
+
+# Add new codelists to codes_2024.
+# If a name already exists, combine the standard and custom lists.
+for (code_name in names(custom_codes)) {
+
+  if (code_name %in% names(codes_2024)) {
+
+    codes_2024[[code_name]] <- dplyr::union(
+      codes_2024[[code_name]],
+      custom_codes[[code_name]]
+    )
+
+  } else {
+
+    codes_2024[[code_name]] <- custom_codes[[code_name]]
+
+  }
+}
+
 analysis_prefix = "ckd"
 
-############################################################################################
+####################################
 
 comorbids <- c("acutepancreatitis",
                "af",
@@ -63,8 +119,67 @@ comorbids <- c("acutepancreatitis",
                #"vitreoushemorrhage",
                "volume_depletion",
                "genital_infection",
-               "genital_infection_nonspec"
+               "genital_infection_nonspec",
+               "aav",
+               "adpkd",
+               "alport",
+               "antigbm",
+               "fabry",
+               "fsgs",
+               "gn_nos",
+               "haemorrhagicstroke",
+               "igan",
+               "incident_stroke",
+               "incident_mi",
+               "ischaemicstroke",
+               "kfdeath",
+               "mcd",
+               "membranous",
+               "mpgn",
+               "other_pkd",
+               "sle",
+               "GIinfection",
+               "LRTI",
+               "URTI",
+               "UTI",
+               "acutecholecystitis",
+               "acutesinusitis",
+               "boneinfection",
+               "candidiasis",
+               "cellulitis",
+               "covid",
+               "endocarditis",
+               "eyeinfection",
+               "infectiveotitisexterna",
+               "influenza",
+               "jointinfection",
+               "meningitis",
+               "otherfungalinfection",
+               "otherskininfection",
+               "pneumonia",
+               "sepsis",
+               "surgicalsiteinfection",
+               "tuberculosis"
 )
+
+custom_comorbids <- c(
+               "all dementia",
+               "alzheimers",
+               "ckd5_noKRT",
+               "ckd5",
+               "delirium",
+               "haemodialysis",
+               "mci",
+               "peritoneal_dialysis",
+               "renalaccessinfection",
+               "transplant",
+               "vascular_dementia",
+               "uti",
+               "skininfection",
+               "respiratorytractinfection"
+)
+
+comorbids <- unique(c(comorbids, custom_comorbids))
 
 ############################################################################################
 
@@ -78,8 +193,9 @@ for (i in comorbids) {
     
     raw_tablename <- paste0("raw_", i, "_medcodes")
     
-    data <- data %>%
-      analysis$cached(raw_tablename, indexes=c("patid", "obsdate"))
+    data <- cprd$tables$observation %>%
+  inner_join(codes_2024[[i]], by = "medcodeid") %>%
+  analysis$cached(raw_tablename, indexes=c("patid", "obsdate"))
     
     assign(raw_tablename, data)
     
@@ -90,11 +206,13 @@ for (i in comorbids) {
     
     raw_tablename <- paste0("raw_", i, "_icd10")
     
-    data <- data %>%
+    data <- cprd$tables$hesDiagnosisEpi %>%
+  inner_join(
+    codes_2024[[paste0("icd10_", i)]],
+    sql_on = "LHS.ICD LIKE CONCAT(icd10,'%')" ) %>%
       analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
     
     assign(raw_tablename, data)
-    
   }
   
   if (length(codes_2024[[paste0("opcs4_", i)]]) > 0) {
@@ -102,7 +220,11 @@ for (i in comorbids) {
     
     raw_tablename <- paste0("raw_", i, "_opcs4")
     
-    data <- data %>%
+    data <- cprd$tables$hesProceduresEpi %>%
+      inner_join(
+        codes_2024[[paste0("opcs4_", i)]],
+        by = c("OPCS" = "opcs4")
+      ) %>%
       analysis$cached(raw_tablename, indexes=c("patid", "evdate"))
     
     assign(raw_tablename, data)
@@ -281,7 +403,7 @@ for (d in date_strings) {
     
     post_index_date <- get(index_date_merge_tablename) %>%
       filter(date>index_date) %>%
-      group_by(patid,) %>%
+      group_by(patid) %>%
       summarise({{post_index_date_date_variable}}:=min(date, na.rm=TRUE)) %>%
       ungroup()
     
@@ -289,7 +411,7 @@ for (d in date_strings) {
     
     comorbidities <- comorbidities %>%
       left_join(pre_index_date, by="patid") %>%
-      mutate({{pre_index_date_variable}}:=!is.na(pre_index_date_earliest_date_variable)) %>%
+      mutate({{pre_index_date_variable}} := !is.na(!!pre_index_date_earliest_date_variable))
       left_join(post_index_date, by="patid") %>%
       analysis$cached(interim_comorbidity_table, unique_indexes="patid")
   }
