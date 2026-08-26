@@ -6,12 +6,67 @@ library(aurum)
 library(EHRBiomarkr)
 rm(list=ls())
 
-
 cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
-
 
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
+
+# Load dementia-medication product-code lists
+
+# Use a medication-specific version so this does not also retrieve the custom
+# diagnostic codelists loaded by the comorbidity script
+dementia_meds_version <- "rk_dementia_meds_2026-08-26"
+
+dementia_meds_directory <- paste0(
+  "C:/Users/rk535/OneDrive/1 - PhD/Data Science/CPRD/",
+  "Github clone/CPRDKidneyFailureCognitive/CPRD-Codelists/",
+  "Prodcodes/Dementia medications"
+)
+
+if (!dir.exists(dementia_meds_directory)) {
+  stop(
+    "The dementia-medication codelist directory was not found: ",
+    dementia_meds_directory
+  )
+}
+
+# Load all compatible .txt product-code files in this folder
+codesets$loadAll(
+  paths = dementia_meds_directory,
+  version = dementia_meds_version
+)
+
+# Retrieve database-backed versions of the newly loaded lists
+dementia_medication_codes <- codesets$getAllCodeSetVersion(
+  version = dementia_meds_version
+)
+
+if (length(dementia_meds) == 0) {
+  stop(
+    "No product-code codelists were loaded. ",
+    "Check that the files are .txt files and contain a prodcodeid column."
+  )
+}
+
+# Add them to the standard codelist collection
+for (code_name in dementia_meds) {
+
+  if (code_name %in% names(codes)) {
+
+    # Combine standard and custom definitions if the name already exists
+    codes[[code_name]] <- dplyr::union(
+      codes[[code_name]] %>% select(prodcodeid),
+      dementia_medication_codes[[code_name]] %>% select(prodcodeid)
+    )
+
+  } else {
+
+    codes[[code_name]] <- dementia_medication_codes[[code_name]]
+
+  }
+}
+
+print(dementia_meds)
 
 analysis_prefix <- "ckd"
 
@@ -34,6 +89,7 @@ meds <- c("ace_inhibitors",
           "definite_genital_infection_meds",
           "topical_candidal_meds")
 
+meds <- unique(c(meds, dementia_meds))
 
 ############################################################################################
 
@@ -48,17 +104,24 @@ for (i in meds) {
   
   raw_tablename <- paste0("raw_", i, "_prodcodes")
   
+    if (is.null(codes[[i]])) {
+    stop("No product-code codelist was found for medication: ", i)
+  }
+
+    data <- cprd$tables$drugIssue %>% inner_join(codes[[i]], by="prodcodeid") %>%
+      select(patid, date=issuedate) %>%
+      analysis$cached(raw_tablename, indexes=c("patid", "date"))
+    
+    assign(raw_tablename, data)
+  } 
   
-  if (i == "sglt2" | i == "glp1") {
+  else {
     
-    empty_variable = paste0(i, "_cat")
+    data <- cprd$tables$drugIssue %>%
+      inner_join(codes[[i]], by="prodcodeid") %>%
+      select(patid, date=issuedate) %>%
+      analysis$cached(raw_tablename, indexes=c("patid", "date"))
     
-    data <- cprd$tables$drugIssue %>% inner_join(
-      readr::read_tsv(
-        here::here(paste0("C:/Users/tj358/OneDrive - University of Exeter/CPRD/Aurum codelists/prodcodes/exeter_prodcodelist_", i, ".txt")),
-        col_types = cols(.default=col_character())) %>%
-        rename(prodcodeid=ProdCodeId) %>%
-        select(prodcodeid) %>%
         mutate(!!sym(empty_variable) := NA), 
       by="prodcodeid", copy = T) %>%
       select(patid, date=issuedate) %>%
