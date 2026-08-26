@@ -6,7 +6,7 @@ library(aurum)
 library(EHRBiomarkr)
 rm(list=ls())
 
-cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
+cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\Robert\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
 codesets = cprd$codesets()
 codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
@@ -58,6 +58,6 @@ for (d in date_strings) {
     
     select(patid, preckdstage, preckdstagedate, preckdstagedatediff) %>%
     
-    analysis$cached(paste0(d, "_ckd_stages"), unique_indexes="patid")
+    analysis$cached(paste0("rk",d, "_ckd_stages"), unique_indexes="patid")
   
 }

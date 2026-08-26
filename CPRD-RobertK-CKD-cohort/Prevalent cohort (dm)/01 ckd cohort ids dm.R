@@ -6,7 +6,7 @@ library(aurum)
 library(EHRBiomarkr)
 rm(list=ls())
 
-cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
+cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\Robert\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
 codesets = cprd$codesets()
 codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
@@ -113,6 +113,6 @@ diabetes_cohort <- diabetes_cohort %>%
 diabetes_ckd_cohort <- diabetes_cohort %>%
   filter(diabetes_type == "type 2") %>%
   inner_join(ckd_ids, by = "patid") %>%
-  analysis$cached("diabetes_ckd_cohort", unique_indexes = "patid")
+  analysis$cached("rk_diabetes_ckd_cohort", unique_indexes = "patid")
 
 diabetes_ckd_cohort  %>% count() # 797526
