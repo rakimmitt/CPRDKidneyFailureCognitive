@@ -30,8 +30,7 @@ codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
 analysis_prefix <- "ckd"
 
-codepath <- "C:/Users/tj358/OneDrive - University of Exeter/CPRD/Aurum codelists/medcodes/ckd causes/"
-
+codepath <- "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\CKD causes\\"
 
 ############################################################################################
 
@@ -47,14 +46,14 @@ cause_codes <- list()
 for (i in ckd_causes) {
 
   cause_codes[[i]] <- readr::read_tsv(
-    paste0(codepath, "exeter_medcodelist_", i, ".tsv"),
+    paste0(codepath, "\\exeter_medcodelist_", i, ".txt"),
     col_types = cols(.default = col_character())
   ) %>%
     rename(medcodeid = MedCodeId) %>%
     select(medcodeid)
 
   cause_codes[[paste0("icd10_", i)]] <- readr::read_tsv(
-    paste0(codepath, "exeter_icd10_", i, ".txt"),
+    paste0(codepath, "\\exeter_icd10_", i, ".txt"),
     col_types = cols(.default = col_character())
   ) %>%
     select(ICD10)
