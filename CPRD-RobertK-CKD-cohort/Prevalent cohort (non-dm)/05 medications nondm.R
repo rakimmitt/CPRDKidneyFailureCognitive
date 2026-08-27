@@ -100,7 +100,6 @@ meds <- c("ace_inhibitors",
           "statins",
           "finerenone",
           "sglt2",
-          "glp1",
           "beta_blockers",
           "ca_channel_blockers",
           "thiazide_diuretics",
@@ -118,60 +117,44 @@ meds <- c("ace_inhibitors",
 analysis = cprd$analysis("all_patid")
 
 for (i in meds) {
-  
-  print(i)
-  
-  raw_tablename <- paste0("raw_", i, "_prodcodes")
-  
-if (i == "dementia_medications") {
 
-    # This codelist is stored locally, so copy=TRUE is required
+  print(i)
+
+  raw_tablename <- paste0("raw_", i, "_prodcodes")
+
+  if (i == "dementia_medications") {
+
+    # This codelist is in local R memory
     code_list <- dementia_medication_codes
     copy_code_list <- TRUE
 
   } else {
 
-    # All other lists are database-backed standard codelists
+    # These are database-backed standard codelists
     code_list <- codes[[i]]
     copy_code_list <- FALSE
   }
 
-
-    if (is.null(codes[[i]])) {
+  if (is.null(code_list)) {
     stop("No product-code codelist was found for medication: ", i)
   }
 
-    data <- cprd$tables$drugIssue %>% inner_join(codes[[i]], by="prodcodeid") %>%
-      select(patid, date=issuedate) %>%
-      analysis$cached(raw_tablename, indexes=c("patid", "date"))
-    
-    assign(raw_tablename, data)
-  } 
-  
-  else {
-    
-    data <- cprd$tables$drugIssue %>%
-      inner_join(codes[[i]], by="prodcodeid") %>%
-      select(patid, date=issuedate) %>%
-      analysis$cached(raw_tablename, indexes=c("patid", "date"))
-    
-        mutate(!!sym(empty_variable) := NA), 
-      by="prodcodeid", copy = T) %>%
-      select(patid, date=issuedate) %>%
-      analysis$cached(raw_tablename, indexes=c("patid", "date"))
-    
-  } else {
-    
-    data <- cprd$tables$drugIssue %>%
-      inner_join(codes[[i]], by="prodcodeid") %>%
-      select(patid, date=issuedate) %>%
-      analysis$cached(raw_tablename, indexes=c("patid", "date"))
-    
-  }
-  
-  
+  data <- cprd$tables$drugIssue %>%
+    inner_join(
+      code_list,
+      by = "prodcodeid",
+      copy = copy_code_list
+    ) %>%
+    select(
+      patid,
+      date = issuedate
+    ) %>%
+    analysis$cached(
+      raw_tablename,
+      indexes = c("patid", "date")
+    )
+
   assign(raw_tablename, data)
-  
 }
 
 
@@ -180,9 +163,18 @@ if (i == "dementia_medications") {
 analysis = cprd$analysis(analysis_prefix)
 
 # get dates at 6 month intervals
-dates <- seq(from = as.Date("2019-03-01"),
-             to   = as.Date("2024-03-01"),
-             by   = "6 months")
+dates <- unique(c(
+  seq(
+    from = as.Date("2019-03-01"),
+    to   = as.Date("2020-09-01"),
+    by   = "6 months"
+  ),
+  seq(
+    from = as.Date("2021-03-01"),
+    to   = as.Date("2024-03-01"),
+    by   = "3 months"
+  )
+))
 
 date_strings <- format(dates, "%Y-%m-%d")
 
@@ -191,7 +183,21 @@ for (d in date_strings) {
   print(d)
   index_date <- as.Date(d)
  
-  
+#check all medication lists included
+standard_meds <- setdiff(meds, "dementia_medications")
+
+missing_standard_meds <- setdiff(
+  standard_meds,
+  names(codes)
+)
+
+if (length(missing_standard_meds) > 0) {
+  stop(
+    "The following standard medication codelists were not found: ",
+    paste(missing_standard_meds, collapse = ", ")
+  )
+}
+
   for (i in meds) {
     
     print(i)
