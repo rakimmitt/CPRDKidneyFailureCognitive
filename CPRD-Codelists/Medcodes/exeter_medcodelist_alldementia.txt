@@ -195,7 +195,6 @@ MedCodeId	Term	Observations_jun24	old_2021	new_2024
 5005671000006118	Frontal lobe degeneration with motor neurone disease	7	1	1
 8031761000006117	Dementia due to Parkinsons disease	6	1	1
 4763081000006118	Senile delirium	6	1	1
-5005661000006113	Lobar atrophy	6	1	1
 3511181000006115	Parkinson-dementia complex of Guam	6	1	1
 7710381000006117	Dementia co-occurrent with human immunodeficiency virus infection	6	1	1
 8024691000006119	Epileptic dementia with behavioural disturbance	6	1	1
@@ -247,7 +246,6 @@ MedCodeId	Term	Observations_jun24	old_2021	new_2024
 2748441000006111	SD - Senile dementia	1	1	1
 8009531000006112	Dementia due to Pick disease	1	1	1
 5005421000006117	Amyotrophic lateral sclerosis with dementia	1	1	1
-5005761000006116	Post-traumatic brain syndrome	1	1	1
 2912331000006111	Vascular dementia, with delusions	1	1	1
 3029421000006116	Inhalant-induced persisting dementia	1	1	1
 6973461000006110	Acquired immune deficiency syndrome dementia complex	1	1	1
@@ -282,7 +280,6 @@ MedCodeId	Term	Observations_jun24	old_2021	new_2024
 4196131000006116	Psychoactive substance-induced organic dementia	NA	1	0
 4196141000006114	Psychoactive substance induced dementia	NA	1	0
 8041011000006119	Dementia due to Rett's syndrome	NA	1	0
-2707651000006116	Circumscribed cerebral atrophy	NA	1	0
 2722941000006116	Vascular dementia, with depressive mood	NA	1	0
 8044921000006112	Delusions in Alzheimers disease	NA	1	0
 8044931000006110	Delusions in Alzheimer disease	NA	1	0
