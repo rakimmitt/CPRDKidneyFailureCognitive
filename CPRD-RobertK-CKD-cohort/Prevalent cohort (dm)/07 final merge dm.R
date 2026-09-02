@@ -222,7 +222,7 @@ for (d in date_strings) {
   
   today <- format(Sys.Date(), "%Y%m%d")
   
-  setwd("C:/Users/tj358/OneDrive - University of Exeter/CPRD/2024/Raw data/")
+  setwd("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/")
   save(list = df_name, file=paste0(today, "_prev_ckd_cohort_dm_", d, ".Rda"))
   
   
@@ -235,5 +235,5 @@ for (d in date_strings) {
   rm(final_merge)
 }
 
-setwd("C:/Users/tj358/OneDrive - University of Exeter/CPRD/2024/Raw data/")
+setwd("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/")
 save(counts, file=paste0(today, "_ckd_counts_dm.Rda"))
