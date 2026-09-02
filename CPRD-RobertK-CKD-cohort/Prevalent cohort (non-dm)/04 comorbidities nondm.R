@@ -169,7 +169,7 @@ comorbids <- c("acutepancreatitis",
                "incident_stroke",
                "incident_mi",
                "ischaemicstroke",
-               "kfdeath",
+               #"kfdeath",
                "mcd",
                "membranous",
                "mpgn",
@@ -238,39 +238,39 @@ for (i in comorbids) {
   }
 
   #medcodes
-  if (length(codes_2024[[i]]) > 0) {
+  if (length(codes[[i]]) > 0) {
     print(paste("making", i, "medcode table"))
     
     raw_tablename <- paste0("raw_", i, "_medcodes")
     
     data <- cprd$tables$observation %>%
-      inner_join(codes_2024[[i]], by="medcodeid", copy = ) %>% # include copy = T so that local data gets copied into mysql table
+      inner_join(codes[[i]], by="medcodeid", copy = use_local_codes) %>% # include copy = use_local_codes so that local data gets copied into mysql table
       analysis$cached(raw_tablename, indexes=c("patid", "obsdate"))
     
     assign(raw_tablename, data)
     
   }
   
-  if (length(codes_2024[[paste0("icd10_", i)]]) > 0 & i!="hypertension") {
+  if (length(codes[[paste0("icd10_", i)]]) > 0 & i!="hypertension") {
     print(paste("making", i, "ICD10 code table"))
     
     raw_tablename <- paste0("raw_", i, "_icd10")
     
     data <- cprd$tables$hesDiagnosisEpi %>%
-      inner_join(codes_2024[[paste0("icd10_",i)]], sql_on="LHS.ICD LIKE CONCAT(icd10,'%')", copy = use_local_codes) %>% # include copy = T so that local data gets copied into mysql table
+      inner_join(codes[[paste0("icd10_",i)]], sql_on="LHS.ICD LIKE CONCAT(icd10,'%')", copy = use_local_codes) %>% # include copy = T so that local data gets copied into mysql table
       analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
     
     assign(raw_tablename, data)
     
   }
   
-  if (length(codes_2024[[paste0("opcs4_", i)]]) > 0) {
+  if (length(codes[[paste0("opcs4_", i)]]) > 0) {
     print(paste("making", i, "OPCS4 code table"))
     
     raw_tablename <- paste0("raw_", i, "_opcs4")
     
     data <- cprd$tables$hesProceduresEpi %>%
-      inner_join(codes_2024[[paste0("opcs4_",i)]], sql_on="LHS.OPCS LIKE CONCAT(opcs4,'%')", copy = use_local_codes) %>%
+      inner_join(codes[[paste0("opcs4_",i)]], sql_on="LHS.OPCS LIKE CONCAT(opcs4,'%')", copy = use_local_codes) %>%
       analysis$cached(raw_tablename, indexes=c("patid", "evdate"))
     
     assign(raw_tablename, data)
