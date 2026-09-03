@@ -1,0 +1,500 @@
+MedCodeId	Observations	Term
+45046017	1033803	Alzheimer's disease
+431681000006117	733795	Vascular dementia
+359241000006119	528090	Dementia
+295668011	355634	[X]Dementia in Alzheimer's disease
+26545010	316769	Senile dementia
+148381000006115	175992	Senile/presenile dementia
+882171000006115	163445	Dementia
+295671015	131039	[X]Dementia in Alzheimer's dis, atypical or mixed type
+294635013	101681	Uncomplicated senile dementia
+376541000006112	96892	Dementia in Alzheimer's disease with late onset
+251625013	89790	H/O: dementia
+401757012	79896	Senile and presenile organic psychotic conditions
+299641000000112	64240	Diffuse Lewy body disease
+363021000006113	60594	[X]Alzheimer's dementia unspec
+497559016	60128	Arteriosclerotic dementia
+295688010	51583	Dementia in Parkinsons disease
+359141000006111	45713	[X] Senile dementia NOS
+8024201000006111	41981	Mixed dementia
+696161000006115	37916	Multi-infarct dementia
+425901000006116	27298	[X]Senile dementia,Alzheimer's type
+295681016	25573	[X]Vascular dementia, unspecified
+499946014	25542	Alzheimer's disease with early onset
+48513015	22824	Progressive supranuclear palsy
+500317011	22053	Alzheimer's disease with late onset
+295672010	19739	[X]Dementia in Alzheimer's disease, unspecified
+745381000006119	16859	Lewy body disease
+21256010	16749	Presenile dementia
+398571000006112	14245	Mixed cortical and subcortical vascular dementia
+399031000006111	11971	[X]Multi-infarct dementia
+376531000006119	10981	Dementia in Alzheimer's disease with early onset
+6024061000006111	10701	Senile dementia of the Lewy body type
+753331000006118	10174	Korsakov alcoholic psychosis
+295684012	9927	Dementia associated with another disease
+3414251000006112	9606	VAD - Vascular dementia
+428201000006119	8577	Subcortical vascular dementia
+294718018	8233	Dementia in conditions EC
+363791000006112	7845	[X]Arteriosclerotic dementia
+394681000006119	7477	Korsakoff's psychosis
+346929012	7100	Alcoholic dementia
+6900181000006114	6881	Primary degenerative dementia of the Alzheimer type, senile onset
+294660013	6732	Senile or presenile psychoses NOS
+294646011	5608	Senile dementia with depression
+345092016	5260	Frontotemporal degeneration
+295685013	4874	Dementia due to Pick's disease
+294644014	4281	Senile dementia with depressive or paranoid features
+882201000006116	4254	Senile dementia - simple type
+501294012	4149	Wernicke-Korsakov syndrome
+294645010	4092	Senile dementia with paranoia
+294648012	3649	Senile dementia with delirium
+5005601000006112	3556	Frontotemporal dementia
+3802651000006111	3334	Dementia of the Lewy body type
+362941000006113	3255	[X]Alcoholic dementia NOS
+2502971000006115	3237	Dementia associated with alcoholism
+2931251000006113	2963	Alzheimer dementia
+295714013	2816	[X]Delirium superimposed on dementia
+22408016	2584	Pick's disease
+295687017	2429	Dementia due to Huntington chorea
+48512013	2373	Progressive supranuclear ophthalmoplegia
+294656010	2343	Arteriosclerotic dementia NOS
+295680015	2139	[X]Other vascular dementia
+401760017	1760	Other alcoholic dementia
+7043651000006119	1622	Dementia associated with Parkinson's Disease
+431691000006119	1549	Vascular dementia of acute onset
+295690011	1451	[X]Dementia in other specified diseases classif elsewhere
+8042791000006116	1357	Lewy body dementia with behavioural disturbance
+401759010	1219	Other senile and presenile organic psychoses
+359161000006110	1215	[X] Senile psychosis NOS
+294652012	1202	Uncomplicated arteriosclerotic dementia
+294643015	1173	Presenile dementia NOS
+6897211000006117	1114	Primary degenerative dementia of the Alzheimer type, presenile onset
+294642013	991	Presenile dementia with depression
+753321000006116	988	Korsakoff's syndrome - non-alcoholic
+359151000006113	886	[X] Senile dementia, depressed or paranoid type
+294655014	767	Arteriosclerotic dementia with depression
+882191000006119	765	Senile and presenile dementias
+397791000006118	671	Alcohol amnestic disorder
+149347010	655	Binswanger's disease
+7969371000006115	644	Dementia with behavioural disturbance
+359081000006118	643	[X] Presenile dementia NOS
+476361000006114	639	Alcohol amnestic syndrome
+542651000006110	581	Cerebral degeneration due to Jakob - Creutzfeldt disease
+423351000006115	538	[X]Presenile dementia,Alzheimer's type
+12370651000006112	533	MVAD - Mixed vascular Alzheimer dementia
+5618261000006114	516	Dementia of frontal lobe type
+294637017	512	Uncomplicated presenile dementia
+8031751000006119	508	Dementia due to Parkinson's disease
+13909641000006114	490	Agitation due to dementia
+294641018	486	Presenile dementia with paranoia
+299325013	486	[X]Other Alzheimer's disease
+294647019	474	Senile dementia with depressive or paranoid features NOS
+359101000006114	438	Cerebral degeneration presenting primarily with dementia
+882211000006118	433	Senile dementia-acute confused
+294654013	430	Arteriosclerotic dementia with paranoia
+2510951000006114	430	Creutzfeldt-Jakob disease
+2386018	426	Jakob-Creutzfeldt disease
+2366181000000114	423	Sporadic CJD (Creutzfeldt-Jakob disease)
+7969281000006110	409	Dementia of the Alzheimer type with behavioural disturbance
+423221000006117	389	[X]Predominantly cortical dementia
+6897271000006114	377	Dementia in Alzheimer's disease - type 2
+294662017	376	Korsakov's alcoholic psychosis with peripheral neuritis
+2931241000006111	373	Alzheimer disease
+376571000006116	347	[X]Dementia in human immunodef virus [HIV] disease
+1221500015	285	Non-alcoholic amnestic syndrome
+423381000006111	257	[X]Primary degen dementia of Alzheimer's type, senile onset
+5005871000006119	256	Semantic dementia
+48515010	254	Steele-Richardson-Olszewski syndrome
+295686014	249	Dementia due to Creutzfeldt Jakob disease
+2366171000000112	242	Sporadic Creutzfeldt-Jakob disease
+542661000006112	204	Cerebral degeneration due to progressive multifocal leucoencephalopathy
+7843521000006113	200	Rapidly progressive dementia
+6897251000006116	191	Presenile dementia, Alzheimer's type
+6900201000006110	187	Dementia of the Alzheimers type, late onset
+5005711000006119	172	Progressive aphasia in Alzheimer's disease
+363031000006111	167	[X]Alzheimer's disease type 1
+8089231000006110	153	Vascular dementia with behavioural disturbance
+294638010	149	Presenile dementia with delirium
+6900241000006112	149	Dementia in Alzheimer's disease - type 1
+3575041000006117	149	Primary degenerative dementia of the Alzheimer type, senile onset, uncomplicated
+125901000006115	142	Steele Richardson Olszewsk syn
+13909621000006120	138	Aggression due to dementia
+6900221000006117	136	SDAT - Senile dementia, Alzheimer's type
+882181000006117	129	Other senile/presenile dement.
+496158012	128	General paresis - neurosyphilis
+8044941000006117	125	Depressed mood in Alzheimer's disease
+294664016	121	Alcohol amnestic syndrome NOS
+7874761000006112	115	Delirium co-occurrent with dementia
+294653019	100	Arteriosclerotic dementia with delirium
+2773831000006113	98	Korsakov's syndrome - non-alcoholic
+3635492010	92	Subcortical dementia
+8044911000006116	88	Delusions in Alzheimer's disease
+12106371000006112	87	BPSD - behavioral and psychological symptoms of dementia
+423391000006114	83	[X]Primary degen dementia, Alzheimer's type, presenile onset
+294688019	82	Drug-induced dementia
+7874771000006117	79	Delirium superimposed on dementia
+13934381000006118	77	Cortical vascular dementia
+2667431000006115	74	Primary degenerative dementia of the Alzheimer type, presenile onset, with depression
+7955161000006118	71	Dementia with Down syndrome
+8044981000006111	70	Alzheimer's disease co-occurrent with delirium
+7755121000006115	68	Behavioural variant of frontotemporal dementia
+359091000006115	68	[X] Presenile psychosis NOS
+7955111000006116	65	Dementia due to chronic subdural haematoma
+5005741000006115	60	Traumatic encephalopathy
+2603271000006110	59	Primary degenerative dementia of the Alzheimer type, presenile onset, uncomplicated
+5618231000006117	58	Frontal lobe degeneration
+6024071000006116	58	Lewy body dementia
+363041000006118	54	[X]Alzheimer's disease type 2
+8030791000006119	54	Altered behaviour in Alzheimer's disease
+12106351000006118	53	Behavioural and psychological symptoms of dementia
+9902251000006116	53	Vascular dementia without behavioural disturbance
+6348061000006115	53	Senile dementia with psychosis
+7510731000006118	53	Dementia associated with normal pressure hydrocephalus
+7510741000006111	53	Dementia associated with multiple sclerosis
+7840631000006118	47	Ischaemic vascular dementia
+1235534016	47	Binswanger's encephalopathy
+3630171000006111	45	Alcoholic amnestic syndrome
+8032911000006111	43	Early onset Alzheimer's disease with behavioural disturbance
+125891000006119	43	Steele - Richardson Oszewski syndrome
+8010111000006117	42	Primary degenerative dementia
+9896131000006110	40	Behavioural disturbance co-occurrent and due to late onset Alzheimer dementia
+3630161000006116	38	Amnesic syndrome due to alcohol
+3802641000006114	38	LBD - Lewy body disease
+5005581000006119	31	Focal Alzheimer's disease
+142920010	31	Kuru
+12370661000006114	30	Dementia with mixed aetiology
+2929931000006112	29	Primary degenerative dementia of the Alzheimer type, senile onset, with depression
+2575731000006115	28	Primary degenerative dementia of the Alzheimer type, senile onset, with delirium
+5005501000006111	24	Familial Alzheimer's disease of early onset
+5005561000006112	24	Non-familial Alzheimer's disease of late onset
+6897241000006118	24	Dementia of the Alzheimers type with early onset
+496157019	23	General paralysis of insane
+2729771000000110	22	Predominantly cortical dementia
+2825541000006118	22	Prion disease
+8024641000006111	21	Altered behaviour in Huntington's dementia
+13913061000006118	20	Disinhibited behaviour due to dementia
+2931231000006118	18	AD - Alzheimer's disease
+7750411000006114	17	Right temporal lobar atrophy
+5005881000006116	16	Patchy dementia
+1805751000006115	16	Variant Creutzfeldt-Jakob disease
+12106381000006114	15	BPSD - behavioural and psychological symptoms of dementia
+12106391000006112	12	Behavioral and psychological symptoms of dementia
+3591821000006112	12	Gerstmann-Straussler-Scheinker syndrome
+5005541000006113	11	Familial Alzheimer's disease of late onset
+3630091000006111	11	Wernicke-Korsakoff syndrome
+7863681000006115	11	Epilepsy co-occurrent and due to dementia
+8033241000006113	10	Multi-infarct dementia due to atherosclerosis
+2773801000006117	10	Non-alcoholic Korsakoff's psychosis
+6348031000006112	9	Senile dementia with delusion
+7511421000006118	8	Post-traumatic dementia with behavioural change
+7560531000006110	8	Frontotemporal dementia with parkinsonism-17
+346897015	8	Presbyophrenic psychosis
+14669521000006116	8	Dementia with AIDS (acquired immunodeficiency syndrome)
+2664601000006115	7	Multi-infarct dementia with delirium
+5005521000006118	7	Non-familial Alzheimer's disease of early onset
+5005671000006118	7	Frontal lobe degeneration with motor neurone disease
+8031761000006117	6	Dementia due to Parkinsons disease
+4763081000006118	6	Senile delirium
+3511181000006115	6	Parkinson-dementia complex of Guam
+7710381000006117	6	Dementia co-occurrent with human immunodeficiency virus infection
+8024691000006119	6	Epileptic dementia with behavioural disturbance
+4768981000006114	5	Cerebral degeneration due to Creutzfeldt-Jakob disease
+5618271000006119	5	DFT - Dementia frontal lobe type
+12370641000006110	5	Dementia with mixed etiology
+3802671000006118	5	Cortical Lewy body disease
+8031771000006112	4	Dementia due to Parkinson disease
+2664611000006117	4	Vascular dementia, with delirium
+8009521000006114	4	Dementia due to Picks disease
+8089241000006117	4	Vascular dementia with behavioral disturbance
+8014401000006116	4	Early onset dementia with delusions
+6973421000006116	4	Dementia associated with AIDS
+3392881000006115	4	Primary degenerative dementia of the Alzheimer type, senile onset, with delusions
+3630121000006110	4	Korsakoff psychosis
+3630141000006115	4	Korsakov syndrome - alcoholic
+7955131000006110	4	Dementia due to herpes encephalitis
+3636474012	4	Dementia due to and following injury of head
+3964671000006119	4	Chronic progressive subcortical encephalopathy
+12106361000006116	3	Neuropsychiatric symptoms
+7973121000006114	3	Hallucinations co-occurrent and due to late onset dementia
+3384371000006119	3	Primary degenerative dementia of the Alzheimer type, presenile onset, with delusions
+3414261000006114	3	Multi infarct dementia
+3630151000006118	3	Korsakov psychosis
+2510981000006118	3	CJD - Creutzfeldt-Jakob disease
+3802621000006119	3	Lewy body variant of Alzheimer's disease
+13810191000006114	3	SDLT - senile dementia of Lewy body type
+13943421000006112	3	Dementia due to iron deficiency
+2722931000006114	2	Multi-infarct dementia with depression
+4539871000006116	2	History of dementia
+2912321000006113	2	Multi-infarct dementia with delusions
+2502981000006117	2	Alcohol-induced persisting dementia
+6964691000006110	2	Presenile dementia associated with AIDS
+7043661000006117	2	Dementia associated with Parkinson Disease
+3189531000006118	2	Diffuse Lewy body disease with spongiform cortical change
+7559621000006112	2	CHMP2B-related frontotemporal dementia
+7838821000006115	2	Dementia co-occurrent and due to neurocysticercosis
+8024671000006115	2	Dementia due to multiple sclerosis with altered behaviour
+3938671000006117	2	Creutzfeldt-Jakob agent
+3964591000006117	2	Subcortical leucoencephalopathy
+3964661000006114	2	Subcortical atherosclerotic dementia
+2649061000006115	2	Dialysis dementia
+8030801000006118	2	Altered behavior in Alzheimer's disease
+8032931000006117	1	Early onset Alzheimers disease with behavioral disturbance
+2707661000006119	1	Pick disease
+2707671000006114	1	Picks disease
+8042801000006115	1	Lewy body dementia with behavioral disturbance
+8044951000006115	1	Alzheimers dementia with depressed mood
+2748441000006111	1	SD - Senile dementia
+8009531000006112	1	Dementia due to Pick disease
+5005421000006117	1	Amyotrophic lateral sclerosis with dementia
+2912331000006111	1	Vascular dementia, with delusions
+3029421000006116	1	Inhalant-induced persisting dementia
+6973461000006110	1	Acquired immune deficiency syndrome dementia complex
+7263021000006116	1	Dementia due to Huntingtons disease
+2575741000006113	1	Dementia of the Alzheimer's type, with late onset, with delirium
+3341631000006115	1	General paresis
+3350441000006115	1	Organic dementia
+3392901000006118	1	Alzheimers dementia, late onset, with delusions
+3414231000006117	1	MID - Multi-infarct dementia
+3469041000006117	1	Sedative, hypnotic AND/OR anxiolytic-induced persisting dementia
+3558401000006117	1	Primary degenerative dementia of the Alzheimer type, presenile onset, with delirium
+7511961000006119	1	Dementia associated with neurosyphilis
+7511971000006114	1	Dementia associated with viral encephalitis
+7515121000006112	1	Primary degenerative dementia of the Alzheimer type, senile onset in remission
+7560411000006117	1	Frontotemporal lobar degeneration
+3653671000006113	1	Multi-infarct dementia, uncomplicated
+7737011000006118	1	Parkinsonism with dementia of Guadeloupe
+7750421000006118	1	Right temporal atrophy variant frontotemporal dementia
+7755131000006117	1	Behavioral variant of frontotemporal dementia
+7838831000006117	1	Dementia caused by toxin
+7838851000006112	1	Dementia due to chromosomal anomaly
+3636471016	1	Dementia due to prion disease
+8024621000006116	1	Altered behaviour co-occurrent and due to Pick's disease
+3964651000006112	1	Subcortical arteriosclerotic encephalopathy
+14091281000006114	1	Dementia with progressive multifocal leucoencephalopathy
+2664621000006113	NA	Multi infarct dementia with delirium
+2667441000006113	NA	Dementia of the Alzheimer's type, with early onset, with depressive mood
+2667451000006110	NA	Alzheimers dementia, early onset, with depressed mood
+8032921000006115	NA	Early onset Alzheimer's disease with behavioral disturbance
+8032941000006110	NA	Early onset Alzheimer disease with behavioral disturbance
+8033251000006110	NA	Multi infarct dementia with atherosclerosis
+4196131000006116	NA	Psychoactive substance-induced organic dementia
+4196141000006114	NA	Psychoactive substance induced dementia
+8041011000006119	NA	Dementia due to Rett's syndrome
+2722941000006116	NA	Vascular dementia, with depressive mood
+8044921000006112	NA	Delusions in Alzheimers disease
+8044931000006110	NA	Delusions in Alzheimer disease
+8044961000006118	NA	Depressed mood in Alzheimer disease
+7969291000006113	NA	Dementia of the Alzheimer type with behavioral disturbance
+7969381000006117	NA	Dementia with behavioral disturbance
+9896141000006116	NA	Behavioral disturbance co-occurrent and due to late onset Alzheimer dementia
+9902261000006116	NA	Vascular dementia without behavioral disturbance
+2773841000006115	NA	Non-alcoholic Korsakoff psychosis
+4763141000006111	NA	Korsakov alcoholic psychosis with peripheral neuritis
+4769001000006112	NA	Cerebral degeneration due to progressive multifocal leukoencephalopathy
+8009541000006119	NA	Dementia co-occurrent and due to Pick's disease
+4997811000006116	NA	Language disorder of dementia
+5005511000006114	NA	Familial Alzheimer disease of early onset
+5005531000006115	NA	Non-familial Alzheimer disease of early onset
+5005551000006110	NA	Familial Alzheimer disease of late onset
+5005571000006117	NA	Non-familial Alzheimer disease of late onset
+5005591000006116	NA	Focal Alzheimer disease
+5005621000006119	NA	Pick disease with Pick bodies
+5005611000006110	NA	Pick's disease with Pick bodies
+5005641000006114	NA	Pick disease with Pick cells and no Pick bodies
+5005631000006116	NA	Pick's disease with Pick cells and no Pick bodies
+5005721000006110	NA	Progressive aphasia in Alzheimer disease
+5005751000006118	NA	Post-traumatic dementia
+5005771000006111	NA	Dementia due to head trauma
+5005811000006111	NA	Punch drunk
+5005781000006114	NA	Punch drunk syndrome
+5005791000006112	NA	Punchdrunk encephalopathy
+5005801000006113	NA	Dementia pugilistica
+5005821000006115	NA	Boxer's dementia
+5005831000006117	NA	Spongiform encephalopathy
+2912341000006118	NA	Multi infarct dementia with delusions
+2929951000006117	NA	Alzheimers dementia, late onset, with depressive mood
+2929941000006119	NA	Dementia of the Alzheimer's type, with late onset, with depressive mood
+11904611000006116	NA	Progressive supranuclear palsy
+2966081000006114	NA	Nuchal dystonia-dementia syndrome
+2966101000006118	NA	PSP - Progressive supranuclear palsy
+11903671000006114	NA	Steele-Richardson-Olszewski syndrome
+2966061000006116	NA	Progressive supranuclear ophthalmoplegia
+11904601000006118	NA	Progressive supranuclear ophthalmoplegia
+5931631000006119	NA	nvCJD - New variant of Creutzfeldt-Jakob disease
+5931641000006112	NA	vCJD - variant Creutzfeldt-Jakob disease
+5931651000006114	NA	Creutzfeldt-Jakob variant disease
+8014391000006118	NA	Presenile dementia with delusions
+6348041000006119	NA	Senile delusion
+6897221000006113	NA	Primary degenerative dementia of the Alzheimer type, early onset
+6900191000006112	NA	Primary degenerative dementia of the Alzheimer type, late onset
+6957311000006114	NA	Organic dementia associated with acquired immunodeficiency syndrome
+6957301000006111	NA	Organic dementia associated with AIDS
+6964701000006110	NA	Presenile dementia associated with acquired immunodeficiency syndrome
+6973451000006113	NA	ADC - Acquired immune deficiency syndrome dementia complex
+6973431000006118	NA	Acquired immune deficiency syndrome-related dementia
+6973441000006111	NA	AIDS - Acquired immune deficiency syndrome dementia complex
+6973471000006115	NA	Dementia associated with acquired immunodeficiency syndrome
+7103601000006116	NA	Dementia due to Creutzfeldt-Jakob disease
+7263011000006112	NA	Dementia due to Huntington disease
+2575751000006110	NA	Dementia Alzheimers type, late onset with delirium
+3341681000006119	NA	GPI - General paresis of the insane
+3341651000006110	NA	Progressive general paresis
+3341661000006112	NA	Paretic neurosyphilis
+3341641000006113	NA	Dementia paralytica
+3341671000006117	NA	General paresis of the insane
+3341701000006116	NA	Paralytic dementia
+3384381000006116	NA	Dementia of the Alzheimer's type, with early onset, with delusions
+3392891000006117	NA	Dementia of the Alzheimer's type, with late onset, with delusions
+3511191000006117	NA	Parkinson's disease - dementia complex on Guam
+2603281000006113	NA	Dementia of the Alzheimer's type, with early onset, uncomplicated
+3558411000006119	NA	Dementia of the Alzheimer's type, with early onset, with delirium
+3575051000006115	NA	Dementia of the Alzheimer's type, with late onset, uncomplicated
+3591831000006110	NA	GSS - Gerstmann-Straussler-Scheinker syndrome
+3630101000006117	NA	Amnestic syndrome of Wernicke's disease
+7510721000006116	NA	Dementia associated with cerebral lipidosis
+7511431000006115	NA	Post-traumatic dementia with behavioral change
+7512791000006115	NA	Dementia associated with cerebral anoxia
+7515131000006110	NA	Primary degenerative dementia of the Alzheimer type, presenile onset in remission
+7558561000006114	NA	PLOSL - polycystic lipomembranous osteodysplasia with sclerosing leukoencephalopathy
+7558571000006119	NA	Nasu-Hakola disease
+7558551000006112	NA	Presenile dementia with bone cysts
+7558541000006110	NA	Polycystic lipomembranous osteodysplasia with sclerosing leukoencephalopathy
+7559631000006110	NA	Frontotemporal dementia with gene located on 3p11
+7559641000006117	NA	Chromosome 3-linked frontotemporal dementia
+7560281000006113	NA	Familial encephalopathy with neuroserpin inclusion bodies
+7560291000006111	NA	Familial dementia with neuroserpin inclusion bodies
+7560401000006115	NA	Hereditary dysphasic disinhibition dementia
+7560391000006117	NA	GRN-related frontotemporal dementia
+7560551000006115	NA	Wilhelmsen-Lynch disease
+7560561000006118	NA	Disinhibition-dementia-parkinsonism-amytrophy complex
+7560541000006117	NA	Familial Pick's disease
+7560571000006113	NA	FTDP-17 - Frontotemporal dementia with parkinsonism 17
+3653681000006111	NA	Vascular dementia, uncomplicated
+3653691000006114	NA	Multi infarct dementia, uncomplicated
+7699251000006118	NA	Sporadic Jakob-Creutzfeldt disease
+7704691000006115	NA	Presenile dementia co-occurrent with human immunodeficiency virus infection
+7735591000006112	NA	Iatrogenic Jakob-Creutzfeldt disease
+7735601000006116	NA	Iatrogenic Creutzfeldt-Jakob disease
+7737021000006114	NA	Parkinsonism co-occurrent with dementia of Guadeloupe
+7737911000006117	NA	fCJD (Familial Creutzfeldt-Jakob disease)
+7737921000006113	NA	Inherited Creutzfeldt-Jakob disease
+7737901000006115	NA	Familial Creutzfeldt-Jakob
+7838841000006110	NA	Dementia due to metabolic abnormality
+7840641000006111	NA	Ischemic vascular dementia
+7861131000006111	NA	Dementia due to disorder of central nervous system
+7861141000006118	NA	Dementia due to infectious disease
+7863701000006117	NA	Epilepsy with dementia
+7863691000006117	NA	Epileptic dementia
+3688931000006118	NA	Alcohol-induced persisting amnestic disorder
+7955091000006113	NA	Dementia caused by heavy metal exposure
+3512304018	NA	Dementia following injury caused by exposure to ionizing radiation
+3512306016	NA	Postradiation dementia
+3512303012	NA	Dementia following injury caused by exposure to ionising radiation
+7955101000006119	NA	Dementia due to primary malignant neoplasm of brain
+7955121000006112	NA	Dementia due to chronic subdural hematoma
+7955151000006115	NA	Dementia co-occurrent and due to progressive multifocal leukoencephalopathy
+7955141000006117	NA	Dementia with progressive multifocal leukoencephalopathy
+7955171000006113	NA	Dementia co-occurrent and due to Down syndrome
+2511001000006119	NA	Transmissible virus dementia
+2510971000006116	NA	Subacute spongiform encephalopathy
+2510991000006115	NA	JCD - Jakob-Creutzfeldt disease
+2511011000006116	NA	Creutzfeldt Jakob disease
+3802661000006113	NA	DLBD - Diffuse Lewy body disease
+3802631000006116	NA	SDLT - Senile dementia of the Lewy body type
+3802681000006115	NA	CLBD - Cortical Lewy body disease
+8024631000006118	NA	Altered behavior co-occurrent and due to Pick's disease
+8024661000006110	NA	Altered behavior in dementia due to Huntington chorea
+8024651000006113	NA	Altered behavior in Huntington's dementia
+8024681000006117	NA	Dementia due to multiple sclerosis with altered behavior
+8024701000006119	NA	Epileptic dementia with behavioral disturbance
+3849671000006119	NA	Juvenile general paresis
+3849661000006114	NA	Dementia paralytica juvenilis
+3894361000006113	NA	Argentophilic neuronal inclusion
+3894371000006118	NA	Alzheimer's neurofibrillary degeneration
+3894381000006115	NA	Alzheimer's neurofibrillary change
+3894351000006111	NA	Neurofibrillary tangle
+3894341000006114	NA	Neurofibrillary degeneration
+3938681000006119	NA	Jakob-Creutzfeldt agent
+3938691000006116	NA	Creutzfeldt-Jakob disease agent
+3964601000006113	NA	Subcortical leukoencephalopathy
+3964611000006111	NA	Binswanger's dementia
+3964621000006115	NA	Encephalitis subcorticalis chronica
+2649081000006113	NA	Dialysis encephalopathy
+2649071000006110	NA	Dialysis encephalopathy syndrome
+8030811000006115	NA	Altered behavior in Alzheimer disease
+8030821000006111	NA	Altered behavior in Alzheimers disease
+905791000006115	645	Alzheimer's disease
+914921000006117	1937	Vascular dementia
+914931000006119	649	Dementia with Lewy bodies
+914941000006112	11049	Dementia
+914951000006114	17265	Dementia in Alzheimer's disease
+939491000006118	2375	Dementia
+1576281000006119	111	Cause of Death- Alzheimer'S Disease
+1823871000006112	414	Dementia confirmed
+1949621000006118	12	Dementia stage at diagnosis
+1949631000006115	1259	Dementia stage at diagnosis - early (mild)
+1949641000006113	986	Dementia stage at diagnosis - mid (moderate)
+1949651000006110	595	Dementia stage at diagnosis - late (severe)
+1949661000006112	8	Dementia stage at diagnosis - undetermined
+1949671000006117	13	Dementia stage at diagnosis - not known
+1971401000006111	66	Dementia in Alzheimer's disease with early onset, without additional symptoms
+1971541000006114	5	Dementia in Alzheimer's disease with early onset, other symptoms, predominantly delusional
+1971771000006112	2	Dementia in Alzheimer's disease with early onset, other symptoms, predominantly hallucinatory
+1972021000006119	1221	Unspecified dementia, without additional symptoms
+1972041000006114	30	Unspecified dementia, other symptoms, predominantly delusional
+1972061000006113	23	Unspecified dementia, other symptoms, predominantly hallucinatory
+1972071000006118	12	Unspecified dementia, other symptoms, predominantly depressive
+1972081000006115	4593	Unspecified dementia, other mixed symptoms
+1972131000006115	9	Dementia in Alzheimer's disease with early onset, other symptoms, predominantly depressive
+1972141000006113	261	Dementia in Alzheimer's disease with early onset, other mixed symptoms
+1972171000006117	113	Dementia in Alzheimer's disease with late onset, without additional symptoms
+1972181000006119	9	Dementia in Alzheimer's disease with late onset, other symptoms, predominantly delusional
+1972191000006116	2	Dementia in Alzheimer's disease with late onset, other symptoms, predominantly hallucinatory
+1972201000006118	18	Dementia in Alzheimer's disease with late onset, other symptoms, predominantly depressive
+1972211000006115	510	Dementia in Alzheimer's disease with late onset, other mixed symptoms
+1972231000006114	1467	Dementia in Alzheimer's dis, atypical or mixed type, without additional symptoms
+1972251000006119	55	Dementia in Alzheimer's dis, atypical or mixed type, other symptoms, predominantly delusional
+1972291000006113	112	Dementia in Alzheimer's dis, atypical or mixed type, other symptoms, predominantly hallucinatory
+1972311000006112	45	Dementia in Alzheimer's dis, atypical or mixed type, other symptoms, predominantly depressive
+1972341000006111	6789	Dementia in Alzheimer's dis, atypical or mixed type, other mixed symptoms
+1972371000006115	175	Dementia in Alzheimer's disease, unspecified, without additional symptoms
+1972401000006117	14	Dementia in Alzheimer's disease, unspecified, other symptoms, predominantly delusional
+1972451000006118	7	Dementia in Alzheimer's disease, unspecified, other symptoms, predominantly depressive
+1972471000006111	4548	Dementia in Alzheimer's disease, unspecified, other mixed symptoms
+1972481000006114	15	Vascular dementia of acute onset, without additional symptoms
+1972501000006116	5	Vascular dementia of acute onset, other symptoms, predominantly delusional
+1972571000006110	18	Vascular dementia of acute onset, other mixed symptoms
+1972661000006119	2	Multi-infarct dementia, other symptoms, predominantly depressive
+1972681000006112	76	Multi-infarct dementia, other mixed symptoms
+1972711000006113	4	Subcortical vascular dementia, without additional symptoms
+1972731000006119	1	Subcortical vascular dementia, other symptoms, predominantly delusional
+1972751000006114	14	Subcortical vascular dementia, other symptoms, predominantly hallucinatory
+1972771000006116	5	Subcortical vascular dementia, other symptoms, predominantly depressive
+1972791000006115	21	Subcortical vascular dementia, other mixed symptoms
+1972821000006112	20	Mixed cortical and subcortical vascular dementia, without additional symptoms
+1972831000006110	5	Mixed cortical and subcortical vascular dementia, other symptoms, predominantly delusional
+1972871000006113	3	Mixed cortical and subcortical vascular dementia, other symptoms, predominantly hallucinatory
+1972911000006111	1	Mixed cortical and subcortical vascular dementia, other symptoms, predominantly depressive
+1972931000006117	93	Mixed cortical and subcortical vascular dementia, other mixed symptoms
+1973221000006118	10	Other vascular dementia, without additional symptoms
+1973271000006117	6	Other vascular dementia, other symptoms, predominantly delusional
+1973341000006118	5	Other vascular dementia, other symptoms, predominantly hallucinatory
+1973381000006112	2	Other vascular dementia, other symptoms, predominantly depressive
+1973401000006112	463	Other vascular dementia, other mixed symptoms
+1973461000006113	113	Vascular dementia, unspecified, without additional symptoms
+1973501000006113	1	Vascular dementia, unspecified, other symptoms, predominantly delusional
+1973531000006117	5	Vascular dementia, unspecified, other symptoms, predominantly hallucinatory
+1973551000006112	7	Vascular dementia, unspecified, other symptoms, predominantly depressive
+1976831000006111	819	Vascular dementia, unspecified, other mixed symptoms
+2729731000000113	1	Presenile dementia with psychosis
+2729791000000114	27	Predominantly cortical vascular dementia
+5005691000006117	1	Non-Alzheimer's progressive dysphasia
+7834071000006116	1	Non-amnestic Alzheimer disease
+14464361000006116	29	Autosomal dominant Alzheimer disease due to mutation of presenilin 1
+14574821000006116	2	Dementia due to cobalamin deficiency
+14805251000006118	4	Behavioural disturbance due to multi-infarct dementia
+15035271000006110	2	Alzheimer disease with psychosis
+15038931000006114	1	Dementia due to hypercalcaemia
+15039111000006110	3	Dementia due to cerebral vasculitis
+15039141000006114	7	Dementia due to cerebral amyloid angiopathy
+15041741000006112	2	Dementia due to multiple system atrophy
