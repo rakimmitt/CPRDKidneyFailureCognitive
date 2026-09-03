@@ -1,4 +1,4 @@
-MedCodeId	Term	Observations_jun24	old_2021	new_2024
+MedCodeId	Term	Observations	old_2021	new_2024
 45046017	Alzheimer's disease	1033803	1	1
 431681000006117	Vascular dementia	733795	1	1
 359241000006119	Dementia	528090	1	1
