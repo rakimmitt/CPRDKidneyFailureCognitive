@@ -81,3 +81,28 @@ MedCodeId	Term	Observations_jun24	old_2021	new_2024
 3894381000006115	Alzheimer's neurofibrillary change	NA	1	0
 8030811000006115	Altered behavior in Alzheimer disease	NA	1	0
 8030821000006111	Altered behavior in Alzheimers disease	NA	1	0
+905791000006115	645	Alzheimer's disease
+914951000006114	17265	Dementia in Alzheimer's disease
+1576281000006119	111	Cause of Death- Alzheimer'S Disease
+1971401000006111	66	Dementia in Alzheimer's disease with early onset, without additional symptoms
+1971541000006114	5	Dementia in Alzheimer's disease with early onset, other symptoms, predominantly delusional
+1971771000006112	2	Dementia in Alzheimer's disease with early onset, other symptoms, predominantly hallucinatory
+1972131000006115	9	Dementia in Alzheimer's disease with early onset, other symptoms, predominantly depressive
+1972141000006113	261	Dementia in Alzheimer's disease with early onset, other mixed symptoms
+1972171000006117	113	Dementia in Alzheimer's disease with late onset, without additional symptoms
+1972181000006119	9	Dementia in Alzheimer's disease with late onset, other symptoms, predominantly delusional
+1972191000006116	2	Dementia in Alzheimer's disease with late onset, other symptoms, predominantly hallucinatory
+1972201000006118	18	Dementia in Alzheimer's disease with late onset, other symptoms, predominantly depressive
+1972211000006115	510	Dementia in Alzheimer's disease with late onset, other mixed symptoms
+1972231000006114	1467	Dementia in Alzheimer's dis, atypical or mixed type, without additional symptoms
+1972251000006119	55	Dementia in Alzheimer's dis, atypical or mixed type, other symptoms, predominantly delusional
+1972291000006113	112	Dementia in Alzheimer's dis, atypical or mixed type, other symptoms, predominantly hallucinatory
+1972311000006112	45	Dementia in Alzheimer's dis, atypical or mixed type, other symptoms, predominantly depressive
+1972341000006111	6789	Dementia in Alzheimer's dis, atypical or mixed type, other mixed symptoms
+1972371000006115	175	Dementia in Alzheimer's disease, unspecified, without additional symptoms
+1972401000006117	14	Dementia in Alzheimer's disease, unspecified, other symptoms, predominantly delusional
+1972451000006118	7	Dementia in Alzheimer's disease, unspecified, other symptoms, predominantly depressive
+1972471000006111	4548	Dementia in Alzheimer's disease, unspecified, other mixed symptoms
+7834071000006116	1	Non-amnestic Alzheimer disease
+14464361000006116	29	Autosomal dominant Alzheimer disease due to mutation of presenilin 1
+15035271000006110	2	Alzheimer disease with psychosis
