@@ -43,3 +43,31 @@ MedCodeId	Term	Observations_jun24	old_2021	new_2024
 3653691000006114	Multi infarct dementia, uncomplicated	NA	1	0
 7840641000006111	Ischemic vascular dementia	NA	1	0
 3964611000006111	Binswanger's dementia	NA	1	0
+914921000006117	1937	Vascular dementia
+1972481000006114	15	Vascular dementia of acute onset, without additional symptoms
+1972501000006116	5	Vascular dementia of acute onset, other symptoms, predominantly delusional
+1972571000006110	18	Vascular dementia of acute onset, other mixed symptoms
+1972661000006119	2	Multi-infarct dementia, other symptoms, predominantly depressive
+1972681000006112	76	Multi-infarct dementia, other mixed symptoms
+1972711000006113	4	Subcortical vascular dementia, without additional symptoms
+1972731000006119	1	Subcortical vascular dementia, other symptoms, predominantly delusional
+1972751000006114	14	Subcortical vascular dementia, other symptoms, predominantly hallucinatory
+1972771000006116	5	Subcortical vascular dementia, other symptoms, predominantly depressive
+1972791000006115	21	Subcortical vascular dementia, other mixed symptoms
+1972821000006112	20	Mixed cortical and subcortical vascular dementia, without additional symptoms
+1972831000006110	5	Mixed cortical and subcortical vascular dementia, other symptoms, predominantly delusional
+1972871000006113	3	Mixed cortical and subcortical vascular dementia, other symptoms, predominantly hallucinatory
+1972911000006111	1	Mixed cortical and subcortical vascular dementia, other symptoms, predominantly depressive
+1972931000006117	93	Mixed cortical and subcortical vascular dementia, other mixed symptoms
+1973221000006118	10	Other vascular dementia, without additional symptoms
+1973271000006117	6	Other vascular dementia, other symptoms, predominantly delusional
+1973341000006118	5	Other vascular dementia, other symptoms, predominantly hallucinatory
+1973381000006112	2	Other vascular dementia, other symptoms, predominantly depressive
+1973401000006112	463	Other vascular dementia, other mixed symptoms
+1973461000006113	113	Vascular dementia, unspecified, without additional symptoms
+1973501000006113	1	Vascular dementia, unspecified, other symptoms, predominantly delusional
+1973531000006117	5	Vascular dementia, unspecified, other symptoms, predominantly hallucinatory
+1973551000006112	7	Vascular dementia, unspecified, other symptoms, predominantly depressive
+1976831000006111	819	Vascular dementia, unspecified, other mixed symptoms
+2729791000000114	27	Predominantly cortical vascular dementia
+14805251000006118	4	Behavioural disturbance due to multi-infarct dementia
