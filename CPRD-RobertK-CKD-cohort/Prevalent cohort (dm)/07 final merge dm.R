@@ -20,7 +20,10 @@ analysis = cprd$analysis("all")
 ckd_cohort <- ckd_cohort %>% analysis$cached("diabetes_ckd_cohort")
 diabetes_cohort <- diabetes_cohort %>% analysis$cached("diabetes_cohort")
 death_causes <- death_causes %>% analysis$cached("death_causes")
-townsend_score <- townsend_score %>% analysis$cached("townsend_score")
+
+townsend_analysis <- cprd$analysis("all_patid")
+townsend_score <- townsend_score %>%
+  townsend_analysis$cached("townsend_score")
 
 ## Get index date
 
@@ -46,6 +49,7 @@ analysis = cprd$analysis(paste0(analysis_prefix, "_", d))
 rk_analysis = cprd$analysis(analysis_prefix)
 
 ## Biomarkers plus CKD stage
+rk_analysis <- cprd$analysis("ckd")
 ckd_stages <- ckd_stages %>%
   rk_analysis$cached(paste0("rk_", d, "_ckd_stages"))
 
