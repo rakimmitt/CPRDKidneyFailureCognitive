@@ -39,12 +39,18 @@ for (d in date_strings) {
   index_date <- as.Date(d)
   print(d)
   
-  analysis = cprd$analysis(paste0(analysis_prefix, "_", d))
-  
-  
-  ## Biomarkers plus CKD stage
-  ckd_stages <- ckd_stages %>% analysis$cached("ckd_stages")
-  baseline_biomarkers <- baseline_biomarkers %>% analysis$cached("baseline_biomarkers")
+# Date-specific analysis area for the other tables
+analysis = cprd$analysis(paste0(analysis_prefix, "_", d))
+
+# Analysis area containing your personalised outputs
+rk_analysis = cprd$analysis(analysis_prefix)
+
+## Biomarkers plus CKD stage
+ckd_stages <- ckd_stages %>%
+  rk_analysis$cached(paste0("rk_", d, "_ckd_stages"))
+
+baseline_biomarkers <- baseline_biomarkers %>%
+  rk_analysis$cached(paste0("rk_", d, "_baseline_biomarkers"))
   
   ## Comorbidities
   comorbidities <- comorbidities %>% analysis$cached("comorbidities")
