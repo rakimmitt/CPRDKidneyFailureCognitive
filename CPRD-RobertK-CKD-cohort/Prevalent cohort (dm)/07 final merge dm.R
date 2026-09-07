@@ -51,10 +51,11 @@ rk_analysis = cprd$analysis(analysis_prefix)
 ## Biomarkers plus CKD stage
 rk_analysis <- cprd$analysis("ckd")
 ckd_stages <- ckd_stages %>%
-  rk_analysis$cached(paste0("rk_", d, "_ckd_stages"))
+  rk_analysis$cached(paste0("rk", d, "_ckd_stages"))
 
+rk_analysis <- cprd$analysis("ckd")
 baseline_biomarkers <- baseline_biomarkers %>%
-  rk_analysis$cached(paste0("rk_", d, "_baseline_biomarkers"))
+  rk_analysis$cached(paste0("rk", d, "_baseline_biomarkers"))
   
   ## Comorbidities
   comorbidities <- comorbidities %>% analysis$cached("comorbidities")
@@ -129,9 +130,10 @@ baseline_biomarkers <- baseline_biomarkers %>%
     left_join(death_causes, by = "patid") %>%
     mutate(index_date_age=datediff(index_date, dob)/365.25,
            index_date_ckd_dur_all=datediff(index_date, first_ckd_date)/365.25,
+           dm_dur_all=datediff(index_date, dm_diag_date_all)/365.25,
            index_date = index_date) %>%
     relocate(c(index_date_age, index_date_ckd_dur_all), .before=gender) %>%
-    analysis$cached("final_merge", unique_indexes="patid")
+    analysis$cached("rk_final_merge", unique_indexes="patid")
   
   ###############################################################
   

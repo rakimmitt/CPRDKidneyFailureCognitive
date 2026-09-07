@@ -200,19 +200,19 @@ comorbids <- c("acutepancreatitis",
 )
 
 custom_comorbids <- c(
-               "alldementia",
-               "alzheimers",
-               "ckd5_nokrt",
-               "ckd5",
-               "delirium",
-               "haemodialysis",
-               "mci",
-               "peritoneal_dialysis",
-               "renalaccessinfection",
-               "transplant",
-               "vascular_dementia",
-               "uti",
-               "skininfection",
+               #"alldementia",
+               #"alzheimers",
+               #"ckd5_nokrt",
+               #"ckd5",
+               #"delirium",
+               #"haemodialysis",
+               #"mci",
+               #"peritoneal_dialysis",
+               #"renalaccessinfection",
+               #"transplant",
+               #"vascular_dementia",
+               #"uti",
+               #"skininfection",
                "respiratorytractinfection"
 )
 
