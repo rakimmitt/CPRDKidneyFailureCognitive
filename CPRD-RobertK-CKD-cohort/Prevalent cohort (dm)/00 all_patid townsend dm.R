@@ -1,5 +1,5 @@
 
-# Produces all_patid_rk_townsend_deprivation_score table
+# Produces all_patid_townsend_deprivation_score table
 
 # See: https://github.com/drkgyoung/Exeter_Diabetes_codelists/blob/main/readme.md#townsend-deprivation-scores
 
@@ -51,4 +51,4 @@ imd_townsend <- imd_lsoa %>%
 townsend_score <- cprd$tables$patientImd %>%
   select(patid, imd_decile) %>%
   inner_join(imd_townsend, by="imd_decile", copy=TRUE) %>%
-  analysis$cached("rk_townsend_score", unique_index="patid")
+  analysis$cached("townsend_score", unique_index="patid")

@@ -7,8 +7,6 @@
 
 # Final table is 1 row per patid, don't need 1 row per drug period as all drug periods are prior to death
 
-# NB adapted for RK's cohort, so final table is "rk_death_causes", not "death_causes"
-
 ############################################################################################
 
 # Setup
@@ -136,4 +134,4 @@ death_causes <- cprd$tables$onsDeath %>%
   left_join(hf_death_any, by="patid") %>%
   left_join(kf_death_primary, by="patid") %>%
   left_join(kf_death_any, by="patid") %>%
-  analysis$cached("rk_death_causes", unique_indexes="patid")
+  analysis$cached("death_causes", unique_indexes="patid")

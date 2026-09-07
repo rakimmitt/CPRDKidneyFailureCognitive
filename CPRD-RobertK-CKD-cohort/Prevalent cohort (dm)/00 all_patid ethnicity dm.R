@@ -38,8 +38,6 @@
 
 # Algorithm: https://github.com/Exeter-Diabetes/CPRD-Codelists/blob/main/readme.md#ethnicity
 
-# Note, the final table is called "rk_ethnicity" whereas the original was "ethnicity"
-
 ############################################################################################
 
 # Setup
@@ -199,4 +197,4 @@ ethnicity <- cprd$tables$patient %>%
   
   select(patid, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2) %>%
   
-  analysis$cached("rk_ethnicity", unique_indexes="patid")
+  analysis$cached("ethnicity", unique_indexes="patid")
