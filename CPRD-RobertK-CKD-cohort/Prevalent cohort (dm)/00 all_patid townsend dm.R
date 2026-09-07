@@ -12,7 +12,7 @@ library(aurum)
 library(tidyverse)
 library(readxl)
 
-cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "~/.aurum.yaml")
+cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
 
 analysis = cprd$analysis("all_patid")
 
