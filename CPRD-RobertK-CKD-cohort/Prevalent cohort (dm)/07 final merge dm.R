@@ -12,7 +12,6 @@ codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
 analysis_prefix = "ckd"
 
-
 ############################################################################################
 
 ## Cohort and patient characteristics
