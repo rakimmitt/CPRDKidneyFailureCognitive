@@ -87,15 +87,6 @@ medcodeid	term_medcode
 2209101000000119	Aneurysm of artery of transplanted kidney
 2234541000000115	Thrombosis of artery of transplanted kidney
 2234621000000111	Thrombosis of vein of transplanted kidney
-2238021000000114	Stenosis of dialysis arteriovenous shunt
-2238261000000112	Thrombosis of dialysis arteriovenous graft
-2238341000000116	Thrombosis of dialysis arteriovenous shunt
-2238461000000111	Occlusion of dialysis arteriovenous shunt
-2240741000000115	Infection of dialysis arteriovenous shunt
-2240831000000118	Haemorrhage of dialysis arteriovenous graft
-2240911000000119	Haemorrhage of dialysis arteriovenous shunt
-2253631000000110	Stenosis of arterial side of dialysis arteriovenous shunt
-2253671000000112	Stenosis of venous side of dialysis arteriovenous shunt
 3292751000006114	Renal homotransplantation with unilateral recipient nephrectomy
 3455171000006118	Disorder of transplanted kidney
 3455181000006115	Complication of transplanted kidney
