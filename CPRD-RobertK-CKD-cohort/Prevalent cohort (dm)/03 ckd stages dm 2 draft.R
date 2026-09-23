@@ -12,11 +12,15 @@ codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
 analysis_prefix <- "rk_ckd"
+
 source_analysis <- cprd$analysis("all_patid")
 
 clean_egfr_medcodes <- source_analysis$cached(
   name = "clean_egfr_medcodes"
 )
+
+# Save all revised CKD outputs under a separate prefix
+analysis_prefix <- "rk_ckd_v2"
 analysis <- cprd$analysis(analysis_prefix)
 
 clean_egfr_medcodes %>% count()
