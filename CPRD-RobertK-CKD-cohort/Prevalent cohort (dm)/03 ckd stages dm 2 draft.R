@@ -12,20 +12,16 @@ codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
 analysis_prefix <- "rk_ckd"
-analysis = cprd$analysis(analysis_prefix)
+source_analysis <- cprd$analysis("all_patid")
 
-############################################################################################
-
-# get egfr
-analysis = cprd$analysis("all_patid")
-
-clean_egfr_medcodes <- clean_egfr_medcodes %>%
-   analysis$cached("clean_egfr_medcodes", indexes=c("patid", "date", "testvalue"))
+clean_egfr_medcodes <- source_analysis$cached(
+  name = "clean_egfr_medcodes"
+)
+analysis <- cprd$analysis(analysis_prefix)
 
 clean_egfr_medcodes %>% count()
-#112,440,442 - lose readings of people with sex == NA or with missing creatinine
 
-################################################################################################################################
+############################################################################################
 
 # Convert eGFR to CKD stage
 
@@ -151,18 +147,79 @@ if (is.null(ckd5_medcodes) && is.null(ckd5_icd10) && is.null(ckd5_opcs4)) {
 
 ## Clean, find earliest date per person, and re-cache
 
-earliest_clean_ckd5 <- ckd5_medcodes %>%
-  select(patid, date=obsdate) %>%
-  mutate(source="gp") %>%
-  union_all((ckd5_icd10 %>% select(patid, date=epistart) %>% mutate(source="hes"))) %>%
-  union_all((ckd5_opcs4 %>% select(patid, date=evdate) %>% mutate(source="hes"))) %>%
-  inner_join(cprd$tables$validDateLookup, by="patid") %>%
-  #filter(date>=min_dob & ((source=="gp" & date<=gp_ons_maximum_date) | (source=="hes" & (is.na(gp_ons_death_date) | date<=gp_ons_death_date)))) %>% ## as above - ONS variables substituted
-  filter(date>=min_dob & ((source=="gp" & date<=gp_end_date) | (source=="hes" & (is.na(gp_end_date) | date<=gp_end_date)))) %>%
+# Find patient records containing the CKD5 codes.
+# Only include coding systems for which a codelist was found.
+
+ckd5_records <- list()
+
+# Medcodes
+if (!is.null(ckd5_medcodes)) {
+
+  ckd5_records[["gp"]] <- cprd$tables$observation %>%
+    inner_join(
+      ckd5_medcodes,
+      by = "medcodeid",
+      copy = TRUE
+    ) %>%
+    select(patid, date = obsdate) %>%
+    mutate(source = "gp")
+}
+
+# ICD10
+if (!is.null(ckd5_icd10)) {
+
+  ckd5_records[["icd10"]] <- cprd$tables$hesDiagnosisEpi %>%
+    inner_join(
+      ckd5_icd10,
+      sql_on = "LHS.ICD LIKE CONCAT(RHS.icd10, '%')",
+      copy = TRUE
+    ) %>%
+    select(patid, date = epistart) %>%
+    mutate(source = "hes")
+}
+
+# OPCS4
+if (!is.null(ckd5_opcs4)) {
+
+  ckd5_records[["opcs4"]] <- cprd$tables$hesProceduresEpi %>%
+    inner_join(
+      ckd5_opcs4,
+      by = c("OPCS" = "opcs4"),
+      copy = TRUE
+    ) %>%
+    select(patid, date = evdate) %>%
+    mutate(source = "hes")
+}
+
+# Combine the available patient-record tables
+all_ckd5_records <- purrr::reduce(
+  ckd5_records,
+  dplyr::union_all
+)
+
+# Apply your existing date rules and find the earliest CKD5 record
+earliest_clean_ckd5 <- all_ckd5_records %>%
+  inner_join(
+    cprd$tables$validDateLookup,
+    by = "patid"
+  ) %>%
+  filter(
+    date >= min_dob &
+      (
+        (source == "gp" & date <= gp_end_date) |
+        (source == "hes" &
+           (is.na(gp_end_date) | date <= gp_end_date))
+      )
+  ) %>%
   group_by(patid) %>%
-  summarise(first_test_date=min(date, na.rm=TRUE)) %>%
-  ungroup() %>%
-  analysis$cached("earliest_clean_ckd5",indexes=c("patid", "first_test_date"))
+  summarise(
+    first_test_date = min(date, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  analysis$cached(
+    name = "earliest_clean_ckd5",
+    indexes = c("patid", "first_test_date")
+  )
 
 ## Combine CKD5 and other codes
 
@@ -214,7 +271,16 @@ ckd_stages_from_algorithm %>% count()
 
 ######################################################################################
 
-analysis = cprd$analysis(analysis_prefix)
- 
-analysis$cached(paste0("rk_", d, "_ckd_stages"), unique_indexes="patid")
+# Save the completed staging table
+
+ckd_stages <- ckd_stages_from_algorithm %>%
+  analysis$cached(
+    name = "stages",
+    unique_indexes = "patid"
+  )
+
+# Inspect the result
+
+ckd_stages %>% count()
+ckd_stages %>% head()
 
