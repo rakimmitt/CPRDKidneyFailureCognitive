@@ -216,5 +216,5 @@ ckd_stages_from_algorithm %>% count()
 
 analysis = cprd$analysis(analysis_prefix)
  
-analysis$cached(paste0("rk_", d, "_ckd_stages"), unique_indexes="patid")
+analysis$cached(paste0(analysis_prefix, "_stages"), unique_indexes = "patid")
 
