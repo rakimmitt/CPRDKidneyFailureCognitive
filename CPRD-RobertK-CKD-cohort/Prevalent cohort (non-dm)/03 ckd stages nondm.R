@@ -6,13 +6,12 @@ library(aurum)
 library(EHRBiomarkr)
 rm(list=ls())
 
-
 cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
 
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-analysis_prefix <- "ckd"
+analysis_prefix <- "rk_ckd"
 analysis = cprd$analysis(analysis_prefix)
 
 ############################################################################################
@@ -25,7 +24,6 @@ clean_egfr_medcodes <- clean_egfr_medcodes %>%
 
 clean_egfr_medcodes %>% count()
 #112,440,442 - lose readings of people with sex == NA or with missing creatinine
-
 
 ################################################################################################################################
 
@@ -40,7 +38,6 @@ ckd_stages_from_all_egfr <- clean_egfr_medcodes %>%
                                                ifelse(egfr<90, "stage_2",
                                                       ifelse(egfr>=90, "stage_1", NA)))))))
 
-
 ################################################################################################################################
 
 # Only keep CKD stages if >1 consecutive test with the same stage, and if time between earliest and latest consecutive test with same stage are >=90 days apart
@@ -49,7 +46,6 @@ ckd_stages_from_all_egfr <- clean_egfr_medcodes %>%
 ### A) Define period from current test until next test as having the ckd_stage of current test
 ### B) Join together consecutive periods with the same ckd_stage
 ### C) If period contains >1 test, and there is >=90 days between the first and last test in the period, it is 'confirmed'
-
 
 ### A) Define period from current test until next test as having the ckd_stage of current test
 
@@ -62,7 +58,6 @@ ckd_stages_from_algorithm <- ckd_stages_from_all_egfr %>%
   mutate(patid_total_rows=max(patid_row_id, na.rm=TRUE)) %>%
   ungroup()
 
-
 #### For rows where there is a next test, use this as end date; for last row, use start date as end date
 
 ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
@@ -73,7 +68,6 @@ ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
          ckd_stage=ckd_stage.x,
          egfr=egfr.x) %>%
   select(patid, patid_row_id, ckd_stage, ckd_start, ckd_end, egfr)
-
 
 ### B) Join together consecutive periods with the same ckd_stage
 
@@ -99,7 +93,6 @@ ckd_stages_from_algorithm %>% count()
 ckd_stages_from_algorithm %>% summarise(total=sum(test_count, na.rm=TRUE))
 #total number of tests: 112,440,442 as above
 
-
 ### C) Remove periods with 1 reading, or with multiple readings but <90 days between first and last test, and cache
 
 ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
@@ -109,29 +102,60 @@ ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
 ckd_stages_from_algorithm %>% count()
 #17,886,174
 
-
 ################################################################################################################################
 
 # Combine with CKD5 medcodes/ICD10/OPCS4 codes
 
-## Get raw CKD5 codes and clean
-analysis = cprd$analysis("all_patid")
-### Medcodes
-raw_ckd5_code_medcodes <- raw_ckd5_medcodes %>% analysis$cached("raw_ckd5_code_medcodes")
+codelist_root <- paste0(
+  "C:/Users/rk535/OneDrive/1 - PhD/Data Science/CPRD/",
+  "Github clone/CPRDKidneyFailureCognitive/CPRD-Codelists"
+)
 
-### ICD10 codes
-raw_ckd5_code_icd10 <- raw_ckd5_icd10 %>% analysis$cached("raw_ckd5_code_icd10")
+read_ckd5_list <- function(folder, wanted_name, code_column) {
+  directory <- file.path(codelist_root, folder)
+  if (!dir.exists(directory)) stop("Codelist directory missing: ", directory)
 
-### OPCS4 codes
-raw_ckd5_code_opcs4 <- raw_ckd5_opcs4 %>% analysis$cached("raw_ckd5_code_opcs4")
+  files <- list.files(directory, pattern = "\\.txt$", ignore.case = TRUE,
+                      recursive = TRUE, full.names = TRUE)
+  names_in_files <- files %>%
+    basename() %>%
+    tools::file_path_sans_ext() %>%
+    str_to_lower() %>%
+    str_remove("^exeter_medcodelist_") %>%
+    str_remove("^exeter_")
+  selected <- files[names_in_files == wanted_name]
+
+  if (length(selected) == 0L) return(NULL)
+  if (length(selected) > 1L) stop("Multiple codelists found for: ", wanted_name)
+
+  codes <- readr::read_tsv(
+    selected, col_types = readr::cols(.default = readr::col_character()),
+    show_col_types = FALSE, progress = FALSE
+  ) %>%
+    rename_with(str_to_lower) %>%
+    select(all_of(code_column)) %>%
+    filter(!is.na(.data[[code_column]]), .data[[code_column]] != "") %>%
+    distinct()
+
+  if (nrow(codes) == 0L) stop("Empty codelist: ", selected)
+  codes
+}
+
+ckd5_medcodes <- read_ckd5_list("Medcodes", "ckd5", "medcodeid")
+ckd5_icd10 <- read_ckd5_list("ICD10", "icd10_ckd5", "icd10")
+ckd5_opcs4 <- read_ckd5_list("OPCS4", "opcs4_ckd5", "opcs4")
+
+if (is.null(ckd5_medcodes) && is.null(ckd5_icd10) && is.null(ckd5_opcs4)) {
+  stop("No custom ckd5 codelist was found in any coding system.")
+}
 
 ## Clean, find earliest date per person, and re-cache
 
-earliest_clean_ckd5 <- raw_ckd5_code_medcodes %>%
+earliest_clean_ckd5 <- ckd5_medcodes %>%
   select(patid, date=obsdate) %>%
   mutate(source="gp") %>%
-  union_all((raw_ckd5_code_icd10 %>% select(patid, date=epistart) %>% mutate(source="hes"))) %>%
-  union_all((raw_ckd5_code_opcs4 %>% select(patid, date=evdate) %>% mutate(source="hes"))) %>%
+  union_all((ckd5_icd10 %>% select(patid, date=epistart) %>% mutate(source="hes"))) %>%
+  union_all((ckd5_opcs4 %>% select(patid, date=evdate) %>% mutate(source="hes"))) %>%
   inner_join(cprd$tables$validDateLookup, by="patid") %>%
   #filter(date>=min_dob & ((source=="gp" & date<=gp_ons_maximum_date) | (source=="hes" & (is.na(gp_ons_death_date) | date<=gp_ons_death_date)))) %>% ## as above - ONS variables substituted
   filter(date>=min_dob & ((source=="gp" & date<=gp_end_date) | (source=="hes" & (is.na(gp_end_date) | date<=gp_end_date)))) %>%
@@ -139,7 +163,6 @@ earliest_clean_ckd5 <- raw_ckd5_code_medcodes %>%
   summarise(first_test_date=min(date, na.rm=TRUE)) %>%
   ungroup() %>%
   analysis$cached("earliest_clean_ckd5",indexes=c("patid", "first_test_date"))
-
 
 ## Combine CKD5 and other codes
 
@@ -151,7 +174,6 @@ ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
 ckd_stages_from_algorithm %>% count()        
 #12,130,677
 
-
 ################################################################################################################################
 
 # Define date of onset for each stage
@@ -162,7 +184,6 @@ ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
   group_by(patid, ckd_stage) %>%
   summarise(ckd_stage_start=min(first_test_date, na.rm=TRUE)) %>% 
   ungroup()
-
 
 ## Remove where start date of less severe stage is later than start date of more severe stage
 ### Reshape wide first
@@ -191,99 +212,9 @@ ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
 ckd_stages_from_algorithm %>% count()        
 #8,466,065
 
-################################################################################################################################
-
-# load in acr data
-clean_acr_medcodes <- clean_acr_medcodes %>%
-  analysis$cached("clean_acr_medcodes", indexes=c("patid", "date", "testvalue"))
-
-clean_acr_from_separate_medcodes <- clean_acr_from_separate_medcodes %>%
-  analysis$cached("clean_acr_from_separate_medcodes", indexes=c("patid", "date", "testvalue"))
-
-all_acr <- clean_acr_medcodes %>%
-  select(patid, date, testvalue) %>%
-  union_all(clean_acr_from_separate_medcodes %>%
-              select(patid, date, testvalue))
-
-# select those with acr >=3 mg/mmol
-acr_high <- all_acr %>%
-  filter(testvalue >= 3)
-
-acr_span <- acr_high %>%
-  group_by(patid) %>%
-  summarise(
-    min_date = min(date, na.rm = TRUE),
-    max_date = max(date, na.rm = TRUE),
-    n_tests = n()
-  )
-
-# confirm 2 readings 3 months apart or longer
-confirmed_acr3 <- acr_span %>%
-  filter(n_tests >= 2 & datediff(max_date, min_date) >= 90) %>%
-  mutate(confirmed_acr3_date = min_date) %>%
-  select(patid, confirmed_acr3_date) %>%
-  analysis$cached("confirmed_acr3", indexes = c("patid", "confirmed_acr3_date"))
-
-# join with ckd stage
-ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
-  left_join(confirmed_acr3, by = "patid") %>%
-  mutate(
-    stage_1 = case_when(
-      is.na(stage_1) ~ sql("NULL"),
-      is.na(confirmed_acr3_date) ~ sql("NULL"),
-      confirmed_acr3_date <= stage_1 ~ stage_1,
-      confirmed_acr3_date > stage_1  ~ confirmed_acr3_date
-    ),
-    stage_2 = case_when(
-      is.na(stage_2) ~ sql("NULL"),
-      is.na(confirmed_acr3_date) ~ sql("NULL"),
-      confirmed_acr3_date <= stage_2 ~ stage_2,
-      confirmed_acr3_date > stage_2  ~ confirmed_acr3_date
-    )
-  ) %>%
-  analysis$cached("ckd_stages_from_algorithm",
-                  indexes = c("patid"))
-
-
 ######################################################################################
+
 analysis = cprd$analysis(analysis_prefix)
+ 
+analysis$cached(paste0("rk_", d, "_ckd_stages"), unique_indexes="patid")
 
-# 6-monthly dates for 2019-2021 (prevalent cohort), then 3-monthly from 2021 onwards
-# (3-monthly required for sequential trial emulation of SGLT2i in non-DM CKD)
-dates <- unique(c(
-  seq(from = as.Date("2019-03-01"), to = as.Date("2020-09-01"), by = "6 months"),
-  seq(from = as.Date("2021-03-01"), to = as.Date("2024-03-01"), by = "3 months")
-))
-
-date_strings <- format(dates, "%Y-%m-%d")
-
-# define CKD stage at each time point
-for (d in date_strings) {
-  print(d)
-  index_date <- as.Date(d)
-  
-  
-  ckd_stage_drug_merge <- cprd$tables$patient %>%
-    select(patid) %>%
-    left_join(ckd_stages_from_algorithm, by="patid") %>%
-    mutate(preckdstage=ifelse(!is.na(stage_5) & datediff(stage_5, index_date)<=7, "stage_5",
-                              ifelse(!is.na(stage_4) & datediff(stage_4, index_date)<=7, "stage_4",
-                                     ifelse(!is.na(stage_3b) & datediff(stage_3b, index_date)<=7, "stage_3b",
-                                            ifelse(!is.na(stage_3a) & datediff(stage_3a, index_date)<=7, "stage_3a",
-                                                   ifelse(!is.na(stage_2) & datediff(stage_2, index_date)<=7, "stage_2",
-                                                          ifelse(!is.na(stage_1) & datediff(stage_1, index_date)<=7, "stage_1", NA)))))),
-           
-           preckdstagedate=ifelse(preckdstage=="stage_5", stage_5,
-                                  ifelse(preckdstage=="stage_4", stage_4,
-                                         ifelse(preckdstage=="stage_3b", stage_3b,
-                                                ifelse(preckdstage=="stage_3a", stage_3a,
-                                                       ifelse(preckdstage=="stage_2", stage_2,
-                                                              ifelse(preckdstage=="stage_1", stage_1, NA)))))),
-           
-           preckdstagedatediff=datediff(preckdstagedate, index_date)) %>%
-    
-    select(patid, preckdstage, preckdstagedate, preckdstagedatediff) %>%
-    
-    analysis$cached(paste0("rk_", d, "_ckd_stages"), unique_indexes="patid")
-  
-}
