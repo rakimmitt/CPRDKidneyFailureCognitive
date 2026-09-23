@@ -1,0 +1,709 @@
+medcodeid	term_medcode
+251923016	H/O: kidney recipient
+4542501000006119	History of renal transplant
+4542521000006112	History of - kidney recipient
+460644012	History of renal transplant
+4669011000006116	Live donor renal allotransplant
+4669031000006110	Live donor renal allograft
+272320011	Allotransplantation of kidney from live donor
+90471000006113	Live donor renal transplant
+272325018	Cadaveric renal transplant
+478131000006115	Allotransplantation of kidney from cadaver
+4669061000006118	Cadaver renal allograft
+90461000006118	Transplantation of kidney from cadaver
+4669051000006115	Cadaver renal allotransplant
+399381000000115	Allotransplantation of kidney from cadaver NEC
+117168016	Renal transplant
+272326017	Other specified transplantation of kidney
+272327014	Transplantation of kidney NOS
+3647071000006110	Tx - Kidney transplantation
+3647061000006115	Kidney transplant
+3647051000006117	Tx - Renal transplantation
+501594013	Transplantation of kidney
+3647091000006111	Renal graft
+3647031000006112	Kidney transplantation
+3647021000006114	Transplant of kidney
+106291000006118	Thomas intravascular shunt for dialysis
+3657891000006116	PD - Peritoneal dialysis
+375841000000114	Peritoneal dialysis NEC
+118218017	Peritoneal dialysis
+228131000006117	Placement ambulatory dialysis apparatus - compens renal fail
+773041000006111	Insertion of chronic ambulatory peritoneal dialysis catheter
+228101000006113	Placement ambulatory apparatus compensation renal failure
+4694051000006116	Removal of chronic ambulatory peritoneal dialysis catheter
+181021000006119	Removal of ambulatory peritoneal dialysis catheter
+278844014	Insertion of temporary peritoneal dialysis catheter
+7174851000006111	CKD stage 5
+304111000000114	Chronic kidney disease stage 5
+2767154014	Chronic kidney disease stage 5
+7688001000006116	Allotransplantation of kidney with DBD (donation after brain stem death)
+372621000000114	Allotransplantation of kidney from beating heart cadaver
+1549841000006116	Allotransplantation of kidney from non-beating heart cadaver
+7688041000006119	Allotransplantation of kidney with DCD (donation after cardiac death)
+5486891000006118	Removal of transplanted kidney
+394365013	Transplant nephrectomy
+1905531000006112	Excision of rejected transplanted kidney
+5686451000006112	Removal of rejected kidney
+422992018	Excision of rejected transplanted kidney
+272389014	Exploration of renal transplant
+4669451000006113	Exploration of kidney transplant
+380101000000116	Examination of recipient after kidney transplant
+7091541000006113	Post-transplantation of kidney examination of recipient
+380061000000118	Interventions associated with transplantation of kidney NOS
+7688541000006114	Transplantation of kidney regime
+1550021000006110	OS interventions associated with transplantation of kidney
+366671000000118	Interventions associated with transplantation of kidney
+2692168016	Automated peritoneal dialysis
+357219012	Continuous ambulatory peritoneal dialysis
+5120171000006118	CAPD - Continuous ambulatory peritoneal dialysis
+5120141000006114	Flushing of chronic ambulatory peritoneal dialysis catheter
+1705621000000113	Flushing of peritoneal dialysis catheter
+7118431000006118	Infection of arteriovenous graft for haemodialysis
+7118451000006113	Infection of dialysis graft
+7118441000006111	Infection of arteriovenous graft for hemodialysis
+2240321000000114	Infection of dialysis arteriovenous graft
+7367731000006118	Infection of HD arteriovenous fistula
+1870801000006111	Infection of haemodialysis arteriovenous fistula
+7367691000006114	Infection of haemodialysis arteriovenous fistula
+7367721000006116	Infection of HD AV fistula
+11930831000006111	Infection of hemodialysis arteriovenous fistula
+7367741000006111	Infection of arteriovenous fistula for haemodialysis
+7367701000006114	Infection of arteriovenous fistula for hemodialysis
+641471000006117	End stage renal failure
+641491000006116	End-stage renal disease
+11924551000006114	End-stage renal disease
+3245861000006116	ESCRF - End stage chronic renal failure
+215521000000116	End stage renal disease
+3245871000006111	ESRD - End stage renal disease
+3245841000006115	End stage kidney disease
+12704471000006116	End-stage renal disease
+3245881000006114	End stage chronic renal failure
+3245851000006118	ESRF - End stage renal failure
+5592051000006113	Peritonitis secondary to peritoneal dialysis
+453312018	Peritoneal dialysis-associated peritonitis
+7518811000006118	CAPD (Continuous ambulatory peritoneal dialysis) associated peritonitis
+1743241000006119	Continuous ambulatory peritoneal dialysis associated peritonitis
+2645965011	Stenosis of arteriovenous dialysis fistula
+324973015	Kidney transplant failure and rejection
+988961000006115	Renal transplant rejected
+354628010	Acute-on-chronic rejection of renal transplant
+354616019	Acute rejection of renal transplant - grade I
+354617011	Acute rejection of renal transplant - grade II
+354618018	Acute rejection of renal transplant - grade III
+354615015	Acute rejection of renal transplant
+354621016	Chronic transplant nephropathy
+5096141000006114	Chronic allograft nephropathy
+354619014	Chronic rejection of renal transplant
+413415016	Unexplained episode of renal transplant dysfunction
+354610013	Renal transplant rejection
+615611000006116	Det.ren.func.after ren.transpl
+900121000006113	Renal transplant rejected
+354613010	Very mild acute rejection of renal transplant
+354614016	Borderline changes of acute rejection
+1848741000006116	Complication of peritoneal dialysis
+272134015	Insertion of arteriovenous prosthesis
+272139013	Attention to arteriovenous shunt
+272140010	Removal of infected arteriovenous shunt
+272141014	Other specified arteriovenous shunt
+3246231000006118	Formation of arteriovenous shunt
+3246241000006111	Arteriovenous shunt
+3246281000006117	Construction of arteriovenous shunt
+3246261000006110	Creation of arteriovenous shunt
+272142019	Arteriovenous shunt NOS
+3246251000006113	Arteriovenostomy
+3246271000006115	AV - Creation of arteriovenous shunt
+3246221000006116	Surgical construction of arteriovenous shunt
+272153013	Ligation of acquired arteriovenous fistula
+743721000006115	Ligation of acquired arteriovenous fistula
+5524381000006119	Chronic ambulatory peritoneal dialysis catheter procedure
+4937941000006118	PD - Chronic peritoneal dialysis
+4937931000006111	Chronic peritoneal dialysis
+4937951000006116	Stab peritoneal dialysis
+4937961000006119	PD - Stab peritoneal dialysis
+5051131000006117	Creation of Brescia-Cimino fistula
+600481000006118	Creation of radialcephalic fistula
+5051121000006115	Creation of Cimino fistula
+5051151000006112	Creation brachiocephalic fistula
+349825015	Creation of brachial-cephalic fistula
+5051281000006112	Balloon dilatation of arteriovenous fistula
+5051271000006114	Angioplasty of arteriovenous fistula
+5051291000006110	Balloon angioplasty of arteriovenous fistula
+5051301000006111	Thrombolysis of arteriovenous fistula
+5051311000006114	Thrombolysis of arteriovenous graft
+5051341000006113	Embolectomy of arteriovenous fistula
+5051351000006110	Embolectomy of arteriovenous graft
+5051361000006112	Procedure on intraluminal device of arteriovenous fistula
+5051371000006117	Insertion of intraluminal device into arteriovenous fistula
+5051391000006116	Stenting of arteriovenous fistula
+5051381000006119	Insertion of stent into arteriovenous fistula
+5051401000006119	Removal of intraluminal device from arteriovenous fistula
+5051411000006116	Removal of stent from arteriovenous fistula
+5051421000006112	Adjustment of intraluminal device of arteriovenous fistula
+5051431000006110	Adjustment of arteriovenous fistula stent
+349856011	Banding of arteriovenous fistula
+5051491000006114	Exploration of arteriovenous fistula
+5051501000006118	Exploration of arteriovenous graft
+353974015	Xenograft renal transplant
+5094151000006116	End stage renal failure untreated by renal replacement therapy
+5094161000006119	End stage renal failure on dialysis
+5094171000006114	End stage renal failure with renal transplant
+3935781000006116	Hypercalcaemia associated with chronic dialysis
+5095641000006112	Long-term disorder of dialysis
+3025091000006112	beta-2-Microglobulin amyloidosis
+3025081000006114	Hemodialysis-associated amyloidosis
+485267014	Beta-2 microglobulin amyloidosis
+3025101000006118	AH type amyloidosis
+3025111000006115	Dialysis-associated amyloidosis
+3025071000006111	Haemodialysis-associated amyloidosis
+354567013	Beta-2 microglobulin arthropathy
+354586017	Adynamic bone disease
+5095841000006113	Aplastic bone disease
+354591016	Bloodstained peritoneal dialysis effluent
+5095881000006119	Peritoneal dialysis catheter exit site infection
+5095891000006116	Peritoneal dialysis cannula exit site infection
+5095911000006119	Peritoneal dialysis cannula tunnel infection
+5095901000006117	Peritoneal dialysis catheter tunnel infection
+5095951000006118	Disorder of peritoneal dialysis cannula
+5095941000006115	Disorder of peritoneal dialysis catheter
+5095971000006111	Blockage of peritoneal dialysis catheter
+5095961000006116	Obstruction of peritoneal dialysis catheter
+5095981000006114	Migration of peritoneal dialysis catheter
+5095991000006112	Omental wrapping around peritoneal dialysis catheter
+5096001000006113	Poor drainage of peritoneal dialysis catheter
+5096011000006111	Extrusion of peritoneal dialysis catheter cuff
+5096021000006115	Misplacement of acute peritoneal dialysis catheter
+7103511000006119	Disorder related to renal transplantation
+5096031000006117	Primary non-function of renal transplant
+5096051000006112	Hyperacute rejection of renal transplant
+354612017	Accelerated rejection of renal transplant
+5096171000006118	Mild chronic transplant nephropathy
+354623018	Chronic rejection of renal transplant - grade 1
+5096191000006117	Moderate chronic transplant nephropathy
+354624012	Chronic rejection of renal transplant - grade II
+354627017	Chronic rejection of renal transplant - grade III
+5096211000006116	Severe chronic transplant nephropathy
+5096231000006110	Failed renal transplant
+5096241000006117	Perfusion injury of renal transplant
+5096271000006113	Transplant glomerulopathy
+5096281000006111	Transplant glomerulopathy - early form
+5096291000006114	Transplant glomerulopathy - late form
+5096641000006119	Perirenal and periureteric post-transplant lymphocele
+5120111000006110	Renewal of chronic ambulatory peritoneal dialysis catheter
+5120121000006119	Adjustment of chronic ambulatory peritoneal dialysis catheter
+5120131000006116	Aspiration of chronic ambulatory peritoneal dialysis catheter
+5120191000006117	CCPD - Continuous cycling peritoneal dialysis
+5120181000006115	Continuous cycling peritoneal dialysis
+5120211000006116	Intermittent peritoneal dialysis
+5120221000006112	IPD - Intermittent peritoneal dialysis
+5120231000006110	Tidal peritoneal dialysis
+5120241000006117	PD - Peritoneal dialysis, tidal
+5120251000006115	Night-time intermittent peritoneal dialysis
+5120261000006118	IPD - Intermittent peritoneal dialysis, night-time
+5120271000006113	NIPD - Night-time intermittent peritoneal dialysis
+2948311000006114	Creation of surgical arteriovenous fistula
+2948291000006110	Arteriovenous fistulization
+2948321000006118	Construction of arteriovenous fistula
+2948331000006115	AV - Creation of arteriovenous fistula
+2948281000006112	Arteriovenous fistulisation
+394350012	Creation of arteriovenous fistula
+394352016	Repair of acquired arteriovenous fistula
+5592301000006111	Percutaneous angioplasty of arteriovenous fistula
+1839031000006115	Percutaneous balloon angioplasty of arteriovenous fistula
+413257013	Percutaneous balloon angioplasty of arteriovenous fistula
+5593321000006110	Percutaneous embolectomy of arteriovenous fistula
+5593481000006117	Percutaneous thrombolysis of arteriovenous fistula
+5593651000006110	Pre-existing disease in renal transplant
+5616371000006112	AV - Procedure related to surgical arteriovenous connection
+384823013	Procedure related to surgical arteriovenous connection
+3847121000006117	Take-down of arteriovenous shunt
+3847131000006119	Removal of arteriovenous shunt
+3847111000006113	Removal of arteriovenous shunt device
+6024541000006117	Donor renal transplantation
+7081801000006114	Removal of thrombus of arteriovenous fistula
+360031000000113	Thrombectomy of arteriovenous fistula
+2675886019	Creation of graft fistula for dialysis
+637771000000113	Ligation of arteriovenous dialysis fistula
+638111000000115	Ligation of arteriovenous dialysis graft
+1227723010	[V]Aftercare involving peritoneal dialysis
+12456621000006114	[V]Aftercare involving peritoneal dialysis
+618511000000119	CKD stage 5 with proteinuria
+8104511000006111	CKD (chronic kidney disease) stage 5 with proteinuria
+596321000000110	Chronic kidney disease stage 5 with proteinuria
+596401000000111	Chronic kidney disease stage 5 without proteinuria
+618521000000113	CKD stage 5 without proteinuria
+8104551000006112	CKD (chronic kidney disease) stage 5 without proteinuria
+2195121000000113	Ruptured aneurysm of dialysis vascular access
+1847091000006110	Aneurysm of superficialised artery of dialysis arteriovenous fistula
+2195721000000112	Aneurysm of needle site of dialysis arteriovenous fistula
+1847111000006118	Aneurysm of anastomotic site of dialysis arteriovenous fistula
+2195661000000114	Aneurysm of dialysis arteriovenous fistula
+2237981000000112	Stenosis of dialysis arteriovenous graft
+2210341000000113	Stenosis of dialysis vascular access
+2238301000000119	Thrombosis of dialysis arteriovenous fistula
+2210381000000117	Thrombosis of dialysis vascular access
+2238381000000112	Occlusion of dialysis arteriovenous graft
+2238421000000115	Occlusion of dialysis arteriovenous fistula
+2237821000000118	Occlusion of dialysis vascular access
+2237861000000114	Infection of dialysis vascular access
+2240871000000116	Haemorrhage of dialysis arteriovenous fistula
+2237901000000119	Haemorrhage of dialysis vascular access
+2240951000000115	Rupture of dialysis arteriovenous graft
+2198141000000110	Stenosis of vein of transplanted kidney
+2189151000000117	Urological complication of renal transplant
+2191221000000118	Vascular complication of renal transplant
+177251000006119	Renal transplant with complication, without blame
+754061000006111	Kidney transplant with complication, without blame
+2211591000000116	Thrombus in peritoneal dialysis catheter
+2197961000000113	Rupture of artery of transplanted kidney
+2198001000000111	Rupture of vein of transplanted kidney
+2209021000000112	Aneurysm of vein of transplanted kidney
+2209101000000119	Aneurysm of artery of transplanted kidney
+2234541000000115	Thrombosis of artery of transplanted kidney
+2234621000000111	Thrombosis of vein of transplanted kidney
+2238021000000114	Stenosis of dialysis arteriovenous shunt
+2238261000000112	Thrombosis of dialysis arteriovenous graft
+2238341000000116	Thrombosis of dialysis arteriovenous shunt
+2238461000000111	Occlusion of dialysis arteriovenous shunt
+2240741000000115	Infection of dialysis arteriovenous shunt
+2240831000000118	Haemorrhage of dialysis arteriovenous graft
+2240911000000119	Haemorrhage of dialysis arteriovenous shunt
+2253631000000110	Stenosis of arterial side of dialysis arteriovenous shunt
+2253671000000112	Stenosis of venous side of dialysis arteriovenous shunt
+2509281000006118	Peritoneal dialysis including cannulation
+2550761000006119	Empty and measure peritoneal dialysis fluid
+2618621000006115	Revision of arteriovenous fistula with thrombectomy with autogenous graft
+2649061000006115	Dialysis dementia
+2672571000006112	Removal of peritoneal dialysis catheter
+2672581000006110	Removal of ambulatory peritoneal catheter
+3050211000006119	Revision of arteriovenous fistula with thrombectomy with nonautogenous graft
+3292751000006114	Renal homotransplantation with unilateral recipient nephrectomy
+3455171000006118	Disorder of transplanted kidney
+3455181000006115	Complication of transplanted kidney
+3531571000006117	Insertion of hemodialysis shunt
+3531561000006112	Insertion of haemodialysis shunt
+3563161000006113	Repair of arteriovenous fistula by division
+3579811000006112	Peritoneal dialysis training
+3579801000006114	Peritoneal dialysis education
+3653831000006114	Structure of transplanted kidney
+3653841000006116	Transplanted kidney
+3660511000006118	Repair of arteriovenous fistula by occlusion
+3691341000006115	Peritoneal dialysis catheter maintenance
+3727281000006114	Acquired arteriovenous fistula of heart
+3771391000006114	Take-down of arteriovenous shunt with creation of new shunt
+3771401000006111	Removal of arteriovenous shunt with creation of new shunt
+3798191000006114	Arteriovenostomy for renal dialysis
+3798201000006112	Formation of arteriovenous fistula for kidney dialysis
+3798211000006110	Arteriovenous shunt for renal dialysis
+3798181000006111	Arteriovenous anastomosis for renal dialysis
+3880691000006119	Replacement of cannula of arteriovenous shunt
+284213011	Renal transplant planned
+424791000006110	[X]Renal tubulo-interstitial disorders/transplant rejection
+177341000006111	Renal tubulo-interstitial disorders in transplant rejection
+4934661000006119	Revision of cannula for dialysis
+4937911000006117	Putting additive into peritoneal dialysis bag
+4937921000006113	Peritoneal dialysis bag procedure
+4947991000006114	Revision of arteriovenous shunt for renal dialysis
+5051191000006118	Creation of external arteriovenous fistula
+5051181000006116	Creation of external arteriovenous shunt
+5051331000006115	Embolization of arteriovenous graft
+5051321000006118	Embolisation of arteriovenous graft
+5051441000006117	Bypass graft of arteriovenous fistula
+5051461000006118	Excision of arteriovenous fistula
+5051471000006113	Excision of arteriovenous graft
+5051481000006111	Simple suture of arteriovenous fistula
+5052191000006114	Cannulation of arteriovenous dialysis fistula
+5055481000006114	Dialysis-associated hypoxia
+5061441000006111	Arteriovenous fistula occlusion
+5061451000006113	Arteriovenous fistula stenosis
+5061481000006117	Arteriovenous fistula clotted
+350892013	Arteriovenous fistula thrombosis
+5061491000006119	Arteriovenous fistula infection
+5061501000006110	Arteriovenous fistula haemorrhage
+5061511000006113	Arteriovenous fistula hemorrhage
+5061521000006117	Arteriovenous fistula rupture
+5155781000006110	Skeletal survey - dialysis
+5155791000006113	Skeletal survey - dialysis follow-up
+5157591000006112	Renal transplant arteriogram
+5157601000006116	Renal transplant venogram
+5157611000006118	Renal transplant venous sampling
+5161291000006110	Ultrasound scan of transplant kidney
+5161281000006112	US scan of transplant kidney
+5307121000006117	Peritoneal dialysis observable
+5307221000006110	Adequacy of peritoneal dialysis
+5308241000006119	Arteriovenous fistula operation
+5308251000006117	Operative procedure on arteriovenous fistula
+5397561000006117	Arteriovenous shunt
+5397541000006116	Arteriovenous shunt - device
+5397551000006119	AVS - Arteriovenous shunt
+5397641000006115	Arteriovenous shunt tip
+5445811000006110	Haemodialysis circuit
+5445821000006119	Hemodialysis circuit
+5465901000006114	Peritoneal dialysis used
+5593511000006113	Percutaneous arteriovenous fistula device procedure
+5600411000006112	Percutaneous embolisation of arteriovenous fistula
+5600421000006116	Percutaneous embolization of arteriovenous fistula
+5614351000006110	Disorder of surgical arteriovenous fistula
+5645831000006119	Disorder of arteriovenous graft
+5645841000006112	Disorder of arteriovenous shunt
+5645851000006114	Arteriovenous graft occlusion
+5645861000006111	Arteriovenous graft stenosis
+5645871000006116	Arteriovenous graft thrombosis
+5645881000006118	Arteriovenous graft infection
+5645901000006116	Arteriovenous graft hemorrhage
+5645891000006115	Arteriovenous graft haemorrhage
+5645911000006118	Arteriovenous graft rupture
+5645921000006114	Arteriovenous graft aneurysm
+5645931000006112	Arteriovenous shunt haemorrhage
+5645941000006119	Arteriovenous shunt hemorrhage
+5645951000006117	Arteriovenous shunt infection
+5645961000006115	Arteriovenous shunt thrombosis
+5645971000006110	Arteriovenous shunt stenosis
+5645981000006113	Arteriovenous shunt occlusion
+5647621000006110	Entire transplant kidney
+5647611000006119	Entire transplanted kidney
+5786741000006112	Peritoneal dialysis solution adverse reaction
+5805401000006111	Peritoneal dialysis solution allergy
+5913541000006117	Arteriovenous fistula aneurysm
+5919061000006113	Arteriovenous graft material
+6013791000006111	Surgical arteriovenous fistula
+6014961000006119	Arteriovenous graft
+6133261000006114	Amino acids peritoneal dialysis solution
+6133271000006119	Low glucose concentration peritoneal dialysis solution
+6133281000006116	Medium glucose concentration peritoneal dialysis solution
+6133301000006117	High glucose concentration peritoneal dialysis solution
+6133311000006119	Icodextrin peritoneal dialysis solution
+6201661000006117	CAPD solution
+6201651000006119	Continuous ambulatory peritoneal dialysis solution
+6201671000006112	Automated peritoneal dialysis solution
+6201681000006110	Intermittent peritoneal dialysis solution
+6201691000006113	Acute peritoneal dialysis solution
+6210341000006119	Peritoneal dialysis catheter
+6210351000006117	Chronic ambulatory peritoneal dialysis catheter
+2751501000006118	Chronic haemodialysis diet
+2751511000006115	Chronic hemodialysis diet
+2868911000006114	Anesthesia for renal transplant, recipient
+2868901000006111	Anaesthesia for renal transplant, recipient
+6296951000006115	Patch repair of arteriovenous fistula
+3344951000006117	Anaesthesia for shunt revision, dialysis
+3344961000006115	Anesthesia for shunt revision, dialysis
+3753591000006115	Plastic repair of arteriovenous aneurysm
+3753601000006111	Plasty procedure of arteriovenous fistula
+3753581000006118	Repair of arteriovenous fistula
+3933131000006119	Anesthesia for repair of arteriovenous fistula
+3933121000006117	Anaesthesia for repair of arteriovenous fistula
+4611411000006114	Returned peritoneal lavage fluid sample
+4611391000006114	Peritoneal dialysate sample
+261136015	Peritoneal dialysis sample
+5059341000006114	Transplant renal vein thrombosis
+354417015	Acute-on-chronic renal failure
+4218231000006113	Kidney transplant evaluation
+4350231000006112	Peritoneal dialysis fluid specimen
+2732451000006111	Peritoneal dialysis excluding cannulation
+2863331000006112	Removal of thrombus from arteriovenous shunt or cannula
+3076321000006115	Peritoneal dialysis solution
+3135211000006116	Removal of arteriovenous shunt for renal dialysis
+3346301000006113	Renal homotransplantation excluding donor and recipient nephrectomy
+3389671000006112	Arteriovenous shunt for renal dialysis by external cannula
+3389681000006110	Creation of arteriovenous shunt or fistula for dialysis by external cannula
+3389691000006113	Formation of arteriovenous fistula by external cannula for renal dialysis
+6434791000006114	Peritoneal dialysis solution
+6434781000006111	Solution for peritoneal dialysis
+6434801000006110	Peritoneal dialysis solution (dose form)
+6665631000006113	Hemodialysis-associated secondary amyloidosis of skin
+6665621000006110	Haemodialysis-associated secondary amyloidosis of skin
+6703951000006115	Peritoneal dialysis leakage
+6712491000006112	Creation of upper extremity arteriovenous fistula
+6712481000006114	Creation of upper limb arteriovenous fistula
+6713671000006115	Creation of lower limb arteriovenous fistula
+6713681000006117	Creation of lower extremity arteriovenous fistula
+6822401000006113	Icodextrin 7.5% peritoneal dialysis solution
+6822411000006111	Icodextrin 7.5% solution
+6833321000006115	Peritoneal dialysis fluid cell count
+6948351000006111	Renal transplant venogram
+6948341000006114	Fluoroscopic venography of renal transplant
+6932441000006115	Renal transplant angiogram
+6932431000006113	Fluoroscopic angiography of renal transplant
+6933861000006111	Fluoroscopy and angioplasty of renal transplant
+6933851000006114	Fluoroscopic angioplasty of renal transplant
+5618981000006110	Continuous ambulatory peritoneal dialysis diet
+5618971000006112	Continuous ambulatory peritoneal dialysis (CAPD) diet
+5618961000006117	CAPD diet
+5307351000006112	AV fistula recirculation
+5307361000006114	Arteriovenous fistula recirculation
+7094321000006114	Pretransplant evaluation of kidney recipient
+7097941000006112	Dependence on dialysis due to end stage renal disease
+7095851000006114	Dependence on peritoneal dialysis due to end stage renal disease
+7096531000006112	Dependence on hemodialysis due to end stage renal disease
+7096521000006114	Dependence on haemodialysis due to end stage renal disease
+7090481000006112	Hypertension secondary to kidney transplant
+7083761000006118	Procedure involving peritoneal dialysis catheter
+7083771000006113	Peritoneal dialysis catheter procedure
+7130251000006116	Mechanical complication of peritoneal dialysis catheter
+7182801000006112	Active warming of patient using peritoneal dialysis fluid
+7182791000006111	Active warming of subject using peritoneal dialysis fluid
+7182701000006116	Fluoroscopy guided percutaneous thrombolysis of transplanted renal artery
+7182721000006114	Fluoroscopic guidance for percutaneous thrombolysis of transplanted renal artery
+7148101000006112	Peritonitis due to infected peritoneal dialysis catheter
+7171101000006117	Fluoroscopic PTA of dialysis fistula
+7171121000006110	PTA of dialysis fistula
+7181841000006115	Fluoroscopic percutaneous transluminal cutting balloon angioplasty of dialysis fistula
+7181861000006116	Cutting balloon PTA of dialysis fistula
+7181851000006118	Percutaneous transluminal cutting balloon angioplasty of dialysis fistula using fluoroscopic guidance
+7141651000006111	Fluoroscopy guided percutaneous mechanical thrombectomy of dialysis fistula
+7141671000006118	Fluoroscopic guidance for percutaneous mechanical thrombectomy of dialysis fistula
+7150611000006118	Doppler ultrasonography (US) of transplanted kidney
+7150631000006112	Doppler ultrasound scan of transplanted kidney
+7150641000006119	Doppler ultrasound of transplanted kidney
+7150621000006114	Doppler ultrasonography of transplanted kidney
+7150601000006116	US doppler scan of transplanted kidney
+7129081000006113	Infection of peritoneal dialysis catheter
+7164601000006118	Insertion of peritoneal dialysis catheter using fluoroscopy guidance
+7164581000006111	Fluoroscopy guided insertion of peritoneal dialysis catheter
+7164611000006115	Peritoneal dialysis catheter insertion
+7164591000006114	Fluoroscopic guidance for insertion of peritoneal dialysis catheter
+7140271000006110	Percutaneous embolization of dialysis fistula using fluoroscopic guidance
+7140281000006113	Fluoroscopic guidance for percutaneous embolisation of dialysis fistula
+7140261000006115	Percutaneous embolisation of dialysis fistula using fluoroscopic guidance
+7140251000006117	Fluoroscopy guided percutaneous embolisation of dialysis fistula
+7133991000006114	Fluoroscopic guidance for percutaneous thrombolysis of dialysis fistula
+7133981000006111	Percutaneous thrombolysis of dialysis fistula using fluoroscopic guidance
+7133971000006113	Fluoroscopy guided percutaneous thrombolysis of dialysis fistula
+7184571000006110	Active cooling of patient using peritoneal dialysis fluid
+7184561000006115	Active cooling of subject using peritoneal dialysis fluid
+7171111000006119	Percutaneous transluminal angioplasty of dialysis fistula using fluoroscopic guidance
+7137951000006113	Fluoroscopic angiography of dialysis fistula using contrast with insertion of stent
+7140291000006111	Fluoroscopy guided percutaneous aspiration thrombectomy of dialysis fistula
+7140301000006112	Percutaneous aspiration thrombectomy of dialysis fistula using fluoroscopic guidance
+7140311000006110	Fluoroscopic guidance for percutaneous aspiration thrombectomy of dialysis fistula
+7141661000006113	Percutaneous mechanical thrombectomy of dialysis fistula using fluoroscopic guidance
+7192731000006113	Fluoroscopic angiography of dialysis fistula using contrast with insertion of stent graft
+7137441000006116	Fluoroscopic percutaneous angiography of dialysis fistula with insertion of drug eluting stent
+7214301000006113	Tissue specimen from transplanted kidney
+7211601000006117	Peritoneal dialysis therapy discontinued
+7238481000006111	Ultrasonography guided biopsy of transplanted kidney
+7238471000006113	Biopsy of transplanted kidney using ultrasound guidance
+7224371000006114	Shaving of peritoneal dialysis catheter cuff
+7237331000006116	MR angiography of transplanted kidney
+7237321000006119	Magnetic resonance angiography of transplanted kidney
+7212371000006110	Specimen from transplanted kidney obtained by biopsy
+7212381000006113	Renal transplant biopsy sample
+7207591000006118	Replacement of peritoneal dialysis catheter
+7239051000006116	Malposition of peritoneal dialysis catheter
+7213991000006119	Doppler ultrasonography of arteriovenous fistula for haemodialysis
+7214001000006111	Doppler ultrasonography of arteriovenous fistula for hemodialysis
+7243731000006111	Temporary peritoneal dialysis catheter in situ
+7218201000006110	Peritoneal dialysis catheter in situ
+7234181000006112	Peritoneal dialysis subcutaneous leakage
+7234171000006114	Leakage of peritoneal dialysate into subcutaneous tissue of abdominal wall
+7207581000006116	Laparoscopic insertion of peritoneal dialysis catheter
+7239671000006118	Obstruction of peritoneal dialysis catheter by fibrin formation
+7221961000006117	Peritoneal dialysis catheter fell out
+7235301000006116	Peritoneal dialysis pleural leakage
+7235291000006117	Leakage of peritoneal dialysate into pleural cavity
+7240521000006114	Encapsulating peritoneal sclerosis (EPS) associated with peritoneal dialysis
+7240511000006118	Encapsulating peritoneal sclerosis associated with peritoneal dialysis
+7238631000006113	Refashioning of arteriovenous fistula
+7267341000006117	Measurement of creatinine clearance normalised to body surface area in peritoneal dialysis fluid specimen
+7267351000006115	Measurement of creatinine clearance normalized to body surface area in peritoneal dialysis fluid specimen
+7261621000006111	Measurement of creatinine clearance in peritoneal dialysis fluid specimen
+7262731000006112	Cloudy peritoneal dialysis effluent
+7279961000006115	Dependence on peritoneal dialysis
+7279701000006119	Radionuclide imaging of transplanted kidney
+7279711000006116	Radionuclide study of transplanted kidney
+7289841000006118	Quantitative measurement of creatinine in 4 hour postperitoneal dialysis fluid specimen
+7289851000006116	Quantitative measurement of mass concentration of creatinine in 4 hour postperitoneal dialysis fluid specimen
+7286491000006115	Quantitative measurement of mass concentration of creatinine in 2 hour postperitoneal dialysis fluid specimen
+7286481000006118	Quantitative measurement of creatinine in 2 hour postperitoneal dialysis fluid specimen
+7286511000006114	Quantitative measurement of mass concentration of creatinine corrected for glucose concentration in overnight peritoneal dialysis fluid specimen
+7286501000006111	Quantitative measurement of mass concentration of creatinine corrected for glucose concentration in overnight peritoneal dialysis fluid
+7293931000006117	Quantitative measurement of glucose in first peritoneal dialysis fluid specimen
+7293941000006110	Quantitative measurement of mass concentration of glucose in first peritoneal dialysis fluid specimen
+7293001000006112	Quantitative measurement of glucose in predialysis peritoneal dialysis fluid specimen
+7293011000006110	Quantitative measurement of mass concentration of glucose in predialysis peritoneal dialysis fluid specimen
+7293281000006110	Quantitative measurement of concentration of glucose in peritoneal dialysis fluid at 4 hours postperitoneal dialysis
+7293291000006113	Quantitative measurement of mass concentration of glucose in peritoneal dialysis fluid specimen at 4 hours postperitoneal dialysis
+7285721000006115	Quantitative measurement of mass concentration of glucose in peritoneal dialysis fluid specimen
+7285711000006111	Quantitative measurement of glucose in peritoneal dialysis fluid specimen
+7300651000006115	Peritoneal dialysis fluid specimen obtained before dialysis
+7300661000006118	Predialysis peritoneal dialysis fluid specimen
+7302341000006111	Postdialysis peritoneal dialysis fluid specimen
+7302331000006118	Peritoneal dialysis fluid specimen obtained after dialysis
+7315121000006114	Ultrasonography of dialysis shunt
+7338641000006112	Dialysis fluid specimen obtained after continuous ambulatory peritoneal dialysis
+7344691000006110	Peritoneal dialysis technique
+7369251000006114	Replacement of peritoneal dialysis transfer set
+7970081000006117	Patient awaiting renal transplant
+7970091000006119	Awaiting renal transplant
+8047971000006118	Malignant hypertensive chronic kidney disease stage 5
+8087651000006114	Malignant hypertensive end stage renal disease
+8088131000006111	Malignant hypertensive end stage renal disease on dialysis
+7407851000006113	Peritoneal dialysis catheter adaptor
+7401751000006112	Peritoneal dialysis catheter, acute/chronic
+7400861000006114	Peritoneal/extracorporeal dialysis dressing procedure kit
+7404651000006116	Peritoneal dialysis catheter, chronic
+7401851000006118	Peritoneal dialysis dialysate
+7405731000006115	Peritoneal dialysis system sterile connection unit
+7400811000006111	Peritoneal dialysis system dialysate filter
+7400671000006118	Peritoneal dialysis system
+7404671000006114	Peritoneal dialysis catheterization kit
+7404661000006119	Peritoneal dialysis catheterisation kit
+7448891000006111	Continuous ambulatory peritoneal dialysis (CAPD) transfer set
+7405661000006115	Peritoneal dialysis dialysate warmer
+7406851000006110	Peritoneal dialysis system tubing set
+7408491000006117	Peritoneal dialysis catheter, acute
+7484161000006113	Leakage of peritoneal dialysis catheter
+7482341000006116	Infection associated with peritoneal dialysis catheter
+7483511000006116	Malfunction of peritoneal dialysis catheter
+7484191000006117	Mode of dialysis access by patient choice
+7484221000006112	Normal renal function of transplanted kidney
+7966621000006118	Diabetic stage 5 chronic renal impairment due to type 2 diabetes mellitus
+7966631000006115	Chronic kidney disease stage 5 due to type II diabetes mellitus
+7966611000006114	Chronic kidney disease stage 5 due to type 2 diabetes mellitus
+8040671000006114	Chronic kidney disease stage 5 due to hypertension
+8030411000006118	Hypertensive heart AND chronic kidney disease stage 5
+7507461000006117	Awaiting transplantation of kidney
+7507471000006112	Awaiting renal transplant
+7510311000006111	Benign hypertensive renal disease with renal failure
+7513101000006118	Hypertensive renal disease with end stage renal failure
+8048001000006110	End stage renal disease on dialysis due to hypertension
+8030391000006118	Hypertensive heart AND chronic kidney disease on dialysis
+8001631000006110	Hypertensive heart AND chronic kidney disease with congestive heart failure
+7502601000006118	Arteriovenous fistula route
+7564221000006119	Inadequate peritoneal dialysis
+7315131000006112	Ultrasound scan of arteriovenous fistula
+7315111000006118	Ultrasonography of arteriovenous fistula
+7569841000006114	Vesicoureteric reflux after renal transplant
+7569831000006116	Post-renal transplant vesicoureteric reflux
+7570441000006114	Fluoroscopy guided peritoneal dialysis catheter procedure
+7570451000006111	Peritoneal dialysis catheter procedure using fluoroscopic guidance
+7570591000006118	Fluoroscopy guided dialysis catheter procedure
+7570601000006114	Dialysis catheter procedure using fluoroscopic guidance
+7589131000006114	Difficulty managing peritoneal dialysis
+7590061000006113	Knowledge level about peritoneal dialysis
+7590071000006118	Deficient knowledge of peritoneal dialysis
+8044011000006117	Hypertension in chronic kidney disease stage 5 due to type 2 diabetes mellitus
+8044021000006113	Hypertension in chronic kidney disease stage 5 due to type II diabetes mellitus
+8027491000006113	Chronic kidney disease stage 5 due to type 1 diabetes mellitus
+8027501000006117	Chronic kidney disease stage 5 due to type I diabetes mellitus
+7593681000006118	Hypertension concurrent and due to end stage renal disease on dialysis
+8040331000006118	Hypertension concurrent and due to end stage renal disease on dialysis due to type 2 diabetes mellitus
+8027531000006113	End stage renal disease on dialysis due to type 2 diabetes mellitus
+8040341000006111	Hypertension concurrent and due to end stage renal disease on dialysis due to type 1 diabetes mellitus
+8027511000006119	End stage renal disease on dialysis due to type 1 diabetes mellitus
+7966111000006117	Complies with analysis of peritoneal dialysate
+7966181000006112	Inadequate monitoring of dose delivery of peritoneal dialysis
+7965331000006115	Peritoneal dialysis finding
+7965991000006115	Requires additional education about peritoneal dialysis
+7966211000006111	Non-compliance with analysis of peritoneal dialysate
+7966201000006113	Non-compliance with collection of peritoneal dialysate specimen
+7966051000006115	Complies with collection of peritoneal dialysate specimen
+7612311000006115	Spondyloarthropathy due to hemodialysis-associated amyloidosis
+7612321000006111	Dialysis spondyloarthropathy
+7966361000006116	Peritoneal dialysis prescription compliance
+7965921000006117	Peritoneal dialysate analysis compliance
+7613121000006116	Recurrent post-transplant renal disease
+7615391000006116	Anemia co-occurrent and due to end stage renal disease
+7615401000006119	Anaemia co-occurrent and due to end stage renal disease
+7615371000006117	Anaemia in end stage renal disease
+7615381000006119	Anemia in end stage renal disease
+7965931000006119	Peritoneal dialysate collection compliance
+7622651000006116	2H post peritoneal dialysis
+7622641000006118	Two hours after peritoneal dialysis
+7622661000006119	Four hours after peritoneal dialysis
+7622671000006114	4H post peritoneal dialysis
+7622691000006110	12H post peritoneal dialysis
+7622681000006112	Twelve hours after peritoneal dialysis
+7622721000006117	24H post peritoneal dialysis
+7622711000006113	Twenty four hours after peritoneal dialysis
+7622701000006110	One day after peritoneal dialysis
+7626811000006117	Increase exchange volume of peritoneal dialysis
+7626821000006113	Increase number of perfusion exchanges per 24 hours of peritoneal dialysis
+1548781000006111	Percutaneous transluminal arterial embolisation of dural arteriovenous fistula
+7643081000006112	Percutaneous transluminal arterial embolization of dural arteriovenous fistula
+9351531000006119	Continuous cycling peritoneal dialysis dependence
+9351521000006117	Dependence on continuous cycling peritoneal dialysis
+9351541000006112	Dependence on continuous cyclic peritoneal dialysis
+7643131000006112	Percutaneous transluminal arterial and venous embolization of dural arteriovenous fistula
+1548771000006113	Percutaneous transluminal arterial and venous embolisation of dural arteriovenous fistula
+7643111000006118	Percutaneous transluminal venous embolization of dural arteriovenous fistula
+1548791000006114	Percutaneous transluminal venous embolisation of dural arteriovenous fistula
+8087091000006113	Chronic kidney disease stage 5 due to benign hypertension
+8041741000006117	Thrombosis of arteriovenous graft due to hemodialysis arteriovenous access device
+8041751000006115	Thrombosis of arteriovenous graft caused by haemodialysis arteriovenous access device
+8041761000006118	Thrombosis of arteriovenous graft caused by hemodialysis arteriovenous access device
+8041731000006110	Thrombosis of arteriovenous graft due to haemodialysis arteriovenous access device
+9479381000006115	Thrombosis of surgically created arteriovenous fistula
+7659411000006114	Fluoroscopy guided angioplasty of arteriovenous fistula
+7659421000006118	Angioplasty of arteriovenous fistula using fluoroscopic guidance
+7663421000006114	Management of peritoneal dialysis
+7664921000006117	Doppler ultrasound of arteriovenous fistula
+7664931000006119	Doppler ultrasound scan of arteriovenous fistula
+7664911000006113	Doppler ultrasonography of arteriovenous fistula
+9351511000006113	Dependence on continuous ambulatory peritoneal dialysis
+7688091000006111	Fluoroscopic angiography of arteriovenous graft
+7691301000006112	Peritoneal dialysis catheterisation support kit
+7691311000006110	Peritoneal dialysis catheterization support kit
+7691501000006119	ESRD (End stage renal disease) due to benign hypertension
+7691491000006110	End stage renal disease due to benign hypertension
+7694951000006112	Replacement of continuous ambulatory peritoneal dialysis transfer set
+7965381000006119	Error in prescription for peritoneal dialysis
+7966231000006117	Compliant with peritoneal dialysis prescription
+7966301000006117	Non-compliant with peritoneal dialysis prescription
+7700671000006112	Cadaver donor for kidney transplant
+8035251000006111	End stage renal disease due to hypertension
+8035261000006113	ESRD (End stage renal disease) due to hypertension
+7708331000006119	Sclerosing peritonitis as complication of peritoneal dialysis
+7708341000006112	Sclerosing peritonitis due to peritoneal dialysis
+7708351000006114	Hydrothorax as complication of peritoneal dialysis
+7708361000006111	Hydrothorax due to peritoneal dialysis
+7708411000006115	Abdominal hernia due to peritoneal dialysis
+7708401000006118	Abdominal hernia as complication of peritoneal dialysis
+7708441000006116	Haemoperitoneum as complication of peritoneal dialysis
+7708461000006117	Hemoperitoneum as complication of peritoneal dialysis
+7708451000006119	Hemoperitoneum due to peritoneal dialysis
+7708471000006112	Haemoperitoneum due to peritoneal dialysis
+7710041000006114	Transplant renal artery stenosis
+7710051000006111	Renal artery stenosis of transplanted kidney
+7710031000006116	Structure of renal artery of transplanted kidney
+7714911000006116	CKD (chronic kidney disease) stage 5d
+7714891000006118	Chronic kidney disease stage 5 on dialysis
+7714901000006119	Chronic kidney disease 5d
+7714931000006110	Chronic kidney disease 5t
+7714921000006112	Chronic kidney disease stage 5 with transplant
+7714941000006117	CKD (chronic kidney disease) stage 5t
+7743081000006116	Doppler ultrasonography of arteriovenous graft
+7743091000006118	Doppler ultrasound scan of arteriovenous graft
+7743101000006112	Doppler ultrasound of arteriovenous graft
+7767261000006115	Injection of arteriovenous fistula using fluoroscopic guidance
+7767251000006117	Fluoroscopy guided injection of arteriovenous fistula
+7761641000006110	Peritoneal dialysis care assessment
+7766401000006118	Retrograde insertion of ureteric stent into ureter of transplanted kidney using fluoroscopic guidance
+7766391000006115	Fluoroscopy guided retrograde insertion of ureteric stent into ureter of transplanted kidney
+7766381000006118	Antegrade insertion of ureteric stent into ureter of transplanted kidney using fluoroscopic guidance
+7766371000006116	Fluoroscopy guided antegrade insertion of ureteric stent into ureter of transplanted kidney
+7770551000006113	Peritoneal dialysis care
+8212361000006113	Anaemia in chronic kidney disease stage 5
+8212371000006118	Anemia co-occurrent and due to chronic kidney disease stage 5
+8212381000006115	Anaemia co-occurrent and due to chronic kidney disease stage 5
+8212391000006117	Anemia in chronic kidney disease stage 5
+7985891000006113	Transplantation of kidney and pancreas
+7780081000006117	Insertion of arteriovenous shunt using fluoroscopic guidance
+7780071000006115	Fluoroscopy guided insertion of arteriovenous shunt
+9896121000006112	Hyperparathyroidism due to end stage renal disease on dialysis
+7985971000006118	Laparoscopic biopsy of transplanted kidney
+7785581000006115	Kidney transplant recipient
+7932051000006112	Entire renal artery of transplanted kidney
+7960171000006111	Home-use peritoneal dialysis connection kit
+7960181000006114	Home-use peritoneal dialysis connection kit housing
+7960191000006112	Home-use peritoneal dialysis connection kit frame
+7960271000006116	Peritoneal dialysis catheter adaptor, reusable
+7960281000006118	Peritoneal dialysis catheter adaptor/dialysate line holder
+3514486019	Failure of surgically constructed arteriovenous fistula
+3527360016	Transplanted kidney present
+3633852017	Fluoroscopic angiogram of arteriovenous shunt
+3620864015	Fluoroscopic angiography of arteriovenous shunt
+12019461000006111	Fluoroscopy guided removal of nephrostomy tube from transplanted kidney
+12019471000006116	Removal of nephrostomy tube from transplanted kidney using fluoroscopic guidance
+12031641000006115	Allotransplantation of left kidney
+12031651000006118	Allotransplantation of right kidney
+272283013	Declotting of thigh vein loop
