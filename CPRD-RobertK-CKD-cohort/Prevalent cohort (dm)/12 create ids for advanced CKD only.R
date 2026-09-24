@@ -146,3 +146,21 @@ group_by(patid) %>%
   analysis$cached("advanced_ckd_ids", unique_indexes="patid")
   
 advanced_ckd_ids %>% count()
+
+# Identify potential controls i.e. those without a ckd code
+
+analysis <- cprd$analysis("rk_ckd")
+
+non_ckd_ids <- diabetes_cohort %>%
+  select(patid) %>%
+  distinct() %>%
+  anti_join(ckd_ids, by = "patid") %>%
+  anti_join(advanced_ckd_ids, by = "patid") %>%
+  anti_join(practice_exclusion_ids, by = "patid") %>%
+  anti_join(gender_exclusion_ids, by = "patid") %>%
+  analysis$cached(
+    "non_ckd_ids",
+    unique_indexes = "patid"
+  )
+
+non_ckd_ids %>% count()
