@@ -1,4 +1,4 @@
-To-do: from ~line 216 need to amend advanced_ckd_ids to refer to matched cohort, add-in my own custom comorbidity list (and ensure they are read-in locally)
+To-do: likely will need to amend the local OPCS4 reading in code
 
 ############################################################################################
 
@@ -63,13 +63,43 @@ comorbids <- c("acutepancreatitis",
                "urinary_frequency",
                "volume_depletion",
                "genital_infection",
-               "genital_infection_nonspec",
-               "wristfracture",
-               "vertfracture",
-               "hipfracture",
-               "humerusfracture",
-               "cerumen",
-               "nmsc"
+               "genital_infection_nonspec", 
+               "giinfection",
+               "lrti",
+               "urti",
+               "uti",
+               "acutecholecystitis",
+               "acutesinusitis",
+               "boneinfection",
+               "candidiasis",
+               "cellulitis",
+               "covid",
+               "endocarditis",
+               "eyeinfection",
+               "infectiveotitisexterna",
+               "influenza",
+               "jointinfection",
+               "meningitis",
+               "otherfungalinfection",
+               "otherskininfection",
+               "pneumonia",
+               "sepsis",
+               "surgicalsiteinfection",
+               "tuberculosis",
+               "alldementia", # henceforth these are local
+               "alzheimers",
+               "ckd5_nokrt",
+               "ckd5",
+               "delirium",
+               "haemodialysis",
+               "mci",
+               "peritoneal_dialysis",
+               "renalaccessinfection",
+               "transplant",
+               "vascular_dementia",
+               "uti",
+               "skininfection",
+               "respiratorytractinfection"
                
 )
 
@@ -84,12 +114,20 @@ analysis = cprd$analysis("all_patid")
 
 for (i in comorbids) {
   
-  if (!i %in% c("wristfracture",
-                "vertfracture",
-                "hipfracture",
-                "humerusfracture",
-                "cerumen",
-                "nmsc")) {
+  if (!i %in% c("alldementia",
+               "alzheimers",
+               "ckd5_nokrt",
+               "ckd5",
+               "delirium",
+               "haemodialysis",
+               "mci",
+               "peritoneal_dialysis",
+               "renalaccessinfection",
+               "transplant",
+               "vascular_dementia",
+               "uti",
+               "skininfection",
+               "respiratorytractinfection")) {
     
     if (length(codes[[i]]) > 0) {
       print(paste("making", i, "medcode table"))
@@ -142,7 +180,7 @@ for (i in comorbids) {
       
       data <- cprd$tables$observation %>%
         inner_join( readr::read_tsv(
-          here::here(paste0("C:/Users/tj358/OneDrive - University of Exeter/CPRD/Aurum codelists/medcodes/exeter_medcodelist_", i, ".tsv")),
+          here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\Medcodes\\exeter_medcodelist_", i, ".txt")),
           col_types = cols(.default=col_character())) %>%
             rename(medcodeid=MedCodeId) %>%
             select(medcodeid) %>%
@@ -156,15 +194,13 @@ for (i in comorbids) {
     if (i != "cerumen") {
       print(paste("making", i, "ICD10 code table"))
       
-      
       raw_tablename <- paste0("raw_", i, "_icd10")
       empty_variable = paste0("icd10_", i, "_cat")
-      
       
       data <- cprd$tables$hesDiagnosisEpi %>%
         inner_join(
           readr::read_tsv(
-            here::here(paste0("C:/Users/tj358/OneDrive - University of Exeter/CPRD/Aurum codelists/medcodes/exeter_icd10_", i, ".txt")),
+            here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\ICD10\\exeter_icd10_", i, ".txt")),
             col_types = cols(.default=col_character())) %>% 
             rename(icd10 = ICD10) %>%
             select(icd10) %>%
@@ -173,11 +209,29 @@ for (i in comorbids) {
         analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
       
       assign(raw_tablename, data)
+
+     if (i != "cerumen") {
+      print(paste("making", i, "OPCS4 code table"))
+      
+      raw_tablename <- paste0("raw_", i, "_opcs4")
+      empty_variable = paste0("_opcs4", i, "_cat")
+      
+      data <- cprd$tables$hesDiagnosisEpi %>%
+        inner_join(
+          readr::read_tsv(
+            here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\OPCS4\\exeter_icd10_", i, ".txt")),
+            col_types = cols(.default=col_character())) %>% 
+            rename(opcs4 = OPCS4) %>%
+            select(opcs4) %>%
+            mutate(!!sym(empty_variable) := NA),
+          , sql_on="LHS.ICD LIKE CONCAT(opcs4,'%')", copy = T) %>%
+        analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
+      
+      assign(raw_tablename, data)
       
     }
   }
 }
-
 
 # Make new primary cause hospitalisation for heart failure, incident MI, and incident stroke comorbidities
 
@@ -217,9 +271,11 @@ comorbids <- c("fh_diabetes_positive", "fh_diabetes_negative", comorbids)
 
 analysis = cprd$analysis("rk_ckd")
 
-advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
+#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
+#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
+matched_cohort <- matched_cohort %>% select(patid, index_date)
   
 ## Clean comorbidity data and combine with index date
 
@@ -301,7 +357,7 @@ for (i in comorbids) {
   rm(all_codes)
   
   data <- all_codes_clean %>%
-    inner_join(advanced_ckd_ids, by="patid") %>%
+    inner_join(matched_cohort, by="patid") %>%
     mutate(datediff=datediff(date, index_date)) %>%
     analysis$cached(index_date_merge_tablename, index="patid")
   
