@@ -1,4 +1,4 @@
-To-do: from ~line 216 need to amend advanced_ckd_ids to refer to matched cohort
+To-do: from ~line 216 need to amend advanced_ckd_ids to refer to matched cohort, add-in my own custom comorbidity list (and ensure they are read-in locally)
 
 ############################################################################################
 
