@@ -1,3 +1,5 @@
+To-do: from ~line 216 need to amend advanced_ckd_ids to refer to matched cohort
+
 ############################################################################################
 
 # Setup
@@ -6,9 +8,7 @@ library(aurum)
 library(EHRBiomarkr)
 rm(list=ls())
 
-
-cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:/Users/tj358/OneDrive - University of Exeter/CPRD/aurum.yaml")
-
+cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
 
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
@@ -73,7 +73,6 @@ comorbids <- c("acutepancreatitis",
                
 )
 
-
 ############################################################################################
 
 # Pull out all raw code instances and cache with 'all_patid' prefix
@@ -82,7 +81,6 @@ comorbids <- c("acutepancreatitis",
 ## Can also decide whether only want primary reasons for hospitalisation (d_order=1) for ICD10 codes - see bottom of this section
 
 analysis = cprd$analysis("all_patid")
-
 
 for (i in comorbids) {
   
@@ -195,10 +193,8 @@ raw_primary_incident_stroke_icd10 <- raw_incident_stroke_icd10 %>%
   filter(d_order==1) %>%
   analysis$cached("raw_primary_incident_stroke_icd10", indexes=c("patid", "epistart"))
 
-
 ## Add to beginning of list so don't have to remake interim tables when add new comorbidity to end of above list
 comorbids <- c("primary_hhf", "primary_incident_mi", "primary_incident_stroke", comorbids)
-
 
 # Separate frailty by severity into three different categories
 ## Add to beginning of list so don't have to remake tables when add new comorbidity to end of above list
@@ -207,7 +203,6 @@ raw_frailty_moderate_medcodes <- raw_frailty_simple_medcodes %>% filter(frailty_
 raw_frailty_severe_medcodes <- raw_frailty_simple_medcodes %>% filter(frailty_simple_cat=="Severe")
 comorbids <- setdiff(comorbids, "frailty_simple")
 comorbids <- c("frailty_mild", "frailty_moderate", "frailty_severe", comorbids)
-
 
 # Separate family history by whether positive or negative
 ## Add to beginning of list so don't have to remake tables when add new comorbidity to end of above list
@@ -220,8 +215,7 @@ comorbids <- c("fh_diabetes_positive", "fh_diabetes_negative", comorbids)
 
 ## Get index date
 
-analysis = cprd$analysis("rk")
-
+analysis = cprd$analysis("rk_ckd")
 
 advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
 
@@ -238,8 +232,7 @@ for (i in comorbids) {
   medcode_tablename <- paste0("raw_", i, "_medcodes")
   icd10_tablename <- paste0("raw_", i, "_icd10")
   opcs4_tablename <- paste0("raw_", i, "_opcs4")
-  
-  
+    
   if (exists(medcode_tablename)) {
     
     medcodes <- get(medcode_tablename) %>%
@@ -263,7 +256,6 @@ for (i in comorbids) {
       mutate(source="hes")
     
   }
-  
   
   if (exists("medcodes")) {
     
@@ -295,7 +287,7 @@ for (i in comorbids) {
     }
   }
   
-  else if(exists("opcs4_codes")) {
+  else if (exists("opcs4_codes")) {
     
     all_codes <- opcs4_codes
     rm(opcs4_codes)
@@ -320,7 +312,6 @@ for (i in comorbids) {
   rm(data)
   
 }
-
 
 ############################################################################################
 
