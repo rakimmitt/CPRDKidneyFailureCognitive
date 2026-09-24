@@ -1,3 +1,5 @@
+To-do: from around line 205, need to replaced advanced_ckd_ids to refer to matched cohort
+
 ############################################################################################
 
 # Setup
