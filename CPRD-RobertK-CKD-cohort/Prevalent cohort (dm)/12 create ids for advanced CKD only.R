@@ -10,18 +10,6 @@ codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
 analysis = cprd$analysis("rk_ckd")
 
-#Setup
-library(tidyverse)
-library(aurum)
-library(EHRBiomarkr)
-rm(list=ls())
-
-cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
-codesets = cprd$codesets()
-codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
-
-analysis_prefix = "ckd"
-
 ###############################################################################################
 
 # load ckd stages based on egfr only
@@ -128,9 +116,11 @@ diabetes_ckd_cohort  %>% count() # 797526
 
 # Create table for ids with advanced ckd only (ckd stages 4 or 5)
 
+analysis = cprd$analysis("rk_ckd")
+
 advanced_ckd_ids <- ckd_stages_from_algorithm %>%
 filter(!(is.na(stage_4) & is.na(stage_5))) %>%
-      mutate(first_ckd_date = as.Date(pmin(
+      mutate(index_date = as.Date(pmin(
     ifelse(is.na(stage_4), as.Date("2050-01-01"), stage_4),
     ifelse(is.na(stage_5), as.Date("2050-01-01"), stage_5),
   na.rm = TRUE
@@ -147,6 +137,7 @@ group_by(patid) %>%
   select(-contains("stage"), -confirmed_acr3_date) %>%
   analysis$cached("advanced_ckd_ids_im", unique_indexes="patid")
   advanced_ckd_ids %>% count()
+
   advanced_ckd_ids %>% anti_join(practice_exclusion_ids, by="patid") %>% anti_join(gender_exclusion_ids, by="patid") %>% count() 
 
       advanced_ckd_ids <- advanced_ckd_ids %>%
