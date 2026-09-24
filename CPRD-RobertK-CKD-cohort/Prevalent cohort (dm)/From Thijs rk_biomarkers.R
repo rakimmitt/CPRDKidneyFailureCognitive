@@ -6,9 +6,7 @@ library(aurum)
 library(EHRBiomarkr)
 rm(list=ls())
 
-
-cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:/Users/tj358/OneDrive - University of Exeter/CPRD/aurum.yaml")
-
+cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
 
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
@@ -20,8 +18,6 @@ analysis_prefix <- "ckd"
 biomarkers <- c("creatinine_blood", "acr", "pcr", "albumin_urine", "creatinine_urine",
                 "albumin_blood", "haemoglobin", 
                 "dbp", "sbp", "weight", "height", "bmi", "totalcholesterol", "hba1c", "hdl", "potassium", "vitd")
-
-
 
 ############################################################################################
 
@@ -59,9 +55,7 @@ for (i in biomarkers) {
   
 }
 
-
 analysis = cprd$analysis("all_patid")
-
 
 for (i in biomarkers) {
   
@@ -79,8 +73,7 @@ for (i in biomarkers) {
     raw_data <- get(raw_tablename)
   }
   
-  
-  # select valid numunitid
+    # select valid numunitid
   
   if (i=="albumin_urine") {
     data <- raw_data %>%
@@ -144,8 +137,7 @@ for (i in biomarkers) {
       select(patid, date=obsdate, testvalue) %>%
       
       analysis$cached(clean_tablename, indexes=c("patid", "date", "testvalue"))
-    
-    
+        
   } else {
     data <- raw_data %>%
       clean_biomarker_units(testvalue, i) %>%
@@ -168,8 +160,6 @@ for (i in biomarkers) {
   assign(clean_tablename, data)
   
 }
-
-
 
 # egfr
 analysis = cprd$analysis("all")
@@ -209,13 +199,13 @@ biomarkers <- setdiff(biomarkers, c("albumin_urine", "creatinine_urine"))
 biomarkers <- c("acr_from_separate", biomarkers)
 
 ######################################################################################
-analysis = cprd$analysis("rk")
+
+analysis = cprd$analysis("rk_ckd")
 
 # get index date
 advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
 
 advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
-
 
   for (i in biomarkers) {
     
@@ -229,9 +219,7 @@ advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
     assign(index_date_merge_tablename, data)
     
   }
-  
-  
-  
+   
   ############################################################################################
   
   # Find baseline values
@@ -242,7 +230,6 @@ advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
   
   baseline_biomarkers <- cprd$tables$patient %>%
     select(patid)
-  
   
   ## For all except height: between 2 years prior and 7 days after index date
   
@@ -257,8 +244,7 @@ advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
     pre_biomarker_variable <- paste0("pre", i)
     pre_biomarker_date_variable <- paste0("pre", i, "date")
     pre_biomarker_datediff_variable <- paste0("pre", i, "datediff")
-    
-    
+        
     data <- get(index_date_merge_tablename) %>%
       filter(datediff<=7 & datediff>=-730) %>%
       
@@ -291,8 +277,7 @@ advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
       analysis$cached(interim_baseline_biomarker_table, unique_indexes="patid")
     
   }
-  
-  
+    
   ## Height - only keep readings at/post-index date, and find mean
   
   table_name = paste0(d, "_full_height_merge")
@@ -306,4 +291,3 @@ advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
   baseline_biomarkers <- baseline_biomarkers %>%
     left_join(baseline_height, by="patid") %>%
     analysis$cached("baseline_biomarkers", unique_indexes="patid")
-  
