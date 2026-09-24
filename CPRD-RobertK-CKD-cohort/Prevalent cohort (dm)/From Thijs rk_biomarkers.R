@@ -1,5 +1,3 @@
-To-do: from around line 205, need to replaced advanced_ckd_ids to refer to matched cohort
-
 ############################################################################################
 
 # Setup
@@ -205,9 +203,12 @@ biomarkers <- c("acr_from_separate", biomarkers)
 analysis = cprd$analysis("rk_ckd")
 
 # get index date
-advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
 
-advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
+#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
+#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
+
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
+matched_cohort <- matched_cohort %>% select(patid, index_date)
 
   for (i in biomarkers) {
     
@@ -215,7 +216,7 @@ advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
     index_date_merge_tablename <- paste0(d, "_full_", i, "_merge")
     
     data <- get(clean_tablename) %>%
-      inner_join(advanced_ckd_ids, by="patid") %>%
+      inner_join(matched_cohort, by="patid") %>%
       mutate(datediff=datediff(date, index_date))
     
     assign(index_date_merge_tablename, data)
@@ -272,8 +273,7 @@ advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
              {{pre_biomarker_datediff_variable}}:=datediff) %>%
       
       select(-c(testvalue, min_timediff))
-    
-    
+        
     baseline_biomarkers <- baseline_biomarkers %>%
       left_join(data, by="patid") %>%
       analysis$cached(interim_baseline_biomarker_table, unique_indexes="patid")
