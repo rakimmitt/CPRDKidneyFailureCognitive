@@ -1,9 +1,6 @@
 # Matched non-CKD controls for the diabetes CKD cohort
 # Run AFTER the original cohort script in the same R session.
-# No type 2 restriction is applied here. Rebuild the original CKD cache if it
-# still contains only type 2 diabetes.
 #
-# Requirements: dplyr, tidyr, lubridate, MatchIt (current version).
 # Matching is performed locally after collecting only the required columns.
 # The outputs below are local R tables, NOT cached database tables.
 #
@@ -26,9 +23,9 @@ rm(list=ls())
 
 cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
 codesets = cprd$codesets()
-codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
+codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-analysis_prefix = "ckd"
+analysis_prefix = "rk_ckd"
 
 index_column <- "first_ckd_date"
 
