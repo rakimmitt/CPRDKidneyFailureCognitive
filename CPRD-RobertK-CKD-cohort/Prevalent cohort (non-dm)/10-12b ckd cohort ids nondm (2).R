@@ -7,7 +7,7 @@ library(EHRBiomarkr)
 rm(list=ls())
 
 
-cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:/Users/tj358/OneDrive - University of Exeter/CPRD/aurum.yaml")
+cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
 
 
 codesets = cprd$codesets()
@@ -543,8 +543,8 @@ ckd_cohort <- ckd_ids %>%
                   
 ckd_cohort %>% count() # 1,452,649
 
-# do similar for advanced ckd cohort
-analysis = cprd$analysis("rk")
+# do similar for advanced ckd cohort and non-ckd cohort  
+analysis = cprd$analysis("rk_ckd")
 
 advanced_ckd_cohort <- advanced_ckd_ids %>%
   left_join(dob, by="patid") %>%
@@ -560,5 +560,20 @@ advanced_ckd_cohort <- advanced_ckd_ids %>%
   analysis$cached("advanced_ckd_cohort", unique_indexes="patid", indexes=c("gender", "dob"))
 
   advanced_ckd_cohort %>% count()
+
+ non_ckd_cohort <- non_ckd_ids %>%
+  left_join(dob, by="patid") %>%
+  left_join((cprd$tables$patient %>% select(patid, gender, regenddate, pracid)), by="patid") %>%
+  left_join((cprd$tables$practice %>% select(pracid, lcd, region)), by="pracid") %>%
+  left_join((cprd$tables$onsDeath %>% select(patid, reg_date_of_death)), by="patid") %>%
+  left_join((cprd$tables$patientImd %>% select(patid, imd_decile)), by="patid") %>%
+  left_join((cprd$tables$validDateLookup %>% select(patid, gp_end_date)), by="patid") %>%
+  left_join((cprd$tables$patidsWithLinkage %>% mutate(with_hes=1L) %>% select(patid, with_hes, hes_end_date)), by="patid") %>%
+  mutate(with_hes=ifelse(is.na(with_hes), 0L, 1L)) %>%
+  left_join(ethnicity, by="patid") %>%
+  select(patid, gender, dob, pracid, prac_region=region, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2, imd_decile, regstartdate, gp_end_date, death_date=reg_date_of_death, with_hes, hes_end_date, index_date) %>%
+  analysis$cached("non_ckd_cohort", unique_indexes="patid", indexes=c("gender", "dob"))
+
+  non_ckd_cohort %>% count()
 
 ############################################################################################
