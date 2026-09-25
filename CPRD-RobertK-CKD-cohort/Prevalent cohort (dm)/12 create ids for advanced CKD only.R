@@ -164,3 +164,109 @@ non_ckd_ids <- diabetes_cohort %>%
   )
 
 non_ckd_ids %>% count()
+
+##################################################
+
+# Join with relevant tables to get demographics and other data for ckd cohort, advanced ckd cohort and non-ckd cohort
+
+## DOB
+
+analysis = cprd$analysis("all")
+
+dob <- cprd$tables$observation %>%
+  inner_join(cprd$tables$validDateLookup, by="patid") %>%
+  filter(obsdate>=min_dob) %>%
+  group_by(patid) %>%
+  summarise(earliest_medcode=min(obsdate, na.rm=TRUE)) %>%
+  ungroup() %>%
+  analysis$cached("earliest_medcode", unique_indexes="patid")
+
+dob %>% count() # should be around 45 million
+
+## No-one has missing dob or earliest_medcode so pmin (runs as 'LEAST' in MySQL) works
+
+dob <- dob %>%
+  inner_join(cprd$tables$patient, by="patid") %>%
+  mutate(dob=as.Date(ifelse(is.na(mob), paste0(yob,"-06-30"), paste0(yob, "-",mob,"-15")))) %>%
+  inner_join(cprd$tables$validDateLookup, by = "patid") %>%
+  mutate(dob=pmin(dob, earliest_medcode, na.rm=TRUE)) %>%
+  mutate(dob=ifelse(regstartdate>=min_dob & regstartdate<dob, regstartdate, dob)) %>%
+  select(patid, dob = dob, mob, yob, regstartdate) %>%
+  analysis$cached("dob", unique_indexes="patid")
+
+dob <- dob %>% analysis$cached("dob", unique_indexes="patid")
+
+analysis = cprd$analysis("all_patid")
+ethnicity <- ethnicity %>% analysis$cached("ethnicity", unique_indexes="patid")
+
+# Get list of all ids
+
+all_ids <- dob %>%
+  anti_join(practice_exclusion_ids, by="patid") %>% 
+  anti_join(gender_exclusion_ids, by="patid") %>%
+  left_join((cprd$tables$patient %>% select(patid, gender, regenddate, pracid)), by="patid") %>%
+  left_join((cprd$tables$practice %>% select(pracid, lcd, region)), by="pracid") %>%
+  left_join((cprd$tables$onsDeath %>% select(patid, reg_date_of_death)), by="patid") %>%
+  left_join((cprd$tables$patientImd %>% select(patid, imd_decile)), by="patid") %>%
+  left_join((cprd$tables$validDateLookup %>% select(patid, gp_end_date)), by="patid") %>%
+  left_join((cprd$tables$patidsWithLinkage %>% mutate(with_hes=1L) %>% select(patid, with_hes, hes_end_date)), by="patid") %>%
+  mutate(with_hes=ifelse(is.na(with_hes), 0L, 1L)) %>%
+  left_join(ethnicity, by="patid") %>%
+  select(patid, gender, dob, pracid, prac_region=region, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2, imd_decile, regstartdate, gp_end_date, death_date=reg_date_of_death, with_hes, hes_end_date) %>%
+  analysis$cached("all_ids", unique_indexes="patid", indexes=c("gender", "dob"))
+
+all_ids %>% count() #44,363,638
+
+# Join ids with dob and other data for CKD cohort
+
+analysis = cprd$analysis(analysis_prefix)
+
+ckd_cohort <- ckd_ids %>%
+  left_join(dob, by="patid") %>%
+  left_join((cprd$tables$patient %>% select(patid, gender, regenddate, pracid)), by="patid") %>%
+  left_join((cprd$tables$practice %>% select(pracid, lcd, region)), by="pracid") %>%
+  left_join((cprd$tables$onsDeath %>% select(patid, reg_date_of_death)), by="patid") %>%
+  left_join((cprd$tables$patientImd %>% select(patid, imd_decile)), by="patid") %>%
+  left_join((cprd$tables$validDateLookup %>% select(patid, gp_end_date)), by="patid") %>%
+  left_join((cprd$tables$patidsWithLinkage %>% mutate(with_hes=1L) %>% select(patid, with_hes, hes_end_date)), by="patid") %>%
+  mutate(with_hes=ifelse(is.na(with_hes), 0L, 1L)) %>%
+  left_join(ethnicity, by="patid") %>%
+  select(patid, gender, dob, pracid, prac_region=region, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2, imd_decile, regstartdate, gp_end_date, death_date=reg_date_of_death, with_hes, hes_end_date, first_ckd_date) %>%
+  analysis$cached("ckd_cohort", unique_indexes="patid", indexes=c("gender", "dob"))
+                  
+                  
+ckd_cohort %>% count() # 1,452,649
+
+# Do similar for advanced ckd cohort and non-ckd cohort
+
+analysis = cprd$analysis("rk_ckd")
+
+advanced_ckd_cohort <- advanced_ckd_ids %>%
+  left_join(dob, by="patid") %>%
+  left_join((cprd$tables$patient %>% select(patid, gender, regenddate, pracid)), by="patid") %>%
+  left_join((cprd$tables$practice %>% select(pracid, lcd, region)), by="pracid") %>%
+  left_join((cprd$tables$onsDeath %>% select(patid, reg_date_of_death)), by="patid") %>%
+  left_join((cprd$tables$patientImd %>% select(patid, imd_decile)), by="patid") %>%
+  left_join((cprd$tables$validDateLookup %>% select(patid, gp_end_date)), by="patid") %>%
+  left_join((cprd$tables$patidsWithLinkage %>% mutate(with_hes=1L) %>% select(patid, with_hes, hes_end_date)), by="patid") %>%
+  mutate(with_hes=ifelse(is.na(with_hes), 0L, 1L)) %>%
+  left_join(ethnicity, by="patid") %>%
+  select(patid, gender, dob, pracid, prac_region=region, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2, imd_decile, regstartdate, gp_end_date, death_date=reg_date_of_death, with_hes, hes_end_date, index_date) %>%
+  analysis$cached("advanced_ckd_cohort", unique_indexes="patid", indexes=c("gender", "dob"))
+
+  advanced_ckd_cohort %>% count()
+
+  non_ckd_cohort <- non_ckd_ids %>%
+  left_join(dob, by="patid") %>%
+  left_join((cprd$tables$patient %>% select(patid, gender, regenddate, pracid)), by="patid") %>%
+  left_join((cprd$tables$practice %>% select(pracid, lcd, region)), by="pracid") %>%
+  left_join((cprd$tables$onsDeath %>% select(patid, reg_date_of_death)), by="patid") %>%
+  left_join((cprd$tables$patientImd %>% select(patid, imd_decile)), by="patid") %>%
+  left_join((cprd$tables$validDateLookup %>% select(patid, gp_end_date)), by="patid") %>%
+  left_join((cprd$tables$patidsWithLinkage %>% mutate(with_hes=1L) %>% select(patid, with_hes, hes_end_date)), by="patid") %>%
+  mutate(with_hes=ifelse(is.na(with_hes), 0L, 1L)) %>%
+  left_join(ethnicity, by="patid") %>%
+  select(patid, gender, dob, pracid, prac_region=region, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2, imd_decile, regstartdate, gp_end_date, death_date=reg_date_of_death, with_hes, hes_end_date, index_date) %>%
+  analysis$cached("non_ckd_cohort", unique_indexes="patid", indexes=c("gender", "dob"))
+
+  non_ckd_cohort %>% count()
