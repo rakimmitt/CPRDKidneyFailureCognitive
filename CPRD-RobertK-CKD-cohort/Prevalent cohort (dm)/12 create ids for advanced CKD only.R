@@ -219,7 +219,7 @@ all_ids %>% count() #44,363,638
 
 # Join ids with dob and other data for CKD cohort
 
-analysis = cprd$analysis(analysis_prefix)
+analysis = cprd$analysis(rk_ckd)
 
 ckd_cohort <- ckd_ids %>%
   left_join(dob, by="patid") %>%

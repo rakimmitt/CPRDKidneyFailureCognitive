@@ -437,6 +437,18 @@ ckd_ids <- ckd_ids %>%
 
 ckd_ids %>% count() #1452649
 
+# and those with no CKD (for comparison)
+
+non_ckd_ids <- cprd$tables$patient %>%
+  select(patid) %>%
+  distinct() %>%
+  anti_join(ckd_ids, by = "patid") %>%
+  anti_join(practice_exclusion_ids, by = "patid") %>%
+  anti_join(gender_exclusion_ids, by = "patid") %>%
+  analysis$cached("no_ckd_ids", unique_indexes = "patid")
+
+non_ckd_ids %>% count()
+
 ## create table for ids with advanced ckd only (ckd stages 4 or 5)
 analysis = cprd$analysis("rk")
 
@@ -571,7 +583,7 @@ advanced_ckd_cohort <- advanced_ckd_ids %>%
   left_join((cprd$tables$patidsWithLinkage %>% mutate(with_hes=1L) %>% select(patid, with_hes, hes_end_date)), by="patid") %>%
   mutate(with_hes=ifelse(is.na(with_hes), 0L, 1L)) %>%
   left_join(ethnicity, by="patid") %>%
-  select(patid, gender, dob, pracid, prac_region=region, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2, imd_decile, regstartdate, gp_end_date, death_date=reg_date_of_death, with_hes, hes_end_date, index_date) %>%
+  select(patid, gender, dob, pracid, prac_region=region, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2, imd_decile, regstartdate, gp_end_date, death_date=reg_date_of_death, with_hes, hes_end_date) %>%
   analysis$cached("non_ckd_cohort", unique_indexes="patid", indexes=c("gender", "dob"))
 
   non_ckd_cohort %>% count()
