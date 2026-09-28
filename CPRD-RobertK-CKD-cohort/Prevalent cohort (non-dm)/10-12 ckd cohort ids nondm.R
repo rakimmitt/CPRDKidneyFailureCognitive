@@ -4,6 +4,7 @@
 library(tidyverse)
 library(aurum)
 library(EHRBiomarkr)
+library(dplyr)
 rm(list=ls())
 
 cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")

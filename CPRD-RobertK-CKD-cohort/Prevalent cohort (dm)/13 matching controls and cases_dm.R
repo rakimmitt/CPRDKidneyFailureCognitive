@@ -12,6 +12,15 @@ codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
 analysis = cprd$analysis("rk_ckd")
 
+advanced_ckd_cohort <- advanced_ckd_cohort %>%
+  analysis$cached("advanced_ckd_cohort")
+  advanced_ckd_cohort %>% count()
+
+
+  non_ckd_cohort <- non_ckd_cohort %>%
+  analysis$cached("non_ckd_cohort")
+  non_ckd_cohort %>% count()
+
 # Settings
 max_controls <- 4L
 max_age_gap_years <- 50
