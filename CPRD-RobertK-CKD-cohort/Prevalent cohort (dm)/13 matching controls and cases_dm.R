@@ -23,7 +23,7 @@ advanced_ckd_cohort <- advanced_ckd_cohort %>%
 
 # Settings
 max_controls <- 4L
-max_age_gap_years <- 50
+max_age_gap_years <- 5
 set.seed(123)
 
 # 1. Load the required columns; both groups must have HES linkage

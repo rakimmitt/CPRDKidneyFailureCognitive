@@ -1,0 +1,5 @@
+# To check name of remote table that has been cached
+
+dbplyr::remote_name(advanced_ckd_cohort)
+
+dplyr::show_query(non_ckd_cohort)
