@@ -450,7 +450,7 @@ non_ckd_ids <- cprd$tables$patient %>%
 non_ckd_ids %>% count()
 
 ## create table for ids with advanced ckd only (ckd stages 4 or 5)
-analysis = cprd$analysis("rk")
+analysis = cprd$analysis("rk_ckd")
 
 advanced_ckd_ids <- ckd_stages_from_algorithm %>% 
   filter(!(is.na(stage_4) & is.na(stage_5))) %>%
