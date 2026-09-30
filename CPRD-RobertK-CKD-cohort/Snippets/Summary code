@@ -109,3 +109,32 @@ advanced_ckd_summary_data %>%
   mutate(index_year = lubridate::year(index_date)) %>%
   count(index_year, name = "n") %>%
   print(n = Inf)
+
+# Summarise ethnicity distribution, including missing values
+
+  advanced_ckd_cohort %>%
+  count(ethnicity_5cat) %>%
+  collect() %>%
+  mutate(
+    ethnicity = case_when(
+      ethnicity_5cat == 0 ~ "White",
+      ethnicity_5cat == 1 ~ "South Asian",
+      ethnicity_5cat == 2 ~ "Black",
+      ethnicity_5cat == 3 ~ "Other",
+      ethnicity_5cat == 4 ~ "Mixed",
+      is.na(ethnicity_5cat) ~ "Missing",
+      TRUE ~ "Unknown / other code"
+    ),
+    percentage = round(100 * n / sum(n), 1)
+  ) %>%
+  select(ethnicity_5cat, ethnicity, n, percentage)
+
+# Summarise IMD decile distribution, including missing values, decile 1 is least deprived, decile 10 is most deprived
+
+  advanced_ckd_cohort %>%
+  count(imd_decile) %>%
+  collect() %>%
+  mutate(
+    percentage = round(100 * n / sum(n), 1)
+  ) %>%
+  arrange(imd_decile)
