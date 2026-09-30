@@ -28,7 +28,7 @@ set.seed(123)
 # 1. Load the required columns; both groups must have HES linkage
 columns <- c(
   "patid", "pracid", "dob", "gender", "regstartdate",
-  "gp_end_date", "hes_end_date", "with_hes"
+  "gp_end_date", "hes_end_date", "with_hes", "ethnicity_5cat", "imd_decile"
 )
 
 cases <- advanced_ckd_cohort %>%
@@ -46,6 +46,20 @@ prepare <- function(x) {
   x %>%
     mutate(
       across(c(patid, pracid, gender), as.character),
+
+      # Treat missing ethnicity as an explicit matching category.
+      ethnicity_5cat = coalesce(as.character(ethnicity_5cat), "Missing"),
+
+      # Preserve the original IMD, including NA.
+      # na_if() also handles "Missing" if previously assigned.
+      imd_decile = as.numeric(
+      na_if(as.character(imd_decile), "Missing")
+      ),
+
+      # Additional variables used only for matching.
+      imd_missing = as.integer(is.na(imd_decile)),
+      imd_for_matching = coalesce(imd_decile, 5.5),
+
       across(
         any_of(c("dob", "regstartdate", "gp_end_date",
                  "hes_end_date", "index_date")),
@@ -115,14 +129,15 @@ match_practice <- function(ca, co) {
   ) %>%
     mutate(
       dob_days = as.numeric(dob),
-      gender = factor(gender)
+      gender = factor(gender),
+      ethnicity_5cat = factor(ethnicity_5cat)
     ) %>%
     as.data.frame()
 
   rownames(dat) <- dat$patid
 
   # Omit variables that are constant within this practice
-  variables <- c("dob_days", "gender")
+  variables <- c("dob_days", "gender", "ethnicity_5cat", "imd_for_matching", "imd_missing")
   variables <- variables[
     vapply(dat[variables], function(x) n_distinct(x) > 1L, logical(1))
   ]
@@ -213,7 +228,7 @@ analysis = cprd$analysis("rk_ckd")
 
 matched_cohort %>%
   select(patid, is_case, matched_case_patid, matched_case_index_date,
-         index_date, dob, gender, pracid, regstartdate, gp_end_date,
+         index_date, dob, gender, ethnicity_5cat, imd_decile, regstartdate, gp_end_date,
          hes_end_date) %>%
   analysis$cached("matched_cohort", unique_indexes="patid",
                   indexes=c("is_case", "matched_case_patid", "index_date"))
@@ -236,7 +251,7 @@ matched_cases %>%
 # Checking quality of matches
 
 # Combine matched cases and controls
-# NB because of the variable ratio matching, there will be imbalances in overall age and gender distributions
+# NB because of the variable ratio matching, there may be differences in overall age and gender distributions
 # Pair-wise matching should be tighter, and we can summarise weighted matching characteristics
 
 comparison <- bind_rows(
@@ -414,7 +429,7 @@ gender_comparison %>%
   print(n = Inf, width = Inf)
 
 
-Weighted gender SMD
+# Weighted gender SMD
 
 unique(gender_comparison$gender)
 
@@ -441,3 +456,9 @@ gender_balance <- gender_comparison %>%
   )
 
 print(gender_balance, width = Inf)
+
+
+
+
+## New quality check
+
