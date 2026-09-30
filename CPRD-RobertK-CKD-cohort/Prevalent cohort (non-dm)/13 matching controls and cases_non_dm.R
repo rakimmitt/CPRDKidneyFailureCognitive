@@ -230,3 +230,53 @@ matched_cases %>%
   count(n_controls, name = "number_of_cases") %>%
   print(n = Inf)
 
+
+
+
+
+########
+
+# Checking quality of matches
+
+# Combine matched cases and controls
+comparison <- bind_rows(
+  matched_cases %>%
+    filter(n_controls > 0) %>%
+    transmute(
+      group = "Cases",
+      dob, gender,
+      index_date = index_date
+    ),
+
+  matched_controls %>%
+    transmute(
+      group = "Controls",
+      dob, gender,
+      index_date = matched_case_index_date
+    )
+) %>%
+  mutate(
+    age_at_index = as.numeric(index_date - dob) / 365.25
+  )
+
+# Summarise age at index
+comparison %>%
+  group_by(group) %>%
+  summarise(
+    n = n(),
+    missing_age = sum(is.na(age_at_index)),
+    mean_age = mean(age_at_index, na.rm = TRUE),
+    sd_age = sd(age_at_index, na.rm = TRUE),
+    median_age = median(age_at_index, na.rm = TRUE),
+    youngest = min(age_at_index, na.rm = TRUE),
+    oldest = max(age_at_index, na.rm = TRUE)
+  ) %>%
+  print(width = Inf)
+
+# Gender counts and percentages, including missing values
+comparison %>%
+  count(group, gender) %>%
+  group_by(group) %>%
+  mutate(percent = round(100 * n / sum(n), 1)) %>%
+  ungroup() %>%
+  print(n = Inf)

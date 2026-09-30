@@ -16,7 +16,6 @@ advanced_ckd_cohort <- advanced_ckd_cohort %>%
   analysis$cached("advanced_ckd_cohort")
   advanced_ckd_cohort %>% count()
 
-
   non_ckd_cohort <- non_ckd_cohort %>%
   analysis$cached("non_ckd_cohort")
   non_ckd_cohort %>% count()
@@ -230,3 +229,215 @@ matched_cases %>%
   count(n_controls, name = "number_of_cases") %>%
   print(n = Inf)
 
+
+
+########
+
+# Checking quality of matches
+
+# Combine matched cases and controls
+# NB because of the variable ratio matching, there will be imbalances in overall age and gender distributions
+# Pair-wise matching should be tighter, and we can summarise weighted matching characteristics
+
+comparison <- bind_rows(
+  matched_cases %>%
+    filter(n_controls > 0) %>%
+    transmute(
+      group = "Cases",
+      dob, gender,
+      index_date = index_date
+    ),
+
+  matched_controls %>%
+    transmute(
+      group = "Controls",
+      dob, gender,
+      index_date = matched_case_index_date
+    )
+) %>%
+  mutate(
+    age_at_index = as.numeric(index_date - dob) / 365.25
+  )
+
+# Summarise age at index
+comparison %>%
+  group_by(group) %>%
+  summarise(
+    n = n(),
+    missing_age = sum(is.na(age_at_index)),
+    mean_age = mean(age_at_index, na.rm = TRUE),
+    sd_age = sd(age_at_index, na.rm = TRUE),
+    median_age = median(age_at_index, na.rm = TRUE),
+    youngest = min(age_at_index, na.rm = TRUE),
+    oldest = max(age_at_index, na.rm = TRUE)
+  ) %>%
+  print(width = Inf)
+
+# Gender counts and percentages, including missing values
+comparison %>%
+  count(group, gender) %>%
+  group_by(group) %>%
+  mutate(percent = round(100 * n / sum(n), 1)) %>%
+  ungroup() %>%
+  print(n = Inf)
+
+# Pair-wise comparison
+
+pair_comparison <- matched_controls %>%
+  select(patid, matched_case_patid, dob, gender) %>%
+  left_join(
+    matched_cases %>%
+      select(
+        matched_case_patid = patid,
+        case_dob = dob,
+        case_gender = gender
+      ),
+    by = "matched_case_patid"
+  ) %>%
+  mutate(
+    age_gap_years = abs(as.numeric(dob - case_dob)) / 365.25,
+    same_gender = gender == case_gender
+  )
+
+pair_comparison %>%
+  summarise(
+    n_pairs = n(),
+    mean_age_gap = mean(age_gap_years, na.rm = TRUE),
+    median_age_gap = median(age_gap_years, na.rm = TRUE),
+    p95_age_gap = quantile(age_gap_years, 0.95, na.rm = TRUE),
+    largest_age_gap = max(age_gap_years, na.rm = TRUE),
+    percent_same_gender = 100 * mean(same_gender, na.rm = TRUE)
+  ) %>%
+  print(width = Inf)
+
+# Weighted comparison matching
+
+comparison_weighted <- bind_rows(
+  matched_cases %>%
+    filter(n_controls > 0) %>%
+    transmute(
+      group = "Cases",
+      age_at_index = as.numeric(
+        as.Date(index_date) - as.Date(dob)
+      ) / 365.25,
+      weight = 1
+    ),
+
+  matched_controls %>%
+    left_join(
+      matched_cases %>%
+        select(matched_case_patid = patid, n_controls),
+      by = "matched_case_patid"
+    ) %>%
+    transmute(
+      group = "Controls",
+      age_at_index = as.numeric(
+        as.Date(matched_case_index_date) - as.Date(dob)
+      ) / 365.25,
+      weight = 1 / n_controls
+    )
+)
+
+comparison_weighted %>%
+  group_by(group) %>%
+  summarise(
+    n = n(),
+    mean_age = weighted.mean(age_at_index, weight, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  print(width = Inf)
+
+## Weighted SMD for age
+
+balance_data <- comparison_weighted %>%
+  mutate(is_case = as.integer(group == "Cases"))
+
+age_balance <- cobalt::bal.tab(
+  is_case ~ age_at_index,
+  data = balance_data,
+  weights = balance_data$weight,
+  method = "weighting",
+  estimand = "ATT",
+  s.d.denom = "treated",   # Cases are the "treated" group here
+  continuous = "std",
+  un = TRUE,
+  thresholds = c(m = 0.1)
+)
+
+print(age_balance)
+
+# NB diff. adj is the weighted SMD, which is the relevant metric for this variable. The unweighted SMD is also reported for reference.
+
+
+
+
+
+
+
+  # Weight gender matching
+
+  gender_comparison <- bind_rows(
+  matched_cases %>%
+    filter(n_controls > 0) %>%
+    transmute(
+      group = "Cases",
+      gender = as.character(gender),
+      weight = 1
+    ),
+
+  matched_controls %>%
+    left_join(
+      matched_cases %>%
+        select(matched_case_patid = patid, n_controls),
+      by = "matched_case_patid"
+    ) %>%
+    transmute(
+      group = "Controls",
+      gender = as.character(gender),
+      weight = 1 / n_controls
+    )
+)
+
+# Weighted percentages within each group.
+
+# Missing gender, if present, is displayed as its own category.
+gender_comparison %>%
+  group_by(group, gender) %>%
+  summarise(
+    n = n(),
+    weighted_n = sum(weight),
+    .groups = "drop"
+  ) %>%
+  group_by(group) %>%
+  mutate(weighted_percent = 100 * weighted_n / sum(weighted_n)) %>%
+  ungroup() %>%
+  print(n = Inf, width = Inf)
+
+
+Weighted gender SMD
+
+unique(gender_comparison$gender)
+
+gender_category <- "1"
+
+gender_balance <- gender_comparison %>%
+  filter(!is.na(gender)) %>%
+  group_by(group) %>%
+  summarise(
+    proportion = weighted.mean(gender == gender_category, weight),
+    .groups = "drop"
+  ) %>%
+  pivot_wider(names_from = group, values_from = proportion) %>%
+  transmute(
+    case_percent = 100 * Cases,
+    control_percent = 100 * Controls,
+    difference_percentage_points = 100 * (Cases - Controls),
+    weighted_smd = if_else(
+      Cases > 0 & Cases < 1,
+      (Cases - Controls) / sqrt(Cases * (1 - Cases)),
+      NA_real_
+    ),
+    absolute_smd = abs(weighted_smd)
+  )
+
+print(gender_balance, width = Inf)

@@ -1,0 +1,111 @@
+#Setup
+library(tidyverse)
+library(aurum)
+library(EHRBiomarkr)
+library(tidyverse)
+library(MatchIt)
+rm(list=ls())
+
+cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
+codesets = cprd$codesets()
+codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
+
+analysis = cprd$analysis("rk_ckd")
+
+# Summary of advanced CKD cohort
+
+analysis = cprd$analysis("all_patid")
+
+ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>% 
+  analysis$cached("ckd_stages_from_algorithm")
+
+analysis = cprd$analysis("rk_ckd")
+
+advanced_ckd_cohort <- advanced_ckd_cohort %>%
+  analysis$cached("advanced_ckd_cohort")
+  advanced_ckd_cohort %>% count()
+
+# Join on the database, then collect only the columns needed.
+advanced_ckd_summary_data <- advanced_ckd_cohort %>%
+  select(patid, dob, gender, index_date) %>%
+  left_join(
+    ckd_stages_from_algorithm %>%
+      select(patid, stage_1, stage_2, stage_3a,
+             stage_3b, stage_4, stage_5),
+    by = "patid"
+  ) %>%
+  collect() %>%
+  mutate(
+    across(c(dob, index_date, starts_with("stage_")), as.Date),
+
+    age_at_index = as.numeric(index_date - dob) / 365.25,
+
+    # Evaluate from highest to lowest stage.
+    # Missing stage dates do not satisfy the conditions.
+    ckd_stage_at_index = case_when(
+      is.na(index_date)      ~ "Missing index date",
+      stage_5  <= index_date ~ "Stage 5",
+      stage_4  <= index_date ~ "Stage 4",
+      stage_3b <= index_date ~ "Stage 3b",
+      stage_3a <= index_date ~ "Stage 3a",
+      stage_2  <= index_date ~ "Stage 2",
+      stage_1  <= index_date ~ "Stage 1",
+      TRUE                  ~ "No qualifying stage date"
+    )
+  )
+
+# Ensure the join has not duplicated patients.
+stopifnot(!anyDuplicated(advanced_ckd_summary_data$patid))
+
+# CKD stage at index
+advanced_ckd_summary_data %>%
+  count(ckd_stage_at_index, name = "n") %>%
+  mutate(percent = round(100 * n / sum(n), 1)) %>%
+  print(n = Inf, width = Inf)
+
+# Gender: retain your existing coding rather than assume its meaning
+advanced_ckd_summary_data %>%
+  count(gender, name = "n") %>%
+  mutate(percent = round(100 * n / sum(n), 1)) %>%
+  print(n = Inf, width = Inf)
+
+  advanced_ckd_summary_data %>%
+  summarise(
+    n_patients = n(),
+    missing_age = sum(is.na(age_at_index)),
+    mean_age = mean(age_at_index, na.rm = TRUE),
+    sd_age = sd(age_at_index, na.rm = TRUE),
+    median_age = median(age_at_index, na.rm = TRUE),
+    q1_age = quantile(age_at_index, 0.25, na.rm = TRUE),
+    q3_age = quantile(age_at_index, 0.75, na.rm = TRUE),
+    min_age = min(age_at_index, na.rm = TRUE),
+    max_age = max(age_at_index, na.rm = TRUE)
+  ) %>%
+  mutate(across(where(is.double), ~ round(.x, 1))) %>%
+  print(width = Inf)
+
+  summary(advanced_ckd_summary_data$index_date)
+
+
+
+advanced_ckd_summary_data %>%
+  summarise(
+    n_patients = n(),
+    missing_age = sum(is.na(age_at_index)),
+    mean_age = mean(age_at_index, na.rm = TRUE),
+    sd_age = sd(age_at_index, na.rm = TRUE),
+    median_age = median(age_at_index, na.rm = TRUE),
+    q1_age = quantile(age_at_index, 0.25, na.rm = TRUE),
+    q3_age = quantile(age_at_index, 0.75, na.rm = TRUE),
+    min_age = min(age_at_index, na.rm = TRUE),
+    max_age = max(age_at_index, na.rm = TRUE)
+  ) %>%
+  mutate(across(where(is.double), ~ round(.x, 1))) %>%
+  print(width = Inf)
+
+
+
+advanced_ckd_summary_data %>%
+  mutate(index_year = lubridate::year(index_date)) %>%
+  count(index_year, name = "n") %>%
+  print(n = Inf)
