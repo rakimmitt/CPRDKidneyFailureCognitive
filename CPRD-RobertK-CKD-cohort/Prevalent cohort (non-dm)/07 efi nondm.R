@@ -14,8 +14,7 @@ cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024", cprdConf = "C:\\Users\\rk53
 codesets = cprd$codesets()
 codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-analysis_prefix = "ckd"
-
+analysis_prefix = "rk_ckd"
 
 ############################################################################################
 
@@ -72,23 +71,13 @@ for (deficit in efi_deficits) {
 # Clean medcodes then merge with index dates
 # Remove medcodes before DOB or after lcd/deregistration
 
-# 6-monthly dates for 2019-2021 (prevalent cohort), then 3-monthly from 2021 onwards
-# (3-monthly required for sequential trial emulation of SGLT2i in non-DM CKD)
-dates <- unique(c(
-  seq(from = as.Date("2019-03-01"), to = as.Date("2020-09-01"), by = "6 months"),
-  seq(from = as.Date("2021-03-01"), to = as.Date("2024-03-01"), by = "3 months")
-))
+analysis = cprd$analysis("rk_ckd")
 
-date_strings <- format(dates, "%Y-%m-%d")
+#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
+#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-
-for (d in date_strings) {
-
-  analysis <- cprd$analysis(paste0(analysis_prefix, "_", d))
-
-  index_date <- as.Date(d)
-  print(d)
-
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
+matched_cohort <- matched_cohort %>% select(patid, index_date)
 
   # Clean deficit data and combine with index dates
   for (deficit in efi_deficits) {
@@ -210,4 +199,4 @@ for (d in date_strings) {
       "efi",
       indexes = c("patid")
     )
-}
+

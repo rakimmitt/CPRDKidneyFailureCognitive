@@ -12,8 +12,7 @@ cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\O
 codesets = cprd$codesets()
 codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-analysis_prefix = "ckd"
-
+analysis_prefix = "rk_ckd"
 
 ############################################################################################
 
@@ -25,7 +24,6 @@ short_deficit_map <- list(
   "efi_mobility_and_transfer_problems" = "efi_mobility_transfer"
 )
 
-
 # Function to shorten table name to avoid 64-character limit;
 # otherwise use the original name
 get_short_deficit <- function(deficit) {
@@ -35,7 +33,6 @@ get_short_deficit <- function(deficit) {
     return(deficit)
   }
 }
-
 
 # Pull out all raw code instances and cache with 'all_patid' prefix
 
@@ -66,30 +63,18 @@ for (deficit in efi_deficits) {
   }
 }
 
-
 ############################################################################################
 
-# Clean medcodes then merge with index dates
+# Get index date
 # Remove medcodes before DOB or after lcd/deregistration
 
+analysis = cprd$analysis("rk_ckd")
 
+#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
+#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-# get dates at 6 month intervals
-dates <- seq(from = as.Date("2013-01-01"),
-             to   = as.Date("2013-01-01"),
-             by   = "6 months")
-
-date_strings <- format(dates, "%Y-%m-%d")
-
-
-for (d in date_strings) {
-  
-  analysis <- cprd$analysis(paste0(analysis_prefix, "_", d))
-  
-  
-  index_date <- as.Date(d)
-  print(d)
-  
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
+matched_cohort <- matched_cohort %>% select(patid, index_date)
   
   # Clean deficit data and combine with index dates
   for (deficit in efi_deficits) {
@@ -216,4 +201,3 @@ for (d in date_strings) {
       "efi",
       indexes = c("patid")
     )
-}
