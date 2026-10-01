@@ -13,9 +13,6 @@ cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-
-analysis_prefix <- "ckd"
-
 #Data quality check - should only include acceptable' patients (see CPRD data specification for definition)
 cprd$tables$patient %>% count() #45,037,869 - total patient count in download
 cprd$tables$patient %>% filter(acceptable ==1) %>% count() #45,037,869
@@ -398,7 +395,8 @@ ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
 #################################################################################################################################
 
 # get cohort ids for all ckd stages (1-5) and advanced ckd (stages 4-5)
-analysis = cprd$analysis(analysis_prefix)
+
+analysis = cprd$analysis("rk_ckd")
 
 ckd_ids <- ckd_stages_from_algorithm %>% 
   filter(!(is.na(stage_1) & is.na(stage_2) & is.na(stage_3a) & 
@@ -454,17 +452,18 @@ analysis = cprd$analysis("rk_ckd")
 
 advanced_ckd_ids <- ckd_stages_from_algorithm %>% 
   filter(!(is.na(stage_4) & is.na(stage_5))) %>%
-  mutate(
-    index_date = as.Date(
-      pmin(
+  mutate(index_date = as.Date(pmin(
         ifelse(is.na(stage_4), as.Date("2050-01-01"), stage_4),
         ifelse(is.na(stage_5), as.Date("2050-01-01"), stage_5),
         na.rm = TRUE
       )
     )
   ) %>%
+
   mutate(index_date = ifelse(index_date == as.Date("2050-01-01"), NA, index_date)) %>%
+
   # keep those with an index date after 1 Jan 2008 (as CKD was added to QOF in 2006) before keeping only the earliest index date for each patient
+  
   filter(index_date > as.Date("2008-01-01")) %>%
   group_by(patid) %>%
   dbplyr::window_order(index_date) %>%
@@ -539,7 +538,7 @@ all_ids %>% count()
 #44,363,638
 
 # join ids with dob and other data
-analysis = cprd$analysis(analysis_prefix)
+analysis = cprd$analysis("rk_ckd")
 
 ckd_cohort <- ckd_ids %>%
   left_join(dob, by="patid") %>%

@@ -88,7 +88,7 @@ print(
   )
 )
 
-analysis_prefix <- "ckd"
+analysis_prefix <- "rk_ckd"
 
 ############################################################################################
 
@@ -157,53 +157,29 @@ for (i in meds) {
   assign(raw_tablename, data)
 }
 
+raw_dementia_medications_prodcodes %>%
+  summarise(
+    prescription_issues = n(),
+    patients = n_distinct(patid)
+  ) %>%
+  collect()
 
 ############################################################################################
 
-analysis = cprd$analysis(analysis_prefix)
+analysis = cprd$analysis("rk_ckd")
 
-# get dates at 6 month intervals
-dates <- unique(c(
-  seq(
-    from = as.Date("2019-03-01"),
-    to   = as.Date("2020-09-01"),
-    by   = "6 months"
-  ),
-  seq(
-    from = as.Date("2021-03-01"),
-    to   = as.Date("2024-03-01"),
-    by   = "3 months"
-  )
-))
+#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
+#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-date_strings <- format(dates, "%Y-%m-%d")
-
-
-for (d in date_strings) {
-  print(d)
-  index_date <- as.Date(d)
- 
-#check all medication lists included
-standard_meds <- setdiff(meds, "dementia_medications")
-
-missing_standard_meds <- setdiff(
-  standard_meds,
-  names(codes)
-)
-
-if (length(missing_standard_meds) > 0) {
-  stop(
-    "The following standard medication codelists were not found: ",
-    paste(missing_standard_meds, collapse = ", ")
-  )
-}
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
+matched_cohort <- matched_cohort %>% select(patid, index_date)
 
   for (i in meds) {
     
     print(i)
     
       raw_tablename <- paste0("raw_", i, "_prodcodes")
-      index_date_merge_tablename <- paste0(d, "_full_", i, "_merge")
+      index_date_merge_tablename <- paste0("full_", i, "_merge")
       
       data <- get(raw_tablename) %>%
         
@@ -221,22 +197,19 @@ if (length(missing_standard_meds) > 0) {
       rm(data)
     }
   
-  
   ############################################################################################
   
   # Find earliest pre-index date, latest pre-index date and first post-index date dates
   
-  
   medications <- cprd$tables$patient %>%
     select(patid)
-  
   
   for (i in meds) {
     
     print(paste("working out pre- and post- index date code occurrences for", i, " at ", d))
     
-    index_date_merge_tablename <- paste0(d, "_full_", i, "_merge")
-    interim_medications_table <- paste0(d, "_meds_im_", i)
+    index_date_merge_tablename <- paste0("full_", i, "_merge")
+    interim_medications_table <- paste0("meds_im_", i)
     pre_index_date_earliest_date_variable <- paste0("pre_index_date_earliest_", i, "")
     pre_index_date_latest_date_variable <- paste0("pre_index_date_latest_", i, "")
     post_index_date_date_variable <- paste0("post_index_date_first_", i, "")
@@ -261,9 +234,7 @@ if (length(missing_standard_meds) > 0) {
     
   }
   
-  
   # Cache final version
   
-  medications <- medications %>% analysis$cached(paste0(d, "_medications"), unique_indexes="patid")
+  medications <- medications %>% analysis$cached(paste0("medications"), unique_indexes="patid")
    
-}

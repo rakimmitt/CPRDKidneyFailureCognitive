@@ -87,7 +87,7 @@ print(
   )
 )
 
-analysis_prefix = "ckd"
+analysis_prefix = "rk_ckd"
 
 ############################################################################################
 
@@ -110,7 +110,8 @@ meds <- c("ace_inhibitors",
 
 ############################################################################################
 
-# Pull out clean script instances
+# Pull out raw script instances and cache with 'all_patid' prefix
+## Some of these already exist from previous analyses
 
 analysis <- cprd$analysis("all_patid")
 
@@ -169,7 +170,6 @@ for (dc in drugclasses) {
   
   assign(prodcode_list_name, prodcode_list)
   
-  
 }
 
 raw_dementia_medications_prodcodes %>%
@@ -192,21 +192,15 @@ meds <- c(meds, drugclasses, "insulin")
 
 ############################################################################################
 
-analysis = cprd$analysis(analysis_prefix)
+analysis = cprd$analysis("rk_ckd")
 
+#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
+#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-# get dates at 6 month intervals
-dates <- seq(from = as.Date("2019-03-01"),
-             to   = as.Date("2024-03-01"),
-             by   = "6 months")
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
+matched_cohort <- matched_cohort %>% select(patid, index_date)
 
-date_strings <- format(dates, "%Y-%m-%d")
-
-
-for (d in date_strings) {
-  print(d)
-  index_date <- as.Date(d)
-  
+# load in matched_cohort and index dates (see "From Thijs_rk comorbidities" script to see how this is done)
   
   for (i in meds) {
     
@@ -215,9 +209,10 @@ for (d in date_strings) {
     if (i %in% drugclasses | i=="insulin") {
       
       clean_tablename <- paste0("clean_", i, "_prodcodes")
-      index_date_merge_tablename <- paste0(d, "_full_", i, "_merge")
+      index_date_merge_tablename <- paste0("full_", i, "_merge")
       
       data <- get(clean_tablename) %>%
+      inner_join(matched_cohort, by="patid") %>%
         mutate(datediff=datediff(date, index_date)) %>%
         analysis$cached(index_date_merge_tablename, indexes="patid")
       
@@ -227,8 +222,10 @@ for (d in date_strings) {
       
     } else {
     
+    # can remove the first if for the non_dm cohort
+
     raw_tablename <- paste0("raw_", i, "_prodcodes")
-    index_date_merge_tablename <- paste0(d, "_full_", i, "_merge")
+    index_date_merge_tablename <- paste0("full_", i, "_merge")
     
     data <- get(raw_tablename) %>%
       
@@ -236,7 +233,7 @@ for (d in date_strings) {
       # filter(date>=min_dob & date<=gp_ons_end_date) %>%
       filter(date>=min_dob & date<=gp_end_date) %>%
       select(patid, date) %>%
-      
+      inner_join(matched_cohort, by="patid") %>%
       mutate(datediff=datediff(date, index_date)) %>%
       
       analysis$cached(index_date_merge_tablename, indexes="patid")
@@ -245,24 +242,20 @@ for (d in date_strings) {
     
     rm(data)
     }
-  }
-  
   
   ############################################################################################
   
   # Find earliest pre-index date, latest pre-index date and first post-index date dates
   
-  
   medications <- cprd$tables$patient %>%
     select(patid)
-  
   
   for (i in meds) {
     
     print(paste("working out pre- and post- index date code occurrences for", i, " at ", d))
     
-    index_date_merge_tablename <- paste0(d, "_full_", i, "_merge")
-    interim_medications_table <- paste0(d, "_meds_im_", i)
+    index_date_merge_tablename <- paste0("full_", i, "_merge")
+    interim_medications_table <- paste0("meds_im_", i)
     pre_index_date_earliest_date_variable <- paste0("pre_index_date_earliest_", i, "")
     pre_index_date_latest_date_variable <- paste0("pre_index_date_latest_", i, "")
     post_index_date_date_variable <- paste0("post_index_date_first_", i, "")
@@ -287,9 +280,8 @@ for (d in date_strings) {
     
   }
   
-  
   # Cache final version
   
-  medications <- medications %>% analysis$cached(paste0(d, "_medications"), unique_indexes="patid")
+  medications <- medications %>% analysis$cached(paste0("medications"), unique_indexes="patid")
   
 }

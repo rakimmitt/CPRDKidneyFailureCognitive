@@ -54,7 +54,6 @@ kf_death_primary <- primary_death_causes %>%
   mutate(kf_death_primary_cause=1L) %>%
   analysis$cached("death_kf_primary", unique_indexes="patid")
 
-
 # Secondary causes
 
 secondary_death_causes <- cprd$tables$onsDeath %>%
@@ -77,7 +76,6 @@ kf_death_secondary <- secondary_death_causes %>%
   inner_join(codes$icd10_kf_death, sql_on="secondary_cause LIKE CONCAT(icd10,'%')") %>%
   distinct(patid) %>%
   analysis$cached("death_kf_secondary", unique_indexes="patid")
-
 
 # Join primary and secondary for any cause
 
