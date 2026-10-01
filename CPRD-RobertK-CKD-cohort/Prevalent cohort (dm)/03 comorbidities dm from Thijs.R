@@ -211,7 +211,7 @@ for (i in comorbids) {
       raw_tablename <- paste0("raw_", i, "_opcs4")
       empty_variable = paste0("_opcs4", i, "_cat")
       
-      data <- cprd$tables$hesDiagnosisEpi %>%
+      data <- cprd$tables$hesProceduresEpi %>%
         inner_join(
           readr::read_tsv(
             here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\OPCS4\\exeter_opcs4_", i, ".txt")),
@@ -219,13 +219,15 @@ for (i in comorbids) {
             rename(opcs4 = OPCS4) %>%
             select(opcs4) %>%
             mutate(!!sym(empty_variable) := NA),
-          , sql_on="LHS.ICD LIKE CONCAT(opcs4,'%')", copy = T) %>%
-        analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
+          , sql_on="LHS.OPCS4 LIKE CONCAT(opcs4,'%')", copy = T) %>%
+        analysis$cached(raw_tablename, indexes=c("patid", "evdate"))
       
       assign(raw_tablename, data)
       
     }
   }
+}
+
 }
 
 # Make new primary cause hospitalisation for heart failure, incident MI, and incident stroke comorbidities
@@ -405,5 +407,3 @@ for (i in comorbids) {
 }
 
 comorbidities <- comorbidities %>% analysis$cached("comorbidities", unique_indexes="patid")
-
-}

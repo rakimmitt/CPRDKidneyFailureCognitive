@@ -153,7 +153,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
   for (i in biomarkers) {
     
     clean_tablename <- paste0("clean_", i, "_medcodes")
-    index_date_merge_tablename <- paste0(d, "_full_", i, "_merge")
+    index_date_merge_tablename <- paste0("full_", i, "_merge")
     
     data <- get(clean_tablename) %>%
       inner_join(matched_cohort, by="patid") %>%
@@ -222,7 +222,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     
   ## Height - only keep readings at/post-index date, and find mean
   
-  table_name = paste0(d, "_full_height_merge")
+  table_name = paste0("full_height_merge")
   
   baseline_height <- get(table_name) %>%
     filter(datediff>=0) %>%

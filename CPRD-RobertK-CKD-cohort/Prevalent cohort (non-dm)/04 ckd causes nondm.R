@@ -6,10 +6,7 @@
 # Causes covered: aav, adpkd, alport, antigbm, fabry, fsgs, gn_nos, igan,
 #                 mcd, membranous, mpgn, other_pkd, sle
 #
-# Raw GP medcode and HES ICD-10 tables are shared with 04 comorbidities nondm.R:
-# if those already exist (analysis$cached is idempotent), no recomputation occurs.
-#
-# Output table: ckd_ckd_causes (one row per patid)
+# Output table: rk_ckd_ckd_causes (one row per patid)
 #   - ckd_cause_{cause}          : 1 if patient has any ever-recorded code, 0 otherwise
 #   - ckd_cause_earliest_{cause} : date of earliest recorded code (any source)
 #   - any_pkd_cause              : 1 if adpkd or other_pkd
@@ -28,7 +25,7 @@ cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024", cprdConf = "C:\\Users\\rk53
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-analysis_prefix <- "ckd"
+analysis_prefix <- "rk_ckd"
 
 codepath <- "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\CKD causes\\"
 
@@ -38,7 +35,6 @@ ckd_causes <- c(
   "aav", "adpkd", "alport", "antigbm", "fabry", "fsgs",
   "gn_nos", "igan", "mcd", "membranous", "mpgn", "other_pkd", "sle"
 )
-
 
 # Read codelists from local files
 cause_codes <- list()
@@ -57,9 +53,7 @@ for (i in ckd_causes) {
     col_types = cols(.default = col_character())
   ) %>%
     select(ICD10)
-
 }
-
 
 ############################################################################################
 
@@ -95,9 +89,7 @@ for (i in ckd_causes) {
 
     assign(raw_tablename, data)
   }
-
 }
-
 
 ############################################################################################
 
@@ -110,7 +102,6 @@ analysis <- cprd$analysis(analysis_prefix)
 ckd_causes_table <- cprd$tables$patient %>%
   select(patid)
 
-
 for (i in ckd_causes) {
 
   print(paste("Processing CKD cause:", i))
@@ -121,7 +112,6 @@ for (i in ckd_causes) {
 
   medcode_tablename <- paste0("raw_", i, "_medcodes")
   icd10_tablename   <- paste0("raw_", i, "_icd10")
-
 
   # Combine GP and HES codes, applying date validity filters
 
@@ -156,9 +146,7 @@ for (i in ckd_causes) {
 
     # No tables available for this cause - skip
     next
-
   }
-
 
   # Aggregate to patient level: earliest ever code date
   cause_summary <- all_codes %>%
@@ -178,9 +166,7 @@ for (i in ckd_causes) {
       !!ever_flag_var := as.integer(!is.na(!!earliest_date_var_sym))
     ) %>%
     analysis$cached(interim_table, indexes = "patid")
-
 }
-
 
 ############################################################################################
 

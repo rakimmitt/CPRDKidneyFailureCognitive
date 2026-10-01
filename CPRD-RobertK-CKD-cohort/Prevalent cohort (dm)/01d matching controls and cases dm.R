@@ -242,7 +242,6 @@ matched_cohort <- copy_to(
   indexes = c("is_case", "matched_case_patid", "index_date")
 )
 
-
 # 5. Check control reuse and display the number of controls per case
 stopifnot(
   !anyDuplicated(matched_controls$patid),

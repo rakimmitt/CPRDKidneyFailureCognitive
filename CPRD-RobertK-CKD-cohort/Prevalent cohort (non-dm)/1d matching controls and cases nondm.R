@@ -229,12 +229,21 @@ matched_cohort <- bind_rows(
 
 analysis = cprd$analysis("rk_ckd")
 
-matched_cohort %>%
-  select(patid, is_case, matched_case_patid, matched_case_index_date,
-         index_date, dob, gender, ethnicity_5cat, imd_decile, pracid, regstartdate, gp_end_date,
-         hes_end_date) %>%
-  analysis$cached("matched_cohort", unique_indexes="patid",
-                  indexes=c("is_case", "matched_case_patid", "index_date"))
+matched_cohort <- copy_to(
+  dest = analysis$.con,
+  df = matched_cohort %>%
+    select(patid, is_case, matched_case_patid, matched_case_index_date,
+           index_date, dob, gender, ethnicity_5cat, imd_decile, regstartdate,
+           gp_end_date, hes_end_date),
+  name = dbplyr::in_schema(
+  analysis$.analysisDb,
+  "rk_ckd_matched_cohort"
+  ),
+  overwrite = TRUE,
+  temporary = FALSE,
+  unique_indexes = "patid",
+  indexes = c("is_case", "matched_case_patid", "index_date")
+)
 
 # 5. Check control reuse and display the number of controls per case
 stopifnot(

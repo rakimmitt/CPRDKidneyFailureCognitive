@@ -63,7 +63,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
                               ifelse(`Active smoker`==0 & `Ex-smoker`==1, "Ex-smoker",
                                      ifelse(`Active smoker`==0 & `Ex-smoker`==0 & `Non-smoker`==1, "Non-smoker", NA)))) %>%
     select(patid, most_recent_code=smoking_cat) %>%
-    analysis$cached(paste0(d, "_smoking_im_1"), unique_indexes="patid")
+    analysis$cached(paste0("smoking_im_1"), unique_indexes="patid")
   
   ### Find next recorded code (to use for those with conflicting categories on most recent date)
   next_most_recent_code <- pre_index_date_smoking_codes %>%
@@ -79,7 +79,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
                               ifelse(`Active smoker`==0 & `Ex-smoker`==1, "Ex-smoker",
                                      ifelse(`Active smoker`==0 & `Ex-smoker`==0 & `Non-smoker`==1, "Non-smoker", NA)))) %>%
     select(patid, next_most_recent_code=smoking_cat) %>%
-    analysis$cached(paste0(d, "_smoking_im_2"), unique_indexes="patid")
+    analysis$cached(paste0("smoking_im_2"), unique_indexes="patid")
   
   ### Pull together
   smoking_cat <- cprd$tables$patient %>%
@@ -90,7 +90,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     mutate(most_recent_code=coalesce(most_recent_code, next_most_recent_code),
            smoking_cat=ifelse(most_recent_code=="Non-smoker" & !is.na(smoked_ever_flag) & smoked_ever_flag==1, "Ex-smoker", most_recent_code)) %>%
     select(-c(most_recent_code, next_most_recent_code, smoked_ever_flag)) %>%
-    analysis$cached(paste0(d, "_smoking_im_3"), unique_indexes="patid")
+    analysis$cached(paste0("smoking_im_3"), unique_indexes="patid")
   
   # Work out smoking status from QRISK2 algorithm
   
@@ -103,7 +103,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     mutate(qrisk2_smoking=ifelse(is.na(testvalue) | qrisk2_smoking_cat==1 | medcodeid==1780396011 | (!is.na(numunitid) & numunitid!=39 & numunitid!=118 & numunitid!=247 & numunitid!=98 & numunitid!=120 & numunitid!=237 & numunitid!=478 & numunitid!=1496 & numunitid!=1394 & numunitid!=1202 & numunitid!=38), qrisk2_smoking_cat,
                                  ifelse(testvalue<10, 2L,
                                         ifelse(testvalue<20, 3L, 4L)))) %>%
-    analysis$cached(paste0(d, "_smoking_im_4"), indexes="patid")
+    analysis$cached(paste0("smoking_im_4"), indexes="patid")
   
   ## If both non- and ex-smoker, use ex-smoker
   ## If conflicting categories (non- and active- / ex- and active-), use minimum
@@ -117,7 +117,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
                                                    ifelse(cat_0==0 & cat_1==0 & cat_2==0 & cat_3==1, 3L,
                                                           ifelse(cat_0==0 & cat_1==0 & cat_2==0 & cat_3==0 & cat_4==1, 4L, NA)))))) %>%
     select(patid, qrisk2_smoking_cat) %>%
-    analysis$cached(paste0(d, "_smoking_im_5"), unique_indexes="patid")
+    analysis$cached(paste0("smoking_im_5"), unique_indexes="patid")
   
   # Join results of our algorithm and QRISK2 algorithm and add uncoded version of QRISK2 category
   
@@ -130,4 +130,4 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
                                                 qrisk2_smoking_cat==2 ~ "Light smoker",
                                                 qrisk2_smoking_cat==3 ~ "Moderate smoker",
                                                 qrisk2_smoking_cat==4 ~ "Heavy smoker")) %>%
-    analysis$cached(paste0("_smoking"), unique_indexes="patid")
+    analysis$cached(paste0("smoking"), unique_indexes="patid")
