@@ -242,7 +242,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     
     rm(data)
     }
-  
+  }
   ############################################################################################
   
   # Find earliest pre-index date, latest pre-index date and first post-index date dates
@@ -252,7 +252,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
   
   for (i in meds) {
     
-    print(paste("working out pre- and post- index date code occurrences for", i, " at ", d))
+    print(paste("working out pre- and post- index date code occurrences for", i)
     
     index_date_merge_tablename <- paste0("full_", i, "_merge")
     interim_medications_table <- paste0("meds_im_", i)
@@ -283,5 +283,3 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
   # Cache final version
   
   medications <- medications %>% analysis$cached(paste0("medications"), unique_indexes="patid")
-  
-  }

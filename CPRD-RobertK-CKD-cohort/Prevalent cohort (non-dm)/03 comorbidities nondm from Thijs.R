@@ -9,7 +9,7 @@ rm(list=ls())
 cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
 
 codesets = cprd$codesets()
-codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
+codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
 ############################################################################################
 
@@ -99,7 +99,7 @@ comorbids <- c("acutepancreatitis",
                "pneumonia",
                "sepsis",
                "surgicalsiteinfection",
-               "tuberculosis"
+               "tuberculosis",
                "alldementia", # henceforth these are local
                "alzheimers",
                "ckd5_nokrt",
@@ -139,7 +139,7 @@ for (i in comorbids) {
                "vascular_dementia",
                "uti",
                "skininfection",
-               "respiratorytractinfection"))
+               "respiratorytractinfection")) {}
 
   # medcodes
   if (length(codes[[i]]) > 0) {
@@ -148,7 +148,7 @@ for (i in comorbids) {
     raw_tablename <- paste0("raw_", i, "_medcodes")
     
     data <- cprd$tables$observation %>%
-      inner_join(codes[[i]], by="medcodeid", copy = use_local_codes) %>% # include copy = use_local_codes so that local data gets copied into mysql table
+      inner_join(codes[[i]], by="medcodeid") %>%
       analysis$cached(raw_tablename, indexes=c("patid", "obsdate"))
     
     assign(raw_tablename, data)
@@ -161,7 +161,7 @@ for (i in comorbids) {
     raw_tablename <- paste0("raw_", i, "_icd10")
     
     data <- cprd$tables$hesDiagnosisEpi %>%
-      inner_join(codes[[paste0("icd10_",i)]], sql_on="LHS.ICD LIKE CONCAT(icd10,'%')", copy = use_local_codes) %>% # include copy = T so that local data gets copied into mysql table
+      inner_join(codes[[paste0("icd10_",i)]], sql_on="LHS.ICD LIKE CONCAT(icd10,'%')") %>% 
       analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
     
     assign(raw_tablename, data)
@@ -174,7 +174,7 @@ for (i in comorbids) {
     raw_tablename <- paste0("raw_", i, "_opcs4")
     
     data <- cprd$tables$hesProceduresEpi %>%
-      inner_join(codes[[paste0("opcs4_",i)]], sql_on="LHS.OPCS LIKE CONCAT(opcs4,'%')", copy = use_local_codes) %>%
+      inner_join(codes[[paste0("opcs4_",i)]], sql_on="LHS.OPCS LIKE CONCAT(opcs4,'%')") %>%
       analysis$cached(raw_tablename, indexes=c("patid", "evdate"))
     
     assign(raw_tablename, data)
@@ -229,7 +229,7 @@ for (i in comorbids) {
       raw_tablename <- paste0("raw_", i, "_opcs4")
       empty_variable = paste0("_opcs4", i, "_cat")
       
-      data <- cprd$tables$hesDiagnosisEpi %>%
+      data <- cprd$tables$hesProceduresEpi %>%
         inner_join(
           readr::read_tsv(
             here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\OPCS4\\exeter_opcs4_", i, ".txt")),
@@ -237,15 +237,15 @@ for (i in comorbids) {
             rename(opcs4 = OPCS4) %>%
             select(opcs4) %>%
             mutate(!!sym(empty_variable) := NA),
-          , sql_on="LHS.ICD LIKE CONCAT(opcs4,'%')", copy = T) %>%
-        analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
+          , sql_on="LHS.OPCS LIKE CONCAT(opcs4,'%')", copy = T) %>%
+        analysis$cached(raw_tablename, indexes=c("patid", "evdate"))
       
       assign(raw_tablename, data)
       
     }
   }
 }
-
+}
 # Make new primary cause hospitalisation for heart failure, incident MI, and incident stroke comorbidities
 
 raw_primary_hhf_icd10 <- raw_heartfailure_icd10 %>%
@@ -397,10 +397,10 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
   
   for (i in comorbids) {
     
-    print(paste("working out pre- and post-index date code occurrences for ", i, " at ", d))
+    print(paste("working out pre- and post-index date code occurrences for ", i))
     
-    index_date_merge_tablename <- paste0(d, "_full_", i, "_merge")
-    interim_comorbidity_table <- paste0(d, "_comorbidities_im_", i)
+    index_date_merge_tablename <- paste0("_full_", i, "_merge")
+    interim_comorbidity_table <- paste0("_comorbidities_im_", i)
     pre_index_date_earliest_date_variable <- paste0("pre_index_date_earliest_", i)
     pre_index_date_latest_date_variable <- paste0("pre_index_date_latest_", i)
     pre_index_date_variable <- paste0("pre_index_date_", i)
@@ -428,6 +428,4 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
       analysis$cached(interim_comorbidity_table, unique_indexes="patid")
   }
   
-  comorbidities <- comorbidities %>% analysis$cached(paste0(d, "_comorbidities"), unique_indexes="patid")
-  
-}
+  comorbidities <- comorbidities %>% analysis$cached(paste0("_comorbidities"), unique_indexes="patid")

@@ -227,7 +227,6 @@ for (i in comorbids) {
     }
   }
 }
-
 }
 
 # Make new primary cause hospitalisation for heart failure, incident MI, and incident stroke comorbidities
