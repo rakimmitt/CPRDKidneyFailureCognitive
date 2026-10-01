@@ -232,7 +232,10 @@ matched_cohort <- copy_to(
     select(patid, is_case, matched_case_patid, matched_case_index_date,
            index_date, dob, gender, ethnicity_5cat, imd_decile, regstartdate,
            gp_end_date, hes_end_date),
-  name = "rk_ckd_matched_cohort",
+  name = dbplyr::in_schema(
+  analysis$.analysisDb,
+  "rk_ckd_matched_cohort"
+  ),
   overwrite = TRUE,
   temporary = FALSE,
   unique_indexes = "patid",

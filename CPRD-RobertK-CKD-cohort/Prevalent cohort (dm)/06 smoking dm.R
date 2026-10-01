@@ -10,7 +10,7 @@ cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\O
 codesets = cprd$codesets()
 codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-analysis_prefix = "ckd"
+analysis_prefix = "rk_ckd"
 
 ############################################################################################
 # Pull out all clean code instances 
@@ -20,7 +20,6 @@ analysis = cprd$analysis("all_patid")
 clean_smoking_medcodes <- clean_smoking_medcodes %>%
   analysis$cached("clean_smoking_medcodes", indexes=c("patid", "date", "smoking_cat", "qrisk2_smoking_cat"))
 
-
 ############################################################################################
 
 # Find smoking status according to both algorithms at index date
@@ -29,25 +28,17 @@ clean_smoking_medcodes <- clean_smoking_medcodes %>%
 
 analysis = cprd$analysis(analysis_prefix)
 
-# get dates at 6 month intervals
-dates <- seq(from = as.Date("2019-03-01"),
-             to   = as.Date("2024-03-01"),
-             by   = "6 months")
+#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
+#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-date_strings <- format(dates, "%Y-%m-%d")
-
-
-for (d in date_strings) {
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
+matched_cohort <- matched_cohort %>% select(patid, index_date)
   
-  index_date <- as.Date(d)
-  print(d)
-  
-  ## Join with smoking codes on patid and retain codes before index date or up to 7 days after
+## Join with smoking codes on patid and retain codes before index date or up to 7 days after
+
   pre_index_date_smoking_codes <- clean_smoking_medcodes %>%
     filter(datediff(date, index_date)<=7) %>%
     analysis$cached(paste0(d, "_smoking_merge"), indexes=c("patid", "smoking_cat", "qrisk2_smoking_cat"))
-  
-  
   
   ## Find smoking status at index date according to our algorithm
   
@@ -101,8 +92,6 @@ for (d in date_strings) {
     select(-c(most_recent_code, next_most_recent_code, smoked_ever_flag)) %>%
     analysis$cached(paste0(d, "_smoking_im_3"), unique_indexes="patid")
   
-  
-  
   # Work out smoking status from QRISK2 algorithm
   
   ## Only keep codes within 5 years, keep those on most recent date, and convert to QRISK2 categories using testvalues (only use testvalues if valid numunitid)
@@ -130,8 +119,6 @@ for (d in date_strings) {
     select(patid, qrisk2_smoking_cat) %>%
     analysis$cached(paste0(d, "_smoking_im_5"), unique_indexes="patid")
   
-  
-  
   # Join results of our algorithm and QRISK2 algorithm and add uncoded version of QRISK2 category
   
   smoking <- cprd$tables$patient %>%
@@ -143,5 +130,4 @@ for (d in date_strings) {
                                                 qrisk2_smoking_cat==2 ~ "Light smoker",
                                                 qrisk2_smoking_cat==3 ~ "Moderate smoker",
                                                 qrisk2_smoking_cat==4 ~ "Heavy smoker")) %>%
-    analysis$cached(paste0(d, "_smoking"), unique_indexes="patid")
-}
+    analysis$cached(paste0("_smoking"), unique_indexes="patid")

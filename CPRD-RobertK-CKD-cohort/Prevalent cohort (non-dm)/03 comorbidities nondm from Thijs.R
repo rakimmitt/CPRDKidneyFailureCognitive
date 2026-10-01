@@ -11,103 +11,6 @@ cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535
 codesets = cprd$codesets()
 codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-# Load Robert's additional codelists locally
-
-codelist_root <- paste0(
-  "C:/Users/rk535/OneDrive/1 - PhD/Data Science/CPRD/",
-  "Github clone/CPRDKidneyFailureCognitive/CPRD-Codelists"
-)
-
-custom_codelist_directories <- c(
-  file.path(codelist_root, "Medcodes"),
-  file.path(codelist_root, "ICD10"),
-  file.path(codelist_root, "OPCS4")
-)
-
-missing_directories <- custom_codelist_directories[
-  !dir.exists(custom_codelist_directories)
-]
-
-if (length(missing_directories) > 0) {
-  stop(
-    "The following codelist directories were not found: ",
-    paste(missing_directories, collapse = ", ")
-  )
-}
-
-read_local_codelists <- function(directories) {
-
-  files <- unlist(
-    lapply(
-      directories,
-      list.files,
-      pattern = "\\.txt$",
-      recursive = TRUE,
-      full.names = TRUE
-    )
-  )
-
-  output <- list()
-
-  for (file in files) {
-
-    codelist <- readr::read_tsv(
-      file,
-      col_types = readr::cols(.default = readr::col_character()),
-      show_col_types = FALSE,
-      progress = FALSE
-    ) %>%
-      rename_with(stringr::str_to_lower)
-
-    code_columns <- intersect(
-      names(codelist),
-      c("medcodeid", "icd10", "opcs4")
-    )
-
-    if (length(code_columns) != 1) {
-      warning(
-        "Skipping ", file,
-        ": expected exactly one of medcodeid, icd10 or opcs4"
-      )
-      next
-    }
-
-    code_column <- code_columns[[1]]
-
-    codelist <- codelist %>%
-      filter(
-        !is.na(.data[[code_column]]),
-        .data[[code_column]] != ""
-      )
-
-    code_name <- file %>%
-      basename() %>%
-      tools::file_path_sans_ext() %>%
-      stringr::str_to_lower() %>%
-      stringr::str_remove("^exeter_medcodelist_") %>%
-      stringr::str_remove("^exeter_")
-
-    if (code_name %in% names(output)) {
-      stop(
-        "More than one local codelist generated the name: ",
-        code_name
-      )
-    }
-
-    output[[code_name]] <- codelist
-  }
-
-  output
-}
-
-custom_codes <- read_local_codelists(
-  custom_codelist_directories
-)
-
-sort(names(custom_codes))
-
-analysis_prefix <- "ckd"
-
 ############################################################################################
 
 comorbids <- c("acutepancreatitis",
@@ -197,10 +100,7 @@ comorbids <- c("acutepancreatitis",
                "sepsis",
                "surgicalsiteinfection",
                "tuberculosis"
-)
-
-custom_comorbids <- c(
-               "alldementia",
+               "alldementia", # henceforth these are local
                "alzheimers",
                "ckd5_nokrt",
                "ckd5",
@@ -216,8 +116,6 @@ custom_comorbids <- c(
                "respiratorytractinfection"
 )
 
-comorbids <- unique(c(comorbids, custom_comorbids))
-
 ############################################################################################
 
 # Pull out all raw code instances and cache with 'all_patid' prefix
@@ -229,15 +127,21 @@ analysis = cprd$analysis("all_patid")
 
 for (i in comorbids) {
   
-  use_local_codes <- i %in% custom_comorbids
+  if (!i %in% c("alldementia",
+               "alzheimers",
+               "ckd5_nokrt",
+               "delirium",
+               "haemodialysis",
+               "mci",
+               "peritoneal_dialysis",
+               "renalaccessinfection",
+               "transplant",
+               "vascular_dementia",
+               "uti",
+               "skininfection",
+               "respiratorytractinfection"))
 
-  if (use_local_codes) {
-    codes <- custom_codes
-  } else {
-    codes <- codes_2024
-  }
-
-  #medcodes
+  # medcodes
   if (length(codes[[i]]) > 0) {
     print(paste("making", i, "medcode table"))
     
@@ -277,8 +181,70 @@ for (i in comorbids) {
     
   }
   
-}
+} else {
+    
+    if (i != "aki") {
+      print(paste("making", i, "medcode table"))
+      
+      raw_tablename <- paste0("raw_", i, "_medcodes")
+      
+      #placeholder variable that all other codelists have on server
+      empty_variable = paste0(i, "_cat")
+      
+      data <- cprd$tables$observation %>%
+        inner_join( readr::read_tsv(
+          here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\Medcodes\\exeter_medcodelist_", i, ".txt")),
+          col_types = cols(.default=col_character())) %>%
+            rename(medcodeid=MedCodeId) %>%
+            select(medcodeid) %>%
+            mutate(!!sym(empty_variable) := NA), 
+          by="medcodeid", copy = T) %>%
+        analysis$cached(raw_tablename, indexes=c("patid", "obsdate"))
+      
+      assign(raw_tablename, data)
+    }
+    
+    if (i != "cerumen") {
+      print(paste("making", i, "ICD10 code table"))
+      
+      raw_tablename <- paste0("raw_", i, "_icd10")
+      empty_variable = paste0("icd10_", i, "_cat")
+      
+      data <- cprd$tables$hesDiagnosisEpi %>%
+        inner_join(
+          readr::read_tsv(
+            here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\ICD10\\exeter_icd10_", i, ".txt")),
+            col_types = cols(.default=col_character())) %>% 
+            rename(icd10 = ICD10) %>%
+            select(icd10) %>%
+            mutate(!!sym(empty_variable) := NA),
+          , sql_on="LHS.ICD LIKE CONCAT(icd10,'%')", copy = T) %>%
+        analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
+      
+      assign(raw_tablename, data)
 
+     if (i != "cerumen") {
+      print(paste("making", i, "OPCS4 code table"))
+      
+      raw_tablename <- paste0("raw_", i, "_opcs4")
+      empty_variable = paste0("_opcs4", i, "_cat")
+      
+      data <- cprd$tables$hesDiagnosisEpi %>%
+        inner_join(
+          readr::read_tsv(
+            here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\OPCS4\\exeter_opcs4_", i, ".txt")),
+            col_types = cols(.default=col_character())) %>% 
+            rename(opcs4 = OPCS4) %>%
+            select(opcs4) %>%
+            mutate(!!sym(empty_variable) := NA),
+          , sql_on="LHS.ICD LIKE CONCAT(opcs4,'%')", copy = T) %>%
+        analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
+      
+      assign(raw_tablename, data)
+      
+    }
+  }
+}
 
 # Make new primary cause hospitalisation for heart failure, incident MI, and incident stroke comorbidities
 
@@ -319,30 +285,21 @@ comorbids <- c("fh_diabetes_positive", "fh_diabetes_negative", comorbids)
 
 ## Get index date
 
-analysis = cprd$analysis(analysis_prefix)
+analysis = cprd$analysis("rk_ckd")
 
-# 6-monthly dates for 2019-2021 (prevalent cohort), then 3-monthly from 2021 onwards
-# (3-monthly required for sequential trial emulation of SGLT2i in non-DM CKD)
-dates <- unique(c(
-  seq(from = as.Date("2019-03-01"), to = as.Date("2020-09-01"), by = "6 months"),
-  seq(from = as.Date("2021-03-01"), to = as.Date("2024-03-01"), by = "3 months")
-))
+#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
+#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-date_strings <- format(dates, "%Y-%m-%d")
-
-
-for (d in date_strings) {
-  
-  index_date <- as.Date(d)
-  print(d)
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
+matched_cohort <- matched_cohort %>% select(patid, index_date)
   
   ## Clean comorbidity data and combine with index date
   
   for (i in comorbids) {
     
-    print(paste("merging index date ", d, " with", i, "code occurrences"))
+    print(paste("merging index date with", i, "code occurrences"))
     
-    index_date_merge_tablename <- paste0(d, "_full_", i, "_merge")
+    index_date_merge_tablename <- paste0("full_", i, "_merge")
     
     medcode_tablename <- paste0("raw_", i, "_medcodes")
     icd10_tablename <- paste0("raw_", i, "_icd10")
@@ -418,6 +375,7 @@ for (d in date_strings) {
     rm(all_codes)
     
     data <- all_codes_clean %>%
+      inner_join(matched_cohort, by="patid") %>%
       mutate(datediff=datediff(date, index_date)) %>%
       analysis$cached(index_date_merge_tablename, index="patid")
     

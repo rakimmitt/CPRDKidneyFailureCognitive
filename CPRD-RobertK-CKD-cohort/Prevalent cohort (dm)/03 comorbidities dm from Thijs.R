@@ -1,5 +1,3 @@
-# To-do: likely will need to amend the local OPCS4 reading in code
-
 ############################################################################################
 
 # Setup
@@ -12,8 +10,6 @@ cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\O
 
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
-
-analysis_prefix <- "ckd"
 
 ############################################################################################
 
@@ -117,7 +113,6 @@ for (i in comorbids) {
   if (!i %in% c("alldementia",
                "alzheimers",
                "ckd5_nokrt",
-               "ckd5",
                "delirium",
                "haemodialysis",
                "mci",
@@ -219,7 +214,7 @@ for (i in comorbids) {
       data <- cprd$tables$hesDiagnosisEpi %>%
         inner_join(
           readr::read_tsv(
-            here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\OPCS4\\exeter_icd10_", i, ".txt")),
+            here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\OPCS4\\exeter_opcs4_", i, ".txt")),
             col_types = cols(.default=col_character())) %>% 
             rename(opcs4 = OPCS4) %>%
             select(opcs4) %>%

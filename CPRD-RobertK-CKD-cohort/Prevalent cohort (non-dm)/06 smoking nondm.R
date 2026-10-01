@@ -6,10 +6,7 @@ library(aurum)
 library(EHRBiomarkr)
 rm(list=ls())
 
-
 cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
-
-
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
@@ -19,12 +16,6 @@ analysis_prefix <- "ckd"
 # Pull out all raw code instances and cache with 'all_patid' prefix
 
 analysis = cprd$analysis("all_patid")
-
-## Check codelists are identical
-codes$smoking %>% count()          #198
-codes$qrisk2_smoking %>% count()   #198
-codes$smoking %>% inner_join(codes$qrisk2_smoking, by="medcodeid") %>% count()  #198
-
 
 raw_smoking_medcodes <- cprd$tables$observation %>%
   inner_join(codes$smoking, by="medcodeid") %>%
@@ -55,27 +46,17 @@ clean_smoking_medcodes <- raw_smoking_medcodes %>%
 
 analysis = cprd$analysis(analysis_prefix)
 
-# 6-monthly dates for 2019-2021 (prevalent cohort), then 3-monthly from 2021 onwards
-# (3-monthly required for sequential trial emulation of SGLT2i in non-DM CKD)
-dates <- unique(c(
-  seq(from = as.Date("2019-03-01"), to = as.Date("2020-09-01"), by = "6 months"),
-  seq(from = as.Date("2021-03-01"), to = as.Date("2024-03-01"), by = "3 months")
-))
+#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
+#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-date_strings <- format(dates, "%Y-%m-%d")
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
+matched_cohort <- matched_cohort %>% select(patid, index_date)
 
-
-for (d in date_strings) {
-  
-  index_date <- as.Date(d)
-  print(d)
-  
   ## Join with smoking codes on patid and retain codes before index date or up to 7 days after
+  
   pre_index_date_smoking_codes <- clean_smoking_medcodes %>%
     filter(datediff(date, index_date)<=7) %>%
     analysis$cached(paste0(d, "_smoking_merge"), indexes=c("patid", "smoking_cat", "qrisk2_smoking_cat"))
-  
-  
   
   ## Find smoking status at index date according to our algorithm
   
@@ -171,7 +152,7 @@ for (d in date_strings) {
                                                 qrisk2_smoking_cat==2 ~ "Light smoker",
                                                 qrisk2_smoking_cat==3 ~ "Moderate smoker",
                                                 qrisk2_smoking_cat==4 ~ "Heavy smoker")) %>%
-    analysis$cached(paste0(d, "_smoking"), unique_indexes="patid")
+    analysis$cached(paste0("_smoking"), unique_indexes="patid")
   
   rm(pre_index_date_smoking_codes)
   rm(smoker_ever)
@@ -180,4 +161,3 @@ for (d in date_strings) {
   rm(smoking_cat)
   rm(qrisk2_smoking_cat)
   rm(smoking)
-}
