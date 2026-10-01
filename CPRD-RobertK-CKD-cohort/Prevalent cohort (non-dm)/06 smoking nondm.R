@@ -10,7 +10,7 @@ cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-analysis_prefix <- "ckd"
+analysis_prefix <- "rk_ckd"
 
 ############################################################################################
 # Pull out all raw code instances and cache with 'all_patid' prefix

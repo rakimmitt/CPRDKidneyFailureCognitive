@@ -104,7 +104,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
       data <- medcodes_clean %>%
         inner_join(matched_cohort, by = "patid") %>%
         mutate(datediff = datediff(date, index_date)) %>%
-        analysis$cached(index_date_m_tablename, index = "patid")
+        analysis$cached(index_date_m_tablename, indexes = "patid")
 
       rm(medcodes_clean)
 
@@ -116,17 +116,14 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     else {
   stop("Missing raw eFI table: ", medcode_tablename)
 }
-
-  }
+}
 
   ############################################################################################
 
   # Find if there has been any pre-index-date occurrence of each deficit
 
   # Initialise efi table from all patients
-  efi <- cprd$tables$patient %>%
-    select(patid)
-
+  efi <- matched_cohort %>% distinct(patid)
 
   for (deficit in efi_deficits) {
 

@@ -1,4 +1,3 @@
-
 # Calculates electronic frailty index (https://pubmed.ncbi.nlm.nih.gov/26944937/) at index date
 # Polypharmacy assumed to be 1
 

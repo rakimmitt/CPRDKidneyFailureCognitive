@@ -1,0 +1,50 @@
+# Setup
+
+library(tidyverse)
+library(aurum)
+
+cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
+codesets = cprd$codesets()
+codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
+
+# Load the longitudinal CKD-stage table.
+
+analysis = cprd$analysis("all_patid")
+
+ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
+  analysis$cached("ckd_stages_from_algorithm")
+
+# Load patient-specific index dates.
+
+analysis = cprd$analysis("rk_ckd")
+
+matched_cohort <- matched_cohort %>%
+  analysis$cached("matched_cohort")
+
+index_dates <- matched_cohort %>%
+  select(patid, index_date)
+
+# Join stage dates to each patient's index date.
+stage_at_index <- index_dates %>%
+  left_join(ckd_stages_from_algorithm, by = "patid") %>%
+  mutate(
+    index_date_ckd_stage = case_when(
+      !is.na(stage_5) & stage_5 <= index_date ~ "5",
+      !is.na(stage_4) & stage_4 <= index_date ~ "4",
+      !is.na(stage_3b) & stage_3b <= index_date ~ "3b",
+      !is.na(stage_3a) & stage_3a <= index_date ~ "3a",
+      !is.na(stage_2) & stage_2 <= index_date ~ "2",
+      !is.na(stage_1) & stage_1 <= index_date ~ "1",
+      TRUE ~ NA_character_
+    )
+  )
+
+# Keep one stage per patient and cache.
+ckd_stages <- stage_at_index %>%
+  select(patid, index_date_ckd_stage) %>%
+  analysis$cached("ckd_stages", unique_indexes = "patid")
+
+# Summarise.
+ckd_stages %>%
+  count(index_date_ckd_stage) %>%
+  collect()

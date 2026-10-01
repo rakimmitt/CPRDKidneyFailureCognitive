@@ -16,7 +16,6 @@ analysis_prefix <- "rk_ckd"
 
 ## Cohort and patient characteristics
 analysis = cprd$analysis("all")
-ckd_cohort <- ckd_cohort %>% analysis$cached("ckd_cohort")
 death_causes <- death_causes %>% analysis$cached("death_causes")
 
 analysis = cprd$analysis("all_patid")
