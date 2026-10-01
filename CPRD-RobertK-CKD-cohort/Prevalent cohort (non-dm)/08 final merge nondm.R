@@ -25,15 +25,7 @@ townsend_score <- townsend_score %>% analysis$cached("townsend_score")
 analysis = cprd$analysis(analysis_prefix)
 ckd_causes <- ckd_causes %>% analysis$cached("ckd_causes")
 
-## Get index date
-
-analysis = cprd$analysis(analysis_prefix)
-
-#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
-#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
-
 matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
-matched_cohort <- matched_cohort %>% select(patid, index_date)
 
 # create empty dataframe for counts of total population / subset with CKD
 counts <- data.frame()
@@ -50,6 +42,10 @@ smoking <- smoking %>% analysis$cached("smoking")
   
 ## Medications
 medications <- medications %>% analysis$cached("medications")
+
+# EFI
+
+efi <- efi %>% analysis$cached("efi")
   
   
 ############################################################################################
@@ -64,6 +60,7 @@ medications <- medications %>% analysis$cached("medications")
     left_join(smoking, by="patid") %>%
     left_join(medications, by="patid") %>%
     left_join(townsend_score %>% select(patid, tds_2011), by = "patid") %>% 
+    left_join(efi %>% select(patid, efi_n_deficits, pre_index_date_efi_score, pre_index_date_efi_cat), by = "patid") %>%
     left_join(death_causes, by = "patid") %>%
     mutate(index_date_age=datediff(index_date, dob)/365.25,
            index_date_ckd_dur_all=datediff(index_date, first_ckd_date)/365.25,
@@ -73,33 +70,23 @@ medications <- medications %>% analysis$cached("medications")
   
   ############################################################################################
   
-  # Export to R data object
-  ## Convert integer64 datatypes to double
-  
-  prev_cohort <- collect(final_merge %>% mutate(patid=as.character(patid)))
-  
-  is.integer64 <- function(x){
-    class(x)=="integer64"
-  }
-  
-  prev_cohort <- prev_cohort %>%
-    mutate_if(is.integer64, as.integer) %>%
-    mutate(index_date = as.Date(d))
-  
-  # Create a valid name (no dashes)
-  df_name <- paste0("prev_", gsub("-", "_", d), "_nondm")
-  
-  # Assign name
-  assign(df_name, prev_cohort, envir = .GlobalEnv)
-  
-  setwd("C:/Users/tj358/OneDrive - University of Exeter/CPRD/2024/Raw data/")
-  save(list = df_name, file=paste0(today, "_prev_ckd_cohort_nondm_", d, ".Rda"))
+# Export to R data object
+# Preserve all integer64 identifiers exactly as character strings.
+
+prev_cohort <- final_merge %>%
+  collect() %>%
+  mutate(
+    across(where(bit64::is.integer64), as.character),
+    index_date = as.Date(index_date)
+  )
+
+today <- format(Sys.Date(), "%Y%m%d")
+
+save(prev_cohort, file = paste0("C:/Users/rk535/OneDrive - University of Exeter/","CPRD/2024/Raw data/", today, "_matched_ckd_cohort_nondm.Rda"))
   
   rm(medications)
   rm(baseline_biomarkers)
   rm(comorbidities)
   rm(ckd_stages)
   rm(smoking)
-  rm(cohort_ids)
   rm(final_merge)
-}

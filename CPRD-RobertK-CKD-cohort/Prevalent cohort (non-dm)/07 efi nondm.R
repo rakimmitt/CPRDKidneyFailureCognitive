@@ -12,14 +12,14 @@ rm(list=ls())
 
 cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024", cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
 codesets = cprd$codesets()
-codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
+codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
 analysis_prefix = "rk_ckd"
 
 ############################################################################################
 
 # Create a vector of all codelist names that start with "efi_"
-efi_deficits <- grep("^efi_", names(codes_2024), value = TRUE)
+efi_deficits <- grep("^efi_", names(codes), value = TRUE)
 
 # List of deficit names to shorten (to avoid 64-character MySQL table name limit)
 short_deficit_map <- list(
@@ -45,17 +45,17 @@ analysis <- cprd$analysis("all_patid")
 for (deficit in efi_deficits) {
 
   # If the codelist is not empty
-  if (length(codes_2024[[deficit]]) > 0) {
+  if (length(codes[[deficit]]) > 0) {
 
     print(paste("making", deficit, "medcode table"))
 
     # Shorten deficit name for table naming
-    deficit_short <- get_short_deficit(deficit)
+    short_deficit <- get_short_deficit(deficit)
 
-    raw_tablename <- paste0("raw_", deficit_short, "_medcodes")
+    raw_tablename <- paste0("raw_", short_deficit, "_medcodes")
 
     data <- cprd$tables$observation %>%
-      inner_join(codes_2024[[deficit]], by = "medcodeid") %>%
+      inner_join(codes[[deficit]], by = "medcodeid") %>%
       analysis$cached(
         raw_tablename,
         indexes = c("patid", "obsdate")
@@ -84,10 +84,10 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
 
     print(paste("merging index date with", deficit, "code occurrences"))
 
-    deficit_short <- get_short_deficit(deficit)
+    short_deficit <- get_short_deficit(deficit)
 
-    medcode_tablename     <- paste0("raw_", deficit_short, "_medcodes")
-    index_date_m_tablename <- paste0("full_", deficit_short, "_m") # use _m instead of _merge as column name too long for MySQL otherwise
+    medcode_tablename     <- paste0("raw_", short_deficit, "_medcodes")
+    index_date_m_tablename <- paste0("full_", short_deficit, "_m") # use _m instead of _merge as column name too long for MySQL otherwise
 
     if (exists(medcode_tablename)) {
 
@@ -102,6 +102,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
       rm(medcodes)
 
       data <- medcodes_clean %>%
+        inner_join(matched_cohort, by = "patid") %>%
         mutate(datediff = datediff(date, index_date)) %>%
         analysis$cached(index_date_m_tablename, index = "patid")
 
@@ -111,8 +112,12 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
 
       rm(data)
     }
-  }
 
+    else {
+  stop("Missing raw eFI table: ", medcode_tablename)
+}
+
+  }
 
   ############################################################################################
 
@@ -127,12 +132,12 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
 
     print(paste("Working out pre_index_date code occurrences for", deficit))
 
-    deficit_short <- get_short_deficit(deficit)
+    short_deficit <- get_short_deficit(deficit)
 
-    index_date_m_tablename              <- paste0("full_", deficit_short, "_m")
-    interim_efi_table                   <- paste0("efi_im_", deficit_short)
-    pre_index_date_indicator            <- paste0("pre_index_date_", deficit_short)
-    pre_index_date_earliest_date_variable <- paste0("pre_index_date_earliest_", deficit_short)
+    index_date_m_tablename              <- paste0("full_", short_deficit, "_m")
+    interim_efi_table                   <- paste0("efi_im_", short_deficit)
+    pre_index_date_indicator            <- paste0("pre_index_date_", short_deficit)
+    pre_index_date_earliest_date_variable <- paste0("pre_index_date_earliest_", short_deficit)
 
     # Get earliest date of pre-index-date occurrence
     pre_index_date <- get(index_date_m_tablename) %>%

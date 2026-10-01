@@ -37,8 +37,9 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
 ## Join with smoking codes on patid and retain codes before index date or up to 7 days after
 
   pre_index_date_smoking_codes <- clean_smoking_medcodes %>%
+    inner_join(matched_cohort, by = "patid") %>%
     filter(datediff(date, index_date)<=7) %>%
-    analysis$cached(paste0(d, "_smoking_merge"), indexes=c("patid", "smoking_cat", "qrisk2_smoking_cat"))
+    analysis$cached("smoking_merge", indexes=c("patid", "smoking_cat", "qrisk2_smoking_cat"))
   
   ## Find smoking status at index date according to our algorithm
   

@@ -10,14 +10,14 @@ rm(list=ls())
 
 cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
 codesets = cprd$codesets()
-codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
+codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
 analysis_prefix = "rk_ckd"
 
 ############################################################################################
 
 # Create a vector of all codelist names that start with "efi_"
-efi_deficits <- grep("^efi_", names(codes_2024), value = TRUE)
+efi_deficits <- grep("^efi_", names(codes), value = TRUE)
 
 # List of deficit names to shorten
 short_deficit_map <- list(
@@ -41,19 +41,19 @@ analysis <- cprd$analysis("all_patid")
 for (deficit in efi_deficits) {
   
   # If the codelist is not empty
-  if (length(codes_2024[[deficit]]) > 0) {
+  if (length(codes[[deficit]]) > 0) {
     
     print(paste("making", deficit, "medcode table"))
     
     # Shorten deficit name
-    deficit <- get_short_deficit(deficit)
+    short_deficit <- get_short_deficit(deficit)
     
     # Name intermediate table (e.g., "raw_efi_anaemia_haematinic_deficiency_medcodes")
     raw_tablename <- paste0("raw_", deficit, "_medcodes")
     
     # Get all relevant observation rows for this deficit
     data <- cprd$tables$observation %>%
-      inner_join(codes_2024[[deficit]], by = "medcodeid") %>%
+      inner_join(codes[[deficit]], by = "medcodeid") %>%
       analysis$cached(
         raw_tablename, 
         indexes = c("patid", "obsdate")
@@ -96,6 +96,10 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
         select(patid, date = obsdate, code = medcodeid)
     }
     
+    else {
+  stop("Missing raw eFI table: ", medcode_tablename)
+}
+    
     # Clean data by joining valid date info
     medcodes_clean <- medcodes %>%
       inner_join(cprd$tables$validDateLookup, by = "patid") %>%
@@ -106,6 +110,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     
     # Merge with index info
     data <- medcodes_clean %>%
+      inner_join(matched_cohort, by = "patid") %>%
       mutate(datediff=datediff(date, index_date)) %>%
       analysis$cached(index_date_m_tablename, index="patid")
     
