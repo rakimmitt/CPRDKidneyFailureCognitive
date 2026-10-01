@@ -187,7 +187,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
         # filter(date>=min_dob & date<=gp_ons_end_date) %>%
         filter(date>=min_dob & date<=gp_end_date) %>%
         select(patid, date) %>%
-        
+        inner_join(matched_cohort, by = "patid") %>%
         mutate(datediff=datediff(date, index_date)) %>%
         
         analysis$cached(index_date_merge_tablename, indexes="patid")
@@ -206,7 +206,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
   
   for (i in meds) {
     
-    print(paste("working out pre- and post- index date code occurrences for", i, " at ", d))
+    print(paste("working out pre- and post- index date code occurrences for", i))
     
     index_date_merge_tablename <- paste0("full_", i, "_merge")
     interim_medications_table <- paste0("meds_im_", i)

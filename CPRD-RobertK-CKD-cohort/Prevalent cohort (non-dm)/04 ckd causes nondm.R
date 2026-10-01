@@ -145,7 +145,7 @@ for (i in ckd_causes) {
   } else {
 
     # No tables available for this cause - skip
-    next
+    stop("No usable codelists/raw tables available for CKD cause: ", i)
   }
 
   # Aggregate to patient level: earliest ever code date

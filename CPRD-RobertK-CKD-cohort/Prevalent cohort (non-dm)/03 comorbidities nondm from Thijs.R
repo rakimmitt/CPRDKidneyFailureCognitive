@@ -38,8 +38,6 @@ comorbids <- c("acutepancreatitis",
                "hosp_cause_minoramputation",
                "hypertension",
                "ihd", #ischaemic heart disease
-               "incident_mi",
-               "incident_stroke",
                "lowerlimbfracture",
                "micturition_control",
                "myocardialinfarction",
@@ -81,7 +79,6 @@ comorbids <- c("acutepancreatitis",
                "giinfection",
                "lrti",
                "urti",
-               "uti",
                "acutecholecystitis",
                "acutesinusitis",
                "boneinfection",
@@ -103,7 +100,6 @@ comorbids <- c("acutepancreatitis",
                "alldementia", # henceforth these are local
                "alzheimers",
                "ckd5_nokrt",
-               "ckd5",
                "delirium",
                "haemodialysis",
                "mci",
@@ -139,7 +135,7 @@ for (i in comorbids) {
                "vascular_dementia",
                "uti",
                "skininfection",
-               "respiratorytractinfection")) {}
+               "respiratorytractinfection")) {
 
   # medcodes
   if (length(codes[[i]]) > 0) {
@@ -183,7 +179,14 @@ for (i in comorbids) {
   
 } else {
     
-    if (i != "aki") {
+
+codelist_root <- paste0(
+  "C:/Users/rk535/OneDrive/1 - PhD/Data Science/CPRD/",
+  "Github clone/CPRDKidneyFailureCognitive/CPRD-Codelists"
+)
+
+          if (file.exists(file.path(codelist_root, "Medcodes", paste0("exeter_medcodelist_", i, ".txt")))) 
+            {
       print(paste("making", i, "medcode table"))
       
       raw_tablename <- paste0("raw_", i, "_medcodes")
@@ -204,7 +207,8 @@ for (i in comorbids) {
       assign(raw_tablename, data)
     }
     
-    if (i != "cerumen") {
+    if (file.exists(file.path(codelist_root, "Medcodes", paste0("exeter_medcodelist_", i, ".txt")))) 
+            {
       print(paste("making", i, "ICD10 code table"))
       
       raw_tablename <- paste0("raw_", i, "_icd10")
@@ -223,7 +227,8 @@ for (i in comorbids) {
       
       assign(raw_tablename, data)
 
-     if (i != "cerumen") {
+     if (file.exists(file.path(codelist_root, "Medcodes", paste0("exeter_medcodelist_", i, ".txt")))) 
+            {
       print(paste("making", i, "OPCS4 code table"))
       
       raw_tablename <- paste0("raw_", i, "_opcs4")
@@ -366,6 +371,10 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
       all_codes <- opcs4_codes
       rm(opcs4_codes)
     }
+
+    else {
+  stop("No raw code tables available for: ", i)
+}
     
     all_codes_clean <- all_codes %>%
       inner_join(cprd$tables$validDateLookup, by="patid") %>%
@@ -377,7 +386,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     data <- all_codes_clean %>%
       inner_join(matched_cohort, by="patid") %>%
       mutate(datediff=datediff(date, index_date)) %>%
-      analysis$cached(index_date_merge_tablename, index="patid")
+      analysis$cached(index_date_merge_tablename, indexes="patid")
     
     rm(all_codes_clean)
     
@@ -399,8 +408,8 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     
     print(paste("working out pre- and post-index date code occurrences for ", i))
     
-    index_date_merge_tablename <- paste0("_full_", i, "_merge")
-    interim_comorbidity_table <- paste0("_comorbidities_im_", i)
+    index_date_merge_tablename <- paste0("full_", i, "_merge")
+    interim_comorbidity_table <- paste0("comorbidities_im_", i)
     pre_index_date_earliest_date_variable <- paste0("pre_index_date_earliest_", i)
     pre_index_date_latest_date_variable <- paste0("pre_index_date_latest_", i)
     pre_index_date_variable <- paste0("pre_index_date_", i)
@@ -428,4 +437,4 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
       analysis$cached(interim_comorbidity_table, unique_indexes="patid")
   }
   
-  comorbidities <- comorbidities %>% analysis$cached(paste0("_comorbidities"), unique_indexes="patid")
+  comorbidities <- comorbidities %>% analysis$cached("comorbidities", unique_indexes="patid")

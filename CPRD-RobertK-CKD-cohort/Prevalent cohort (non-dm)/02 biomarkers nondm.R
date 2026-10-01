@@ -217,7 +217,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
              {{pre_biomarker_date_variable}}:=date,
              {{pre_biomarker_datediff_variable}}:=datediff) %>%
       
-      select(-c(testvalue, min_timediff))
+      select(-c(testvalue, min_timediff, index_date)) %>%
     
     
     baseline_biomarkers <- baseline_biomarkers %>%

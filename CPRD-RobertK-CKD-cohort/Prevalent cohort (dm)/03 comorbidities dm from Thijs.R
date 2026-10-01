@@ -63,7 +63,6 @@ comorbids <- c("acutepancreatitis",
                "giinfection",
                "lrti",
                "urti",
-               "uti",
                "acutecholecystitis",
                "acutesinusitis",
                "boneinfection",
@@ -85,7 +84,6 @@ comorbids <- c("acutepancreatitis",
                "alldementia", # henceforth these are local
                "alzheimers",
                "ckd5_nokrt",
-               "ckd5",
                "delirium",
                "haemodialysis",
                "mci",
@@ -165,7 +163,13 @@ for (i in comorbids) {
     
   } else {
     
-    if (i != "aki") {
+codelist_root <- paste0(
+  "C:/Users/rk535/OneDrive/1 - PhD/Data Science/CPRD/",
+  "Github clone/CPRDKidneyFailureCognitive/CPRD-Codelists"
+)
+
+          if (file.exists(file.path(codelist_root, "Medcodes", paste0("exeter_medcodelist_", i, ".txt")))) 
+            {
       print(paste("making", i, "medcode table"))
       
       raw_tablename <- paste0("raw_", i, "_medcodes")
@@ -186,7 +190,8 @@ for (i in comorbids) {
       assign(raw_tablename, data)
     }
     
-    if (i != "cerumen") {
+            if (file.exists(file.path(codelist_root, "ICD10", paste0("exeter_icd10_", i, ".txt")))) 
+            {
       print(paste("making", i, "ICD10 code table"))
       
       raw_tablename <- paste0("raw_", i, "_icd10")
@@ -204,8 +209,10 @@ for (i in comorbids) {
         analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
       
       assign(raw_tablename, data)
+            }
 
-     if (i != "cerumen") {
+            if (file.exists(file.path(codelist_root, "OPCS4", paste0("exeter_opcs4_", i, ".txt")))) 
+            {
       print(paste("making", i, "OPCS4 code table"))
       
       raw_tablename <- paste0("raw_", i, "_opcs4")
@@ -219,14 +226,13 @@ for (i in comorbids) {
             rename(opcs4 = OPCS4) %>%
             select(opcs4) %>%
             mutate(!!sym(empty_variable) := NA),
-          , sql_on="LHS.OPCS4 LIKE CONCAT(opcs4,'%')", copy = T) %>%
+          , sql_on="LHS.OPCS LIKE CONCAT(opcs4,'%')", copy = T) %>%
         analysis$cached(raw_tablename, indexes=c("patid", "evdate"))
       
       assign(raw_tablename, data)
       
     }
   }
-}
 }
 
 # Make new primary cause hospitalisation for heart failure, incident MI, and incident stroke comorbidities
@@ -345,6 +351,10 @@ for (i in comorbids) {
     rm(opcs4_codes)
   }
   
+  else {
+  stop("No raw code tables available for: ", i)
+}
+
   all_codes_clean <- all_codes %>%
     inner_join(cprd$tables$validDateLookup, by="patid") %>%
     filter(date>=min_dob & ((source=="gp" & date<=gp_end_date) | (source=="hes" & date<=as.Date("2023-03-31")))) %>%
