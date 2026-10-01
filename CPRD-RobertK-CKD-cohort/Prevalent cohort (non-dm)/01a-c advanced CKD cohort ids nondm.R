@@ -427,7 +427,6 @@ ckd_ids %>% count() #1452649
 
 ckd_ids %>% anti_join(practice_exclusion_ids, by="patid") %>% anti_join(gender_exclusion_ids, by="patid") %>% count() #2110415
 
-
 ckd_ids <- ckd_ids %>%
   anti_join(practice_exclusion_ids, by="patid") %>% 
   anti_join(gender_exclusion_ids, by="patid") %>%
@@ -443,7 +442,7 @@ non_ckd_ids <- cprd$tables$patient %>%
   anti_join(ckd_ids, by = "patid") %>%
   anti_join(practice_exclusion_ids, by = "patid") %>%
   anti_join(gender_exclusion_ids, by = "patid") %>%
-  analysis$cached("no_ckd_ids", unique_indexes = "patid")
+  analysis$cached("non_ckd_ids", unique_indexes = "patid")
 
 non_ckd_ids %>% count()
 
@@ -463,7 +462,7 @@ advanced_ckd_ids <- ckd_stages_from_algorithm %>%
   mutate(index_date = ifelse(index_date == as.Date("2050-01-01"), NA, index_date)) %>%
 
   # keep those with an index date after 1 Jan 2008 (as CKD was added to QOF in 2006) before keeping only the earliest index date for each patient
-  
+
   filter(index_date > as.Date("2008-01-01")) %>%
   group_by(patid) %>%
   dbplyr::window_order(index_date) %>%
@@ -476,7 +475,6 @@ advanced_ckd_ids <- ckd_stages_from_algorithm %>%
 advanced_ckd_ids %>% count() 
 
 advanced_ckd_ids %>% anti_join(practice_exclusion_ids, by="patid") %>% anti_join(gender_exclusion_ids, by="patid") %>% count()
-
 
 advanced_ckd_ids <- advanced_ckd_ids %>%
   anti_join(practice_exclusion_ids, by="patid") %>% 

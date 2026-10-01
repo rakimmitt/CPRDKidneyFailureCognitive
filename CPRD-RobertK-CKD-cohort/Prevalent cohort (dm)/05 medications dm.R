@@ -284,4 +284,4 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
   
   medications <- medications %>% analysis$cached(paste0("medications"), unique_indexes="patid")
   
-}
+  }

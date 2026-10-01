@@ -48,6 +48,11 @@ prepare <- function(x) {
     mutate(
       across(c(patid, pracid, gender), as.character),
 
+    # Include missing ethnicity as an explicit category.
+    ethnicity_5cat = coalesce(
+      as.character(ethnicity_5cat), "Missing"
+    ),
+
     # Preserve the original IMD, including NA.
     # na_if() also handles "Missing" if previously assigned.
     imd_decile = as.numeric(

@@ -13,8 +13,6 @@ cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-analysis_prefix <- "ckd"
-
 ############################################################################################
 
 biomarkers <- c("creatinine_blood", "acr", "pcr", "albumin_urine", "creatinine_urine",
@@ -43,9 +41,7 @@ for (i in biomarkers) {
   
 }
 
-
 analysis = cprd$analysis("all_patid")
-
 
 for (i in biomarkers) {
   
@@ -146,21 +142,16 @@ biomarkers <- setdiff(biomarkers, c("albumin_urine", "creatinine_urine"))
 biomarkers <- c("acr_from_separate", biomarkers)
 
 ######################################################################################
-analysis = cprd$analysis(analysis_prefix)
 
-# 6-monthly dates for 2019-2021 (prevalent cohort), then 3-monthly from 2021 onwards
-# (3-monthly required for sequential trial emulation of SGLT2i in non-DM CKD)
-dates <- unique(c(
-  seq(from = as.Date("2019-03-01"), to = as.Date("2020-09-01"), by = "6 months"),
-  seq(from = as.Date("2021-03-01"), to = as.Date("2024-03-01"), by = "3 months")
-))
+# Get index date
 
-date_strings <- format(dates, "%Y-%m-%d")
+analysis = cprd$analysis("rk_ckd")
 
+#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
+#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-for (d in date_strings) {
-  print(d)
-  index_date = as.Date(d)
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
+matched_cohort <- matched_cohort %>% select(patid, index_date)
   
   for (i in biomarkers) {
     
@@ -168,13 +159,12 @@ for (d in date_strings) {
     index_date_merge_tablename <- paste0(d, "_full_", i, "_merge")
     
     data <- get(clean_tablename) %>%
+      inner_join(matched_cohort, by="patid") %>%
       mutate(datediff=datediff(date, index_date))
     
     assign(index_date_merge_tablename, data)
     
   }
-  
-  
   
   ############################################################################################
   
@@ -236,7 +226,6 @@ for (d in date_strings) {
     
   }
   
-  
   ## Height - only keep readings at/post-index date, and find mean
   
   table_name = paste0(d, "_full_height_merge")
@@ -249,6 +238,5 @@ for (d in date_strings) {
   
   baseline_biomarkers <- baseline_biomarkers %>%
     left_join(baseline_height, by="patid") %>%
-    analysis$cached(paste0("rk_", d, "_baseline_biomarkers"), unique_indexes="patid")
-  
-}
+    analysis$cached(paste0("baseline_biomarkers"), unique_indexes="patid")
+

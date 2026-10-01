@@ -17,7 +17,7 @@ analysis_prefix <- "ckd"
 
 biomarkers <- c("creatinine_blood", "acr", "pcr", "albumin_urine", "creatinine_urine",
                 "albumin_blood", "haemoglobin", 
-                "dbp", "sbp", "weight", "height", "bmi", "totalcholesterol", "hba1c", "hdl", "potassium", "vitd")
+                "dbp", "sbp", "weight", "height", "bmi", "totalcholesterol", "hba1c",  "hdl")
 
 ############################################################################################
 
@@ -30,26 +30,10 @@ for (i in biomarkers) {
   print(i)
   
   raw_tablename <- paste0("raw_", i, "_medcodes")
-  
-  if (i %in% c("potassium", "vitd")) {
-    
-    data <- cprd$tables$observation %>% inner_join(
-      readr::read_tsv(
-        here::here(paste0("C:/Users/tj358/OneDrive - University of Exeter/CPRD/Aurum codelists/medcodes/exeter_medcodelist_", i, ".tsv")),
-        col_types = cols(.default=col_character())) %>%
-        rename(medcodeid=MedCodeId) %>%
-        select(medcodeid) %>%
-        mutate("{i}_cat" := NA), 
-      by="medcodeid", copy = T) %>%
-      analysis$cached(raw_tablename, indexes=c("patid", "obsdate", "testvalue", "numunitid"))
-    
-  } else {
     
     data <- cprd$tables$observation %>%
       inner_join(codes[[i]], by="medcodeid") %>%
       analysis$cached(raw_tablename, indexes=c("patid", "obsdate", "testvalue", "numunitid"))
-    
-  }
   
   assign(raw_tablename, data)
   
@@ -94,50 +78,6 @@ for (i in biomarkers) {
       clean_biomarker_values(testvalue, "hba1c") %>%
       clean_biomarker_units(numunitid, "hba1c") 
     
-  } else if (i == "potassium") {
-    # potassium limits and units are not defined in the EHRBiomarkr package - define manually
-    data <- get(raw_tablename) %>%
-      dplyr::filter(testvalue >= 2.5 & testvalue <= 6.5) %>%
-      dplyr::inner_join(
-        data.frame(numunitid = c(218, 425, NA)),
-        by = "numunitid",
-        na_matches = "na",
-        copy = TRUE
-      ) %>%      
-      group_by(patid,obsdate) %>%
-      summarise(testvalue=mean(testvalue, na.rm=TRUE)) %>%
-      ungroup() %>%
-      
-      inner_join(cprd$tables$validDateLookup, by="patid") %>%
-      # filter(obsdate>=min_dob & obsdate<=gp_ons_end_date) %>%
-      filter(obsdate>=min_dob & obsdate<=gp_end_date) %>%
-      
-      select(patid, date=obsdate, testvalue) %>%
-      
-      analysis$cached(clean_tablename, indexes=c("patid", "date", "testvalue"))
-    
-  } else if (i == "vitd") {
-    data <- get(raw_tablename) %>%
-      dplyr::inner_join(
-        data.frame(numunitid = c(235, 233, NA)), # 235: nmol/L, 233: ng/mL
-        by = "numunitid",
-        na_matches = "na",
-        copy = TRUE
-      ) %>%      
-      mutate(testvalue=ifelse(numunitid==233, testvalue*2.5, testvalue)) %>% # convert ng/mL to nmol/L
-      dplyr::filter(testvalue >= 5 & testvalue <= 250) %>%
-      group_by(patid,obsdate) %>%
-      summarise(testvalue=mean(testvalue, na.rm=TRUE)) %>%
-      ungroup() %>%
-      
-      inner_join(cprd$tables$validDateLookup, by="patid") %>%
-      # filter(obsdate>=min_dob & obsdate<=gp_ons_end_date) %>%
-      filter(obsdate>=min_dob & obsdate<=gp_end_date) %>%
-      
-      select(patid, date=obsdate, testvalue) %>%
-      
-      analysis$cached(clean_tablename, indexes=c("patid", "date", "testvalue"))
-        
   } else {
     data <- raw_data %>%
       clean_biomarker_units(testvalue, i) %>%
