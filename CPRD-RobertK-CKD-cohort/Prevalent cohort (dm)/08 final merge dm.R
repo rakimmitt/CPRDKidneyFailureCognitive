@@ -54,7 +54,7 @@ efi <- efi %>% analysis$cached("efi")
   
   final_merge <- matched_cohort %>%
     left_join(ckd_stages, by="patid") %>%
-    left_join(diabetes_cohort %>% select(patid, dm_diag_date_all, dm_dur_all), by = "patid") %>%
+    left_join(diabetes_cohort %>% select(patid, dm_diag_date_all), by = "patid") %>%
     left_join(baseline_biomarkers, by="patid") %>%
     left_join(comorbidities, by="patid") %>%
     left_join(smoking, by="patid") %>%

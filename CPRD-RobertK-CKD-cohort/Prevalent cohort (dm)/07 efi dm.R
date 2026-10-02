@@ -11,7 +11,7 @@ cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\O
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-analysis_prefix = "rk_ckd"
+analysis_prefix = "all_patid"
 
 ############################################################################################
 
@@ -44,21 +44,21 @@ for (deficit in efi_deficits) {
     
     print(paste("making", deficit, "medcode table"))
     
-    # Shorten deficit name
-    short_deficit <- get_short_deficit(deficit)
-    
-    # Name intermediate table (e.g., "raw_efi_anaemia_haematinic_deficiency_medcodes")
-    raw_tablename <- paste0("raw_", deficit, "_medcodes")
-    
-    # Get all relevant observation rows for this deficit
-    data <- cprd$tables$observation %>%
-      inner_join(codes[[deficit]], by = "medcodeid") %>%
-      analysis$cached(
-        raw_tablename, 
-        indexes = c("patid", "obsdate")
-      )
-    
-    assign(raw_tablename, data)
+# Shorten deficit name
+short_deficit <- get_short_deficit(deficit)
+
+# Name intermediate table (e.g., "raw_efi_anaemia_haematinic_deficiency_medcodes")
+raw_tablename <- paste0("raw_", short_deficit, "_medcodes")
+
+# Get all relevant observation rows for this deficit
+data <- cprd$tables$observation %>%
+  inner_join(codes[[deficit]], by = "medcodeid") %>%
+  analysis$cached(
+    raw_tablename,
+    indexes = c("patid", "obsdate")
+  )
+
+assign(raw_tablename, data)
   }
 }
 
