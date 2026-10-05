@@ -52,7 +52,7 @@ efi <- efi %>% analysis$cached("efi")
   
 # Final merge of all datasets to create final cohort for analysis
   
-  final_merge <- matched_cohort %>%
+  rk_final_merge <- matched_cohort %>%
     left_join(ckd_stages, by="patid") %>%
     left_join(diabetes_cohort %>% select(patid, dm_diag_date_all), by = "patid") %>%
     left_join(baseline_biomarkers, by="patid") %>%
@@ -63,10 +63,8 @@ efi <- efi %>% analysis$cached("efi")
     left_join(townsend_score %>% select(patid, tds_2011), by = "patid") %>%
     left_join(death_causes, by = "patid") %>%
     mutate(index_date_age=datediff(index_date, dob)/365.25,
-           index_date_ckd_dur_all=datediff(index_date, first_ckd_date)/365.25,
-           dm_dur_all=datediff(index_date, dm_diag_date_all)/365.25,
-           index_date = index_date) %>%
-    relocate(c(index_date_age, index_date_ckd_dur_all), .before=gender) %>%
+           dm_dur_all=datediff(index_date, dm_diag_date_all)/365.25) %>%
+    relocate(c(index_date_age), .before=gender) %>%
     analysis$cached("rk_final_merge", unique_indexes="patid")
   
   ############################################################################################
@@ -76,14 +74,14 @@ efi <- efi %>% analysis$cached("efi")
   
 # Preserve all integer64 identifiers exactly as character strings.
 
-prev_cohort <- final_merge %>%
+prev_cohort <- rk_final_merge %>%
   collect() %>%
   mutate(
     across(where(bit64::is.integer64), as.character),
     index_date = as.Date(index_date)
   )
 
-today <- format(Sys.Date(), "%Y%m%d")
+today <- format(Sys.Date(), "%d%m%Y")
 
 save(prev_cohort, file = paste0("C:/Users/rk535/OneDrive - University of Exeter/","CPRD/2024/Raw data/", today, "_matched_ckd_cohort_dm.Rda"))
   
@@ -92,4 +90,4 @@ save(prev_cohort, file = paste0("C:/Users/rk535/OneDrive - University of Exeter/
   rm(comorbidities)
   rm(ckd_stages)
   rm(smoking)
-  rm(final_merge)
+  rm(rk_final_merge)

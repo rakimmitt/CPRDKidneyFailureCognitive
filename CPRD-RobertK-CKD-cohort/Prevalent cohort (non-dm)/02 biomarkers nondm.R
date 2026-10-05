@@ -6,9 +6,7 @@ library(aurum)
 library(EHRBiomarkr)
 rm(list=ls())
 
-
 cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
-
 
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
@@ -19,7 +17,6 @@ biomarkers <- c("creatinine_blood", "acr", "pcr", "albumin_urine", "creatinine_u
                 "albumin_blood", "haemoglobin", 
                 "dbp", "sbp", "weight", "height", "bmi", "totalcholesterol", "hba1c", "hdl", "potassium")
                 
-
 
 ############################################################################################
 
@@ -41,67 +38,82 @@ for (i in biomarkers) {
   
 }
 
-analysis = cprd$analysis("all_patid")
+analysis <- cprd$analysis("all_patid")
 
 for (i in biomarkers) {
-  
+
   print(i)
-  
+
   raw_tablename <- paste0("raw_", i, "_medcodes")
   clean_tablename <- paste0("clean_", i, "_medcodes")
-  
-  if (i=="haemoglobin") {
-    message("Converting haemoglobin values to g/L")
-    raw_data <- get(raw_tablename) %>%
-      mutate(testvalue=ifelse(testvalue<30, testvalue*10, testvalue))
-  }
-  else {
-    raw_data <- get(raw_tablename)
-  }
-  
-  
-  if (i=="albumin_urine") {
-    data <- raw_data %>%
-      filter(numunitid==183)
-  }
-  else if (i=="creatinine_urine") {
-    data <- raw_data %>%
-      filter(numunitid==218 | numunitid==285) %>%
-      mutate(testvalue=ifelse(numunitid==285, testvalue/1000, testvalue))
-  }
-  else if (i == "hba1c") {
-    
-    raw_data <- get(raw_tablename) %>%    
-      mutate(testvalue=ifelse(testvalue<=20,((testvalue-2.152)/0.09148),testvalue)) 
-    
-    data <- raw_data %>%
-      
-      clean_biomarker_values(testvalue, "hba1c") %>%
-      clean_biomarker_units(numunitid, "hba1c") 
-    
-  } else {
-    data <- raw_data %>%
-      clean_biomarker_units(testvalue, i) %>%
-      #clean_biomarker_values(testvalue, i) %>%
-      clean_biomarker_units(numunitid, i)
-  }
-  data <- data %>%
-    group_by(patid,obsdate) %>%
-    summarise(testvalue=mean(testvalue, na.rm=TRUE)) %>%
-    ungroup() %>%
-    
-    inner_join(cprd$tables$validDateLookup, by="patid") %>%
-    #filter(obsdate>=min_dob & obsdate<=gp_ons_end_date) %>%  #gp_ons_end_date not available on this dataset
-    filter(obsdate>=min_dob & obsdate<=gp_end_date) %>%
-    
-    select(patid, date=obsdate, testvalue) %>%
-    
-    analysis$cached(clean_tablename, indexes=c("patid", "date", "testvalue"))
-  
-  assign(clean_tablename, data)
-  
-}
 
+  raw_data <- get(raw_tablename)
+
+  if (i == "haemoglobin") {
+    message("Converting haemoglobin values to g/L")
+
+    raw_data <- raw_data %>%
+      mutate(
+        testvalue = ifelse(testvalue < 30, testvalue * 10, testvalue)
+      )
+  }
+
+  if (i == "albumin_urine") {
+
+    data <- raw_data %>%
+      filter(numunitid == 183)
+
+  } else if (i == "creatinine_urine") {
+
+    data <- raw_data %>%
+      filter(numunitid == 218 | numunitid == 285) %>%
+      mutate(
+        testvalue = ifelse(numunitid == 285, testvalue / 1000, testvalue)
+      )
+
+  } else if (i == "hba1c") {
+
+    data <- raw_data %>%
+      mutate(
+        testvalue = ifelse(
+          testvalue <= 20,
+          (testvalue - 2.152) / 0.09148,
+          testvalue
+        )
+      ) %>%
+      clean_biomarker_values(testvalue, "hba1c") %>%
+      clean_biomarker_units(numunitid, "hba1c")
+
+  } else if (i == "potassium") {
+
+    # Potassium values and units still require separate checking.
+    data <- raw_data
+
+  } else {
+
+    data <- raw_data %>%
+      clean_biomarker_values(testvalue, i) %>%
+      clean_biomarker_units(numunitid, i)
+
+  }
+
+  # Common processing for every biomarker.
+  data <- data %>%
+    group_by(patid, obsdate) %>%
+    summarise(
+      testvalue = mean(testvalue, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    inner_join(cprd$tables$validDateLookup, by = "patid") %>%
+    filter(obsdate >= min_dob & obsdate <= gp_end_date) %>%
+    select(patid, date = obsdate, testvalue) %>%
+    analysis$cached(
+      clean_tablename,
+      indexes = c("patid", "date", "testvalue")
+    )
+
+  assign(clean_tablename, data)
+}
 
 
 # egfr
@@ -217,7 +229,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
              {{pre_biomarker_date_variable}}:=date,
              {{pre_biomarker_datediff_variable}}:=datediff) %>%
       
-      select(-c(testvalue, min_timediff, index_date)) %>%
+      select(-c(testvalue, min_timediff, index_date))
     
     
     baseline_biomarkers <- baseline_biomarkers %>%

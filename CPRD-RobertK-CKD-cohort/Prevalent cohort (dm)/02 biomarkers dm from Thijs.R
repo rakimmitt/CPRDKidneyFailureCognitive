@@ -80,8 +80,7 @@ for (i in biomarkers) {
     
   } else {
     data <- raw_data %>%
-      clean_biomarker_units(testvalue, i) %>%
-      #clean_biomarker_values(testvalue, i) %>%
+      clean_biomarker_values(testvalue, i) %>%
       clean_biomarker_units(numunitid, i)
   }
   data <- data %>%

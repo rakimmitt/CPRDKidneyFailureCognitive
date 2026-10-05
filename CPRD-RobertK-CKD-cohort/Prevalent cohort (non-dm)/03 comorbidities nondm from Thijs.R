@@ -207,7 +207,7 @@ codelist_root <- paste0(
       assign(raw_tablename, data)
     }
     
-    if (file.exists(file.path(codelist_root, "Medcodes", paste0("exeter_medcodelist_", i, ".txt")))) 
+    if (file.exists(file.path(codelist_root, "ICD10", paste0("exeter_icd10_", i, ".txt")))) 
             {
       print(paste("making", i, "ICD10 code table"))
       
@@ -226,8 +226,8 @@ codelist_root <- paste0(
         analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
       
       assign(raw_tablename, data)
-
-     if (file.exists(file.path(codelist_root, "Medcodes", paste0("exeter_medcodelist_", i, ".txt")))) 
+            }
+     if (file.exists(file.path(codelist_root, "OPCS4", paste0("exeter_opcs4_", i, ".txt")))) 
             {
       print(paste("making", i, "OPCS4 code table"))
       
@@ -250,7 +250,7 @@ codelist_root <- paste0(
     }
   }
 }
-}
+
 # Make new primary cause hospitalisation for heart failure, incident MI, and incident stroke comorbidities
 
 raw_primary_hhf_icd10 <- raw_heartfailure_icd10 %>%
