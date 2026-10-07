@@ -199,3 +199,4 @@ print(pair_quality, width = Inf)
 # Zero/undefined case SD gives NA SMD; inspect the raw differences in those rows.
 # IMD numerical balance is conditional on observation; assess missingness separately.
 # These checks describe only the supplied matched sample, not unmatched cases.
+

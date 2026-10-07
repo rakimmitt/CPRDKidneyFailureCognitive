@@ -1,0 +1,359 @@
+#Setup
+library(tidyverse)
+library(aurum)
+library(EHRBiomarkr)
+library(tidyverse)
+library(MatchIt)
+rm(list=ls())
+
+### NB *Either* read in the saved table from database just after matching OR use the final merged cohort
+
+# Immediately after matching:
+
+#cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
+#codesets = cprd$codesets()
+#codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
+
+#analysis = cprd$analysis("rk_ckd")
+
+#advanced_ckd_cohort <- advanced_ckd_cohort %>%
+#  analysis$cached("advanced_ckd_cohort")
+#  advanced_ckd_cohort %>% count()
+
+#  non_ckd_cohort <- non_ckd_cohort %>%
+#  analysis$cached("non_ckd_cohort")
+#  non_ckd_cohort %>% count()
+
+  # FALSE: assess balance among matched cases and their controls.
+# TRUE: compare ALL cached cases against the selected controls.
+# Silenced when using final merged cohort
+#include_unmatched_cases <- TRUE
+
+# Read the saved table without rerunning matching
+#cohort <- tbl(
+#  analysis$.con,
+#  dbplyr::in_schema(
+#    analysis$.analysisDb,
+#    "rk_ckd_matched_cohort"
+#  )
+#) %>%
+#  select(
+#   patid, is_case, matched_case_patid, matched_case_index_date,
+#    index_date, dob, gender, ethnicity_5cat, imd_decile
+#  ) %>%
+#  collect() %>%
+#  mutate(
+#    across(c(patid, matched_case_patid), as.character),
+#    is_case = as.integer(as.character(is_case)),
+#    across(c(index_date, matched_case_index_date, dob), as.Date),
+#    gender = coalesce(as.character(gender), "Missing"),
+#    ethnicity_5cat = coalesce(as.character(ethnicity_5cat), "Missing"),
+#    imd_decile = as.numeric(na_if(as.character(imd_decile), "Missing"))
+#  )
+
+# Final merged cohort for analysis:
+
+loaded_file <- load("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/05102026_matched_ckd_cohort_dm.Rda")
+
+diabetes_2024 <- get(loaded_file[1])
+
+  cohort <- diabetes_2024 %>%
+  select(
+    patid, is_case, matched_case_patid, matched_case_index_date,
+    index_date, dob, gender, ethnicity_5cat, imd_decile
+  ) %>%
+  mutate(
+    across(c(patid, matched_case_patid), as.character),
+    is_case = as.integer(as.character(is_case)),
+    across(c(index_date, matched_case_index_date, dob), as.Date),
+    gender = coalesce(as.character(gender), "Missing"),
+    ethnicity_5cat = coalesce(as.character(ethnicity_5cat), "Missing"),
+    imd_decile = as.numeric(
+      na_if(as.character(imd_decile), "Missing")
+    )
+  )
+
+#####
+
+# Checks for your matching design: one row per patient, no control reuse
+stopifnot(
+  !anyNA(cohort$patid),
+  !anyDuplicated(cohort$patid),
+  !anyNA(cohort$is_case),
+  all(cohort$is_case %in% c(0L, 1L))
+)
+
+cases <- cohort %>% filter(is_case == 1L)
+controls <- cohort %>% filter(is_case == 0L)
+
+stopifnot(
+  nrow(cases) > 0,
+  nrow(controls) > 0,
+  !anyNA(controls$matched_case_patid),
+  all(controls$matched_case_patid %in% cases$patid)
+)
+
+set_sizes <- controls %>%
+  count(matched_case_patid, name = "n_controls")
+
+cases <- cases %>%
+  left_join(set_sizes, by = c("patid" = "matched_case_patid")) %>%
+  mutate(n_controls = coalesce(n_controls, 0L))
+
+# How many cases received each number of controls?
+matching_counts <- cases %>%
+  count(n_controls, name = "number_of_cases")
+
+print(matching_counts, n = Inf)
+
+# Use the linked case's index date as the authoritative date for controls
+controls <- controls %>%
+  left_join(set_sizes, by = "matched_case_patid") %>%
+  left_join(
+    cases %>%
+      transmute(matched_case_patid = patid, case_index_date = index_date),
+    by = "matched_case_patid"
+  )
+
+stopifnot(
+  !anyNA(controls$case_index_date),
+  !anyNA(controls$index_date),
+  !anyNA(controls$matched_case_index_date),
+  all(controls$index_date == controls$case_index_date),
+  all(controls$matched_case_index_date == controls$case_index_date)
+)
+
+balance_cases <- cases # %>%
+#  filter(include_unmatched_cases | n_controls > 0)
+
+balance_data <- bind_rows(
+  balance_cases %>%
+    mutate(group = "Cases", weight = 1, assessment_date = index_date),
+  controls %>%
+    mutate(
+      group = "Controls",
+      weight = 1 / n_controls,
+      assessment_date = case_index_date
+    )
+) %>%
+  mutate(
+    age = as.numeric(assessment_date - dob) / 365.25
+  )
+
+# Raw and weighted group sizes
+balance_data %>%
+  group_by(group) %>%
+  summarise(
+    patients = n(),
+    total_weight = sum(weight),
+    .groups = "drop"
+  ) %>%
+  print()
+
+  #####
+
+  # Mean that safely handles missing values
+safe_mean <- function(x, w = rep(1, length(x))) {
+  keep <- !is.na(x) & !is.na(w) & w > 0
+  if (!any(keep)) return(NA_real_)
+  weighted.mean(x[keep], w[keep])
+}
+
+# Continuous variables
+continuous_long <- balance_data %>%
+  select(group, weight, age, imd_decile) %>%
+  pivot_longer(
+    c(age, imd_decile),
+    names_to = "variable",
+    values_to = "value"
+  ) %>%
+  mutate(category = "Mean", type = "Continuous")
+
+# One 0/1 indicator for every gender and ethnicity category
+categorical_long <- map_dfr(
+  c("gender", "ethnicity_5cat"),
+  function(v) {
+    map_dfr(sort(unique(balance_data[[v]])), function(level) {
+      tibble(
+        group = balance_data$group,
+        weight = balance_data$weight,
+        variable = v,
+        category = level,
+        type = "Percentage",
+        value = as.numeric(balance_data[[v]] == level)
+      )
+    })
+  }
+)
+
+# Missingness is assessed separately from observed numerical values
+missing_long <- map_dfr(c("age", "imd_decile"), function(v) {
+  tibble(
+    group = balance_data$group,
+    weight = balance_data$weight,
+    variable = v,
+    category = "Missing",
+    type = "Percentage",
+    value = as.numeric(is.na(balance_data[[v]]))
+  )
+})
+
+balance_long <- bind_rows(
+  continuous_long, categorical_long, missing_long
+)
+
+# Fixed case-reference denominator
+denominators <- balance_long %>%
+  filter(group == "Cases") %>%
+  group_by(variable, category, type) %>%
+  summarise(
+    denominator = if (first(type) == "Continuous") {
+      sd(value, na.rm = TRUE)
+    } else {
+      p <- safe_mean(value)
+      sqrt(p * (1 - p))
+    },
+    .groups = "drop"
+  )
+
+overall_balance <- balance_long %>%
+  group_by(variable, category, type, group) %>%
+  summarise(
+    observed_n = sum(!is.na(value)),
+    unweighted = safe_mean(value),
+    weighted = safe_mean(value, weight),
+    .groups = "drop"
+  ) %>%
+  pivot_wider(
+    names_from = group,
+    values_from = c(observed_n, unweighted, weighted)
+  ) %>%
+  left_join(
+    denominators,
+    by = c("variable", "category", "type")
+  ) %>%
+  mutate(
+    unweighted_smd = if_else(
+      is.finite(denominator) & denominator > 0,
+      (unweighted_Cases - unweighted_Controls) / denominator,
+      NA_real_
+    ),
+    weighted_smd = if_else(
+      is.finite(denominator) & denominator > 0,
+      (weighted_Cases - weighted_Controls) / denominator,
+      NA_real_
+    ),
+    absolute_weighted_smd = abs(weighted_smd),
+
+    # Display categorical values as percentages, after calculating SMDs
+    across(
+      c(unweighted_Cases, unweighted_Controls,
+        weighted_Cases, weighted_Controls),
+      ~ if_else(type == "Percentage", .x * 100, .x)
+    )
+  ) %>%
+  select(-denominator) %>%
+  arrange(desc(absolute_weighted_smd))
+
+print(overall_balance, n = Inf, width = Inf)
+
+# Optional spreadsheet-style display
+View(overall_balance)
+
+# Median for IMDs
+
+imd_summary <- balance_data %>%
+  group_by(group) %>%
+  summarise(
+    n = n(),
+    observed_imd = sum(!is.na(imd_decile)),
+    missing_imd = sum(is.na(imd_decile)),
+    mean_imd_decile = safe_mean(imd_decile),
+    median_imd_decile = median(imd_decile, na.rm = TRUE),
+    weighted_mean_imd_decile = safe_mean(imd_decile, weight),
+    .groups = "drop"
+  )
+
+print(imd_summary, n = Inf, width = Inf)
+
+#####
+
+pair_comparison <- controls %>%
+  transmute(
+    control_patid = patid,
+    matched_case_patid,
+    case_index_date,
+    n_controls,
+    pair_weight = 1 / n_controls,
+    control_dob = dob,
+    control_gender = gender,
+    control_ethnicity = ethnicity_5cat,
+    control_imd = imd_decile
+  ) %>%
+  left_join(
+    cases %>%
+      transmute(
+        matched_case_patid = patid,
+        case_dob = dob,
+        case_gender = gender,
+        case_ethnicity = ethnicity_5cat,
+        case_imd = imd_decile
+      ),
+    by = "matched_case_patid"
+  ) %>%
+  mutate(
+    case_age = as.numeric(case_index_date - case_dob) / 365.25,
+    control_age = as.numeric(case_index_date - control_dob) / 365.25,
+
+    # Positive differences mean the case has the higher value
+    age_difference = case_age - control_age,
+    absolute_age_gap = abs(age_difference),
+    imd_difference = case_imd - control_imd,
+    absolute_imd_gap = abs(imd_difference),
+
+    same_gender = if_else(
+      case_gender == "Missing" | control_gender == "Missing",
+      NA, case_gender == control_gender
+    ),
+    same_ethnicity = if_else(
+      case_ethnicity == "Missing" | control_ethnicity == "Missing",
+      NA, case_ethnicity == control_ethnicity
+    ),
+    same_imd_missingness = is.na(case_imd) == is.na(control_imd)
+  )
+
+# Inspect pairs with the largest age gaps
+pair_comparison %>%
+  arrange(desc(absolute_age_gap)) %>%
+  print(n = 20, width = Inf)
+
+View(pair_comparison)
+
+#####
+
+pair_summary <- pair_comparison %>%
+  transmute(
+    pair_weight,
+    age_difference,
+    absolute_age_gap,
+    imd_difference,
+    absolute_imd_gap,
+    percent_same_gender = 100 * as.numeric(same_gender),
+    percent_same_ethnicity = 100 * as.numeric(same_ethnicity),
+    percent_same_imd_missingness = 100 * as.numeric(same_imd_missingness)
+  ) %>%
+  pivot_longer(
+    -pair_weight,
+    names_to = "measure",
+    values_to = "value"
+  ) %>%
+  group_by(measure) %>%
+  summarise(
+    total_pairs = n(),
+    evaluable_pairs = sum(!is.na(value)),
+    unweighted_mean = safe_mean(value),
+    weighted_mean = safe_mean(value, pair_weight),
+    .groups = "drop"
+  )
+
+print(pair_summary, n = Inf, width = Inf)

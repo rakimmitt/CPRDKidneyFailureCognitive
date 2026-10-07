@@ -6,19 +6,72 @@ library(tidyverse)
 library(MatchIt)
 rm(list=ls())
 
-cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
-codesets = cprd$codesets()
-codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
+### NB *Either* read in the saved table from database just after matching OR use the final merged cohort
 
-analysis = cprd$analysis("rk_ckd")
+# Immediately after matching:
 
-advanced_ckd_cohort <- advanced_ckd_cohort %>%
-  analysis$cached("advanced_ckd_cohort")
-  advanced_ckd_cohort %>% count()
+#cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
+#codesets = cprd$codesets()
+#codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-  non_ckd_cohort <- non_ckd_cohort %>%
-  analysis$cached("non_ckd_cohort")
-  non_ckd_cohort %>% count()
+#analysis = cprd$analysis("rk_ckd")
+
+#advanced_ckd_cohort <- advanced_ckd_cohort %>%
+#  analysis$cached("advanced_ckd_cohort")
+#  advanced_ckd_cohort %>% count()
+
+#  non_ckd_cohort <- non_ckd_cohort %>%
+#  analysis$cached("non_ckd_cohort")
+#  non_ckd_cohort %>% count()
+
+  # FALSE: assess balance among matched cases and their controls.
+# TRUE: compare ALL cached cases against the selected controls.
+# Silenced when using final merged cohort
+#include_unmatched_cases <- TRUE
+
+# Read the saved table without rerunning matching
+#cohort <- tbl(
+#  analysis$.con,
+#  dbplyr::in_schema(
+#    analysis$.analysisDb,
+#    "rk_ckd_matched_cohort"
+#  )
+#) %>%
+#  select(
+#   patid, is_case, matched_case_patid, matched_case_index_date,
+#    index_date, dob, gender, ethnicity_5cat, imd_decile
+#  ) %>%
+#  collect() %>%
+#  mutate(
+#    across(c(patid, matched_case_patid), as.character),
+#    is_case = as.integer(as.character(is_case)),
+#    across(c(index_date, matched_case_index_date, dob), as.Date),
+#    gender = coalesce(as.character(gender), "Missing"),
+#    ethnicity_5cat = coalesce(as.character(ethnicity_5cat), "Missing"),
+#    imd_decile = as.numeric(na_if(as.character(imd_decile), "Missing"))
+#  )
+
+# Final merged cohort for analysis:
+
+loaded_file <- load("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/05102026_matched_ckd_cohort_dm.Rda")
+
+diabetes_2024 <- get(loaded_file[1])
+
+  cohort <- diabetes_2024 %>%
+  select(
+    patid, is_case, matched_case_patid, matched_case_index_date,
+    index_date, dob, gender, ethnicity_5cat, imd_decile
+  ) %>%
+  mutate(
+    across(c(patid, matched_case_patid), as.character),
+    is_case = as.integer(as.character(is_case)),
+    across(c(index_date, matched_case_index_date, dob), as.Date),
+    gender = coalesce(as.character(gender), "Missing"),
+    ethnicity_5cat = coalesce(as.character(ethnicity_5cat), "Missing"),
+    imd_decile = as.numeric(
+      na_if(as.character(imd_decile), "Missing")
+    )
+  )
 
 #####
 
@@ -232,6 +285,22 @@ print(overall_balance, n = Inf, width = Inf)
 
 # Optional spreadsheet-style display
 View(overall_balance)
+
+# Median for IMDs
+
+imd_summary <- balance_data %>%
+  group_by(group) %>%
+  summarise(
+    n = n(),
+    observed_imd = sum(!is.na(imd_decile)),
+    missing_imd = sum(is.na(imd_decile)),
+    mean_imd_decile = safe_mean(imd_decile),
+    median_imd_decile = median(imd_decile, na.rm = TRUE),
+    weighted_mean_imd_decile = safe_mean(imd_decile, weight),
+    .groups = "drop"
+  )
+
+print(imd_summary, n = Inf, width = Inf)
 
 #####
 

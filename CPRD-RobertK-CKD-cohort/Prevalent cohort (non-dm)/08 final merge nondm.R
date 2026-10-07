@@ -51,7 +51,7 @@ efi <- efi %>% analysis$cached("efi")
 
 # Final merge of all datasets to create final cohort for analysis
   
-  final_merge <- matched_cohort %>%
+  rk_final_merge <- matched_cohort %>%
     left_join(ckd_stages, by="patid") %>%
     left_join(baseline_biomarkers, by="patid") %>%
     left_join(comorbidities, by="patid") %>%
@@ -65,21 +65,21 @@ efi <- efi %>% analysis$cached("efi")
            index_date_ckd_dur_all=datediff(index_date, first_ckd_date)/365.25,
            index_date = index_date) %>%
     relocate(c(index_date_age, index_date_ckd_dur_all), .before=gender) %>%
-    analysis$cached("final_merge", unique_indexes="patid")
+    analysis$cached("rk_final_merge", unique_indexes="patid")
   
   ############################################################################################
   
 # Export to R data object
 # Preserve all integer64 identifiers exactly as character strings.
 
-prev_cohort <- final_merge %>%
+prev_cohort <- rk_final_merge %>%
   collect() %>%
   mutate(
     across(where(bit64::is.integer64), as.character),
     index_date = as.Date(index_date)
   )
 
-today <- format(Sys.Date(), "%Y%m%d")
+today <- format(Sys.Date(), "%d%m%Y")
 
 save(prev_cohort, file = paste0("C:/Users/rk535/OneDrive - University of Exeter/","CPRD/2024/Raw data/", today, "_matched_ckd_cohort_nondm.Rda"))
   
@@ -88,4 +88,4 @@ save(prev_cohort, file = paste0("C:/Users/rk535/OneDrive - University of Exeter/
   rm(comorbidities)
   rm(ckd_stages)
   rm(smoking)
-  rm(final_merge)
+  rm(rk_final_merge)
