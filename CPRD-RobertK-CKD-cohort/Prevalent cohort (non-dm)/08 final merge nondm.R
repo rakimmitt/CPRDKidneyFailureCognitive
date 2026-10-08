@@ -62,9 +62,8 @@ efi <- efi %>% analysis$cached("efi")
     left_join(efi %>% select(patid, efi_n_deficits, pre_index_date_efi_score, pre_index_date_efi_cat), by = "patid") %>%
     left_join(death_causes, by = "patid") %>%
     mutate(index_date_age=datediff(index_date, dob)/365.25,
-           index_date_ckd_dur_all=datediff(index_date, first_ckd_date)/365.25,
            index_date = index_date) %>%
-    relocate(c(index_date_age, index_date_ckd_dur_all), .before=gender) %>%
+    relocate(c(index_date_age), .before=gender) %>%
     analysis$cached("rk_final_merge", unique_indexes="patid")
   
   ############################################################################################

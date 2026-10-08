@@ -9,7 +9,19 @@ loaded_file <- load("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Ra
 
 diabetes_2024 <- get(loaded_file[1])
 
-# Keep individuals aged 18 or over
+# Identify the patient IDs of cases aged under 18
+patid_under_18 <- diabetes_2024 %>%
+  filter(is_case == 1, index_date_age < 18) %>%
+  pull(patid)
+
+# Remove under-18 individuals and controls matched to under-18 cases
+diabetes_2024 <- diabetes_2024 %>%
+  filter(
+    index_date_age >= 18,
+    !(is_case == 0 & matched_case_patid %in% patid_under_18)
+  )
+
+# Keep individuals aged 18 or over - this will remove any controls <18 matched to cases >18
 diabetes_2024 <- diabetes_2024 %>%
   filter(index_date_age >= 18)
 

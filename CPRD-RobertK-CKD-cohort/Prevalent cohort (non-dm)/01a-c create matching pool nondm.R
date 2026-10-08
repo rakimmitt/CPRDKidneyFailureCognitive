@@ -4,25 +4,13 @@
 library(tidyverse)
 library(aurum)
 library(EHRBiomarkr)
-rm(list=ls())
-
 
 cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
-
-
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-#Data quality check - should only include acceptable' patients (see CPRD data specification for definition)
 cprd$tables$patient %>% count() #45,037,869 - total patient count in download
-cprd$tables$patient %>% filter(acceptable ==1) %>% count() #45,037,869
-cprd$tables$patient %>% filter(patienttypeid ==3) %>% count() #45,037,869
-#All are 'acceptable' and have patienttypeid==3 ('Regular')
 
-############################################################################################
-
-##CPRD recommend excluding 44 practices (as below) that appear likely to have merged into other contributing practices (patient data could be duplicated)
-##Define patients to remove later
 analysis = cprd$analysis("all_patid")
 
 practice_exclusion_ids <- cprd$tables$patient %>% 
@@ -34,7 +22,6 @@ practice_exclusion_ids <- cprd$tables$patient %>%
   analysis$cached("practice_exclusion_ids")
 
 practice_exclusion_ids %>% count() #672,504
-
 
 ############################################################################################
 
@@ -48,51 +35,133 @@ gender_exclusion_ids %>% count() #1767
 
 cprd$tables$patient %>% anti_join(practice_exclusion_ids, by="patid") %>% anti_join(gender_exclusion_ids, by="patid") %>% count() #44,363,638
 
-
 ############################################################################################
 
 # create table for ckd stage 5 (by diagnostic codes) and ckd_stages_from_algorithm (by eGFR/ACR algorithm) - to be used for cohort definition
 analysis = cprd$analysis("all_patid")
-comorbids = "ckd5_code"
+
+comorbids <- c("ckd5_code",
+               "alldementia"
+)
+
+############################################################################################
+
+analysis = cprd$analysis("all_patid")
 
 for (i in comorbids) {
-  if (length(codes[[i]]) > 0) {
-    print(paste("making", i, "medcode table"))
-    
-    raw_tablename <- paste0("raw_", i, "_medcodes")
-    
-    data <- cprd$tables$observation %>%
-      inner_join(codes[[i]], by="medcodeid") %>%
-      analysis$cached(raw_tablename, indexes=c("patid", "obsdate"))
-    
-    assign(raw_tablename, data)
-    
-  }
   
-  if (i!="hypertension" && length(codes[[paste0("icd10_", i)]]) > 0) {
-    print(paste("making", i, "ICD10 code table"))
+  if (!i %in% c("alldementia")) {
+     
+    if (length(codes[[i]]) > 0) {
+      print(paste("making", i, "medcode table"))
+      
+      raw_tablename <- paste0("raw_", i, "_medcodes")
+      
+      data <- cprd$tables$observation %>%
+        inner_join(codes[[i]], by="medcodeid") %>%
+        analysis$cached(raw_tablename, indexes=c("patid", "obsdate"))
+      
+      assign(raw_tablename, data)
+      
+    }
     
-    raw_tablename <- paste0("raw_", i, "_icd10")
+    if (i!="hypertension" && length(codes[[paste0("icd10_", i)]]) > 0) {
+      print(paste("making", i, "ICD10 code table"))
+      
+      raw_tablename <- paste0("raw_", i, "_icd10")
+      
+      data <- cprd$tables$hesDiagnosisEpi %>%
+        inner_join(codes[[paste0("icd10_",i)]], sql_on="LHS.ICD LIKE CONCAT(icd10,'%')") %>%
+        analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
+      
+      assign(raw_tablename, data)
+      
+    }
     
-    data <- cprd$tables$hesDiagnosisEpi %>%
-      inner_join(codes[[paste0("icd10_",i)]], sql_on="LHS.ICD LIKE CONCAT(icd10,'%')") %>%
-      analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
+    if (length(codes[[paste0("opcs4_", i)]]) > 0) {
+      print(paste("making", i, "OPCS4 code table"))
+      
+      raw_tablename <- paste0("raw_", i, "_opcs4")
+      
+      data <- cprd$tables$hesProceduresEpi %>%
+        inner_join(codes[[paste0("opcs4_",i)]], sql_on="LHS.OPCS LIKE CONCAT(opcs4,'%')") %>%
+        analysis$cached(raw_tablename, indexes=c("patid", "evdate"))
+      
+      assign(raw_tablename, data)
+      
+    }
     
-    assign(raw_tablename, data)
+  } else {
     
-  }
-  
-  if (length(codes[[paste0("opcs4_", i)]]) > 0) {
-    print(paste("making", i, "OPCS4 code table"))
+codelist_root <- paste0(
+  "C:/Users/rk535/OneDrive/1 - PhD/Data Science/CPRD/",
+  "Github clone/CPRDKidneyFailureCognitive/CPRD-Codelists"
+)
+
+          if (file.exists(file.path(codelist_root, "Medcodes", paste0("exeter_medcodelist_", i, ".txt")))) 
+            {
+      print(paste("making", i, "medcode table"))
+      
+      raw_tablename <- paste0("raw_", i, "_medcodes")
+      
+      #placeholder variable that all other codelists have on server
+      empty_variable = paste0(i, "_cat")
+      
+      data <- cprd$tables$observation %>%
+        inner_join( readr::read_tsv(
+          here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\Medcodes\\exeter_medcodelist_", i, ".txt")),
+          col_types = cols(.default=col_character())) %>%
+            rename(medcodeid=MedCodeId) %>%
+            select(medcodeid) %>%
+            mutate(!!sym(empty_variable) := NA), 
+          by="medcodeid", copy = T) %>%
+        analysis$cached(raw_tablename, indexes=c("patid", "obsdate"))
+      
+      assign(raw_tablename, data)
+    }
     
-    raw_tablename <- paste0("raw_", i, "_opcs4")
-    
-    data <- cprd$tables$hesProceduresEpi %>%
-      inner_join(codes[[paste0("opcs4_",i)]], sql_on="LHS.OPCS LIKE CONCAT(opcs4,'%')") %>%
-      analysis$cached(raw_tablename, indexes=c("patid", "evdate"))
-    
-    assign(raw_tablename, data)
-    
+            if (file.exists(file.path(codelist_root, "ICD10", paste0("exeter_icd10_", i, ".txt")))) 
+            {
+      print(paste("making", i, "ICD10 code table"))
+      
+      raw_tablename <- paste0("raw_", i, "_icd10")
+      empty_variable = paste0("icd10_", i, "_cat")
+      
+      data <- cprd$tables$hesDiagnosisEpi %>%
+        inner_join(
+          readr::read_tsv(
+            here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\ICD10\\exeter_icd10_", i, ".txt")),
+            col_types = cols(.default=col_character())) %>% 
+            rename(icd10 = ICD10) %>%
+            select(icd10) %>%
+            mutate(!!sym(empty_variable) := NA),
+            sql_on="LHS.ICD LIKE CONCAT(icd10,'%')", copy = T) %>%
+        analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
+      
+      assign(raw_tablename, data)
+            }
+
+            if (file.exists(file.path(codelist_root, "OPCS4", paste0("exeter_opcs4_", i, ".txt")))) 
+            {
+      print(paste("making", i, "OPCS4 code table"))
+      
+      raw_tablename <- paste0("raw_", i, "_opcs4")
+      empty_variable = paste0("_opcs4", i, "_cat")
+      
+      data <- cprd$tables$hesProceduresEpi %>%
+        inner_join(
+          readr::read_tsv(
+            here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\OPCS4\\exeter_opcs4_", i, ".txt")),
+            col_types = cols(.default=col_character())) %>% 
+            rename(opcs4 = OPCS4) %>%
+            select(opcs4) %>%
+            mutate(!!sym(empty_variable) := NA),
+            sql_on="LHS.OPCS LIKE CONCAT(opcs4,'%')", copy = T) %>%
+        analysis$cached(raw_tablename, indexes=c("patid", "evdate"))
+      
+      assign(raw_tablename, data)
+      
+    }
   }
 }
 
@@ -141,8 +210,7 @@ for (i in biomarkers) {
   }
   else {
     data <- raw_data %>%
-      clean_biomarker_units(testvalue, i) %>%
-      #clean_biomarker_values(testvalue, i) %>%
+      clean_biomarker_values(testvalue, i) %>%
       clean_biomarker_units(numunitid, i)
   }
 
@@ -162,6 +230,37 @@ for (i in biomarkers) {
   assign(clean_tablename, data)
   
 }
+
+## DOB
+
+analysis = cprd$analysis("all")
+
+dob <- cprd$tables$observation %>%
+  inner_join(cprd$tables$validDateLookup, by="patid") %>%
+  filter(obsdate>=min_dob) %>%
+  group_by(patid) %>%
+  summarise(earliest_medcode=min(obsdate, na.rm=TRUE)) %>%
+  ungroup() %>%
+  analysis$cached("earliest_medcode", unique_indexes="patid")
+
+dob %>% count() # should be around 45 million
+
+## No-one has missing dob or earliest_medcode so pmin (runs as 'LEAST' in MySQL) works
+
+dob <- dob %>%
+  inner_join(cprd$tables$patient, by="patid") %>%
+  mutate(dob=as.Date(ifelse(is.na(mob), paste0(yob,"-06-30"), paste0(yob, "-",mob,"-15")))) %>%
+  inner_join(cprd$tables$validDateLookup, by = "patid") %>%
+  mutate(dob=pmin(dob, earliest_medcode, na.rm=TRUE)) %>%
+  mutate(dob=ifelse(regstartdate>=min_dob & regstartdate<dob, regstartdate, dob)) %>%
+  select(patid, dob = dob, mob, yob, regstartdate) %>%
+  analysis$cached("dob", unique_indexes="patid")
+
+dob <- dob %>% analysis$cached("dob", unique_indexes="patid")
+
+analysis = cprd$analysis("all_patid")
+ethnicity <- ethnicity %>% analysis$cached("ethnicity", unique_indexes="patid")
+
 
 # egfr
 analysis = cprd$analysis("all")
@@ -213,7 +312,6 @@ ckd_stages_from_all_egfr <- clean_egfr_medcodes %>%
                                                ifelse(egfr<90, "stage_2",
                                                       ifelse(egfr>=90, "stage_1", NA)))))))
 
-
 ################################################################################################################################
 
 # Only keep CKD stages if >1 consecutive test with the same stage, and if time between earliest and latest consecutive test with same stage are >=90 days apart
@@ -222,7 +320,6 @@ ckd_stages_from_all_egfr <- clean_egfr_medcodes %>%
 ### A) Define period from current test until next test as having the ckd_stage of current test
 ### B) Join together consecutive periods with the same ckd_stage
 ### C) If period contains >1 test, and there is >=90 days between the first and last test in the period, it is 'confirmed'
-
 
 ### A) Define period from current test until next test as having the ckd_stage of current test
 
@@ -235,7 +332,6 @@ ckd_stages_from_algorithm <- ckd_stages_from_all_egfr %>%
   mutate(patid_total_rows=max(patid_row_id, na.rm=TRUE)) %>%
   ungroup()
 
-
 #### For rows where there is a next test, use this as end date; for last row, use start date as end date
 
 ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
@@ -246,7 +342,6 @@ ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
          ckd_stage=ckd_stage.x,
          egfr=egfr.x) %>%
   select(patid, patid_row_id, ckd_stage, ckd_start, ckd_end, egfr)
-
 
 ### B) Join together consecutive periods with the same ckd_stage
 
@@ -272,7 +367,6 @@ ckd_stages_from_algorithm %>% count()
 ckd_stages_from_algorithm %>% summarise(total=sum(test_count, na.rm=TRUE))
 #total number of tests: 112,440,442 as above
 
-
 ### C) Remove periods with 1 reading, or with multiple readings but <90 days between first and last test, and cache
 
 ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
@@ -282,6 +376,7 @@ ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
 ckd_stages_from_algorithm %>% count()
 #17,886,174
 
+## Clean CKD5 codes
 
 earliest_clean_ckd5 <- raw_ckd5_code_medcodes %>%
   select(patid, date=obsdate) %>%
@@ -290,12 +385,11 @@ earliest_clean_ckd5 <- raw_ckd5_code_medcodes %>%
   union_all((raw_ckd5_code_opcs4 %>% select(patid, date=evdate) %>% mutate(source="hes"))) %>%
   inner_join(cprd$tables$validDateLookup, by="patid") %>%
   #filter(date>=min_dob & ((source=="gp" & date<=gp_ons_maximum_date) | (source=="hes" & (is.na(gp_ons_death_date) | date<=gp_ons_death_date)))) %>% ## as above - ONS variables substituted
-  filter(date>=min_dob & ((source=="gp" & date<=gp_end_date) | (source=="hes" & (is.na(gp_end_date) | date<=gp_end_date)))) %>%
+  filter(!is.na(date), date>=min_dob, (source=="gp" & date<=gp_end_date) | (source=="hes" & date <= as.Date("2023-03-31"))) %>%
   group_by(patid) %>%
   summarise(first_test_date=min(date, na.rm=TRUE)) %>%
   ungroup() %>%
   analysis$cached("earliest_clean_ckd5",indexes=c("patid", "first_test_date"))
-
 
 ## Combine CKD5 and other codes
 
@@ -307,7 +401,6 @@ ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
 ckd_stages_from_algorithm %>% count()        
 #12,130,677
 
-
 ################################################################################################################################
 
 # Define date of onset for each stage
@@ -318,7 +411,6 @@ ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
   group_by(patid, ckd_stage) %>%
   summarise(ckd_stage_start=min(first_test_date, na.rm=TRUE)) %>% 
   ungroup()
-
 
 ## Remove where start date of less severe stage is later than start date of more severe stage
 ### Reshape wide first
@@ -391,133 +483,62 @@ ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
   analysis$cached("ckd_stages_from_algorithm",
                   indexes = c("patid"))
 
-
 #################################################################################################################################
 
 # get cohort ids for all ckd stages (1-5) and advanced ckd (stages 4-5)
 
 analysis = cprd$analysis("rk_ckd")
 
-ckd_ids <- ckd_stages_from_algorithm %>% 
-  filter(!(is.na(stage_1) & is.na(stage_2) & is.na(stage_3a) & 
-             is.na(stage_3b) & is.na(stage_4) & is.na(stage_5))) %>%
-  mutate(
-    first_ckd_date = as.Date(
-      pmin(
-        ifelse(is.na(stage_1), as.Date("2050-01-01"), stage_1),
-        ifelse(is.na(stage_2), as.Date("2050-01-01"), stage_2),
-        ifelse(is.na(stage_3a), as.Date("2050-01-01"), stage_3a),
-        ifelse(is.na(stage_3b), as.Date("2050-01-01"), stage_3b),
-        ifelse(is.na(stage_4), as.Date("2050-01-01"), stage_4),
-        ifelse(is.na(stage_5), as.Date("2050-01-01"), stage_5),
-        na.rm = TRUE
+ckd_matching_dates <- ckd_stages_from_algorithm %>%
+  transmute(
+    patid,
+
+    # Earliest recorded stage 3a or 3b date
+    ckd_stage_3_start_date = as.Date(
+      case_when(
+        is.na(stage_3a) ~ stage_3b,
+        is.na(stage_3b) ~ stage_3a,
+        TRUE ~ pmin(stage_3a, stage_3b)
+      )
+    ),
+
+    # Earliest stage 4 or 5 date, including diagnostic CKD5
+    advanced_ckd_index_date = as.Date(
+      case_when(
+        is.na(stage_4) ~ stage_5,
+        is.na(stage_5) ~ stage_4,
+        TRUE ~ pmin(stage_4, stage_5)
       )
     )
   ) %>%
-  mutate(first_ckd_date = ifelse(first_ckd_date == as.Date("2050-01-01"), NA, first_ckd_date)) %>%
-  group_by(patid) %>%
-  dbplyr::window_order(first_ckd_date) %>%
-  distinct(patid, .keep_all = TRUE) %>%
-  ungroup() %>%
-  distinct(patid, .keep_all = TRUE) %>%
-  select(-contains("stage"), -confirmed_acr3_date) %>%
-  analysis$cached("ckd_ids_im", unique_indexes="patid")
+  analysis$cached(
+    "ckd_matching_dates",
+    unique_indexes = "patid"
+  )
 
-ckd_ids %>% count() #1452649
+###################################
 
-ckd_ids %>% anti_join(practice_exclusion_ids, by="patid") %>% anti_join(gender_exclusion_ids, by="patid") %>% count() #2110415
+analysis <- cprd$analysis("all_patid")
 
-ckd_ids <- ckd_ids %>%
-  anti_join(practice_exclusion_ids, by="patid") %>% 
-  anti_join(gender_exclusion_ids, by="patid") %>%
-  analysis$cached("ckd_ids", unique_indexes="patid")
+# Dementia Dx
 
-ckd_ids %>% count() #1452649
+raw_alldementia_medcodes <- raw_alldementia_medcodes %>% analysis$cached("raw_alldementia_medcodes")
+raw_alldementia_icd10 <- raw_alldementia_icd10 %>% analysis$cached("raw_alldementia_icd10")
 
-# and those with no CKD (for comparison)
-
-non_ckd_ids <- cprd$tables$patient %>%
-  select(patid) %>%
-  distinct() %>%
-  anti_join(ckd_ids, by = "patid") %>%
-  anti_join(practice_exclusion_ids, by = "patid") %>%
-  anti_join(gender_exclusion_ids, by = "patid") %>%
-  analysis$cached("non_ckd_ids", unique_indexes = "patid")
-
-non_ckd_ids %>% count()
-
-## create table for ids with advanced ckd only (ckd stages 4 or 5)
-analysis = cprd$analysis("rk_ckd")
-
-advanced_ckd_ids <- ckd_stages_from_algorithm %>% 
-  filter(!(is.na(stage_4) & is.na(stage_5))) %>%
-  mutate(index_date = as.Date(pmin(
-        ifelse(is.na(stage_4), as.Date("2050-01-01"), stage_4),
-        ifelse(is.na(stage_5), as.Date("2050-01-01"), stage_5),
-        na.rm = TRUE
-      )
-    )
-  ) %>%
-
-  mutate(index_date = ifelse(index_date == as.Date("2050-01-01"), NA, index_date)) %>%
-
-  # keep those with an index date after 1 Jan 2008 (as CKD was added to QOF in 2006) before keeping only the earliest index date for each patient
-
-  filter(index_date > as.Date("2008-01-01")) %>%
-  group_by(patid) %>%
-  dbplyr::window_order(index_date) %>%
-  distinct(patid, .keep_all = TRUE) %>%
-  ungroup() %>%
-  distinct(patid, .keep_all = TRUE) %>%
-  select(-contains("stage"), -confirmed_acr3_date) %>%
-  analysis$cached("advanced_ckd_ids_im", unique_indexes="patid")
-
-advanced_ckd_ids %>% count() 
-
-advanced_ckd_ids %>% anti_join(practice_exclusion_ids, by="patid") %>% anti_join(gender_exclusion_ids, by="patid") %>% count()
-
-advanced_ckd_ids <- advanced_ckd_ids %>%
-  anti_join(practice_exclusion_ids, by="patid") %>% 
-  anti_join(gender_exclusion_ids, by="patid") %>%
-  analysis$cached("advanced_ckd_ids", unique_indexes="patid")
-
-advanced_ckd_ids %>% count()
-
-
-############################################################################################
-
-# join with tables
-
-# dob 
-analysis = cprd$analysis("all")
-
-dob <- cprd$tables$observation %>%
-  inner_join(cprd$tables$validDateLookup, by="patid") %>%
-  filter(obsdate>=min_dob) %>%
-  group_by(patid) %>%
-  summarise(earliest_medcode=min(obsdate, na.rm=TRUE)) %>%
-  ungroup() %>%
-  analysis$cached("earliest_medcode", unique_indexes="patid")
-
-#### Check count
-dob %>% count() #44,960,468 - almost everyone in download
-
-#### No-one has missing dob or earliest_medcode so pmin (runs as 'LEAST' in MySQL) works
-dob <- dob %>%
-  inner_join(cprd$tables$patient, by="patid") %>%
-  mutate(dob=as.Date(ifelse(is.na(mob), paste0(yob,"-06-30"), paste0(yob, "-",mob,"-15")))) %>%
+# Combine Medcodes and ICD10 records
+earliest_all_dementia <- raw_alldementia_medcodes %>%
+  select(patid, date = obsdate) %>%
+  mutate(source = "gp") %>%
+  union_all(raw_alldementia_icd10 %>% select(patid, date = epistart) %>% mutate(source = "hes")) %>%
   inner_join(cprd$tables$validDateLookup, by = "patid") %>%
-  mutate(dob=pmin(dob, earliest_medcode, na.rm=TRUE)) %>%
-  mutate(dob=ifelse(regstartdate>=min_dob & regstartdate<dob, regstartdate, dob)) %>%
-  select(patid, dob = dob, mob, yob, regstartdate) %>%
-  analysis$cached("dob", unique_indexes="patid")
+  filter(date >= min_dob, (source == "gp" & date <= gp_end_date) | (source == "hes" & date <= as.Date("2023-03-31"))) %>%
+  group_by(patid) %>%
+  summarise(earliest_all_dementia = min(date, na.rm = TRUE),
+    .groups = "drop") %>%
+  analysis$cached("earliest_all_dementia", unique_indexes = "patid")
 
-dob <- dob %>% analysis$cached("dob", unique_indexes="patid")
+# Get list of all ids
 
-analysis = cprd$analysis("all_patid")
-ethnicity <- ethnicity %>% analysis$cached("ethnicity", unique_indexes="patid")
-
-# get list of all ids
 all_ids <- dob %>%
   anti_join(practice_exclusion_ids, by="patid") %>% 
   anti_join(gender_exclusion_ids, by="patid") %>%
@@ -532,59 +553,18 @@ all_ids <- dob %>%
   select(patid, gender, dob, pracid, prac_region=region, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2, imd_decile, regstartdate, gp_end_date, death_date=reg_date_of_death, with_hes, hes_end_date) %>%
   analysis$cached("all_ids", unique_indexes="patid", indexes=c("gender", "dob"))
 
-all_ids %>% count() 
-#44,363,638
+all_ids %>% count() #44,363,638
 
-# join ids with dob and other data
-analysis = cprd$analysis("rk_ckd")
+# Join ids with dob and other data for CKD cohort to produce matching_pool
 
-ckd_cohort <- ckd_ids %>%
-  left_join(dob, by="patid") %>%
-  left_join((cprd$tables$patient %>% select(patid, gender, regenddate, pracid)), by="patid") %>%
-  left_join((cprd$tables$practice %>% select(pracid, lcd, region)), by="pracid") %>%
-  left_join((cprd$tables$onsDeath %>% select(patid, reg_date_of_death)), by="patid") %>%
-  left_join((cprd$tables$patientImd %>% select(patid, imd_decile)), by="patid") %>%
-  left_join((cprd$tables$validDateLookup %>% select(patid, gp_end_date)), by="patid") %>%
-  left_join((cprd$tables$patidsWithLinkage %>% mutate(with_hes=1L) %>% select(patid, with_hes, hes_end_date)), by="patid") %>%
-  mutate(with_hes=ifelse(is.na(with_hes), 0L, 1L)) %>%
-  left_join(ethnicity, by="patid") %>%
-  select(patid, gender, dob, pracid, prac_region=region, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2, imd_decile, regstartdate, gp_end_date, death_date=reg_date_of_death, with_hes, hes_end_date, first_ckd_date) %>%
-  analysis$cached("ckd_cohort", unique_indexes="patid", indexes=c("gender", "dob"))
-                  
-                  
-ckd_cohort %>% count() # 1,452,649
+analysis <- cprd$analysis("rk_ckd")
 
-# do similar for advanced ckd cohort and non-ckd cohort  
-analysis = cprd$analysis("rk_ckd")
+matching_pool <- all_ids %>%
+  left_join(ckd_matching_dates, by="patid") %>%
+  left_join(earliest_all_dementia, by="patid") %>%
+  filter(with_hes==1L) %>%
+  select(patid, gender, dob, pracid, prac_region, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2, imd_decile, regstartdate, gp_end_date, death_date, with_hes, hes_end_date,
+         ckd_stage_3_start_date, advanced_ckd_index_date, earliest_all_dementia) %>%
+  analysis$cached("matching_pool", unique_indexes="patid", indexes=c("ckd_stage_3_start_date", "advanced_ckd_index_date", "earliest_all_dementia"))
 
-advanced_ckd_cohort <- advanced_ckd_ids %>%
-  left_join(dob, by="patid") %>%
-  left_join((cprd$tables$patient %>% select(patid, gender, regenddate, pracid)), by="patid") %>%
-  left_join((cprd$tables$practice %>% select(pracid, lcd, region)), by="pracid") %>%
-  left_join((cprd$tables$onsDeath %>% select(patid, reg_date_of_death)), by="patid") %>%
-  left_join((cprd$tables$patientImd %>% select(patid, imd_decile)), by="patid") %>%
-  left_join((cprd$tables$validDateLookup %>% select(patid, gp_end_date)), by="patid") %>%
-  left_join((cprd$tables$patidsWithLinkage %>% mutate(with_hes=1L) %>% select(patid, with_hes, hes_end_date)), by="patid") %>%
-  mutate(with_hes=ifelse(is.na(with_hes), 0L, 1L)) %>%
-  left_join(ethnicity, by="patid") %>%
-  select(patid, gender, dob, pracid, prac_region=region, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2, imd_decile, regstartdate, gp_end_date, death_date=reg_date_of_death, with_hes, hes_end_date, index_date) %>%
-  analysis$cached("advanced_ckd_cohort", unique_indexes="patid", indexes=c("gender", "dob"))
-
-  advanced_ckd_cohort %>% count()
-
- non_ckd_cohort <- non_ckd_ids %>%
-  left_join(dob, by="patid") %>%
-  left_join((cprd$tables$patient %>% select(patid, gender, regenddate, pracid)), by="patid") %>%
-  left_join((cprd$tables$practice %>% select(pracid, lcd, region)), by="pracid") %>%
-  left_join((cprd$tables$onsDeath %>% select(patid, reg_date_of_death)), by="patid") %>%
-  left_join((cprd$tables$patientImd %>% select(patid, imd_decile)), by="patid") %>%
-  left_join((cprd$tables$validDateLookup %>% select(patid, gp_end_date)), by="patid") %>%
-  left_join((cprd$tables$patidsWithLinkage %>% mutate(with_hes=1L) %>% select(patid, with_hes, hes_end_date)), by="patid") %>%
-  mutate(with_hes=ifelse(is.na(with_hes), 0L, 1L)) %>%
-  left_join(ethnicity, by="patid") %>%
-  select(patid, gender, dob, pracid, prac_region=region, ethnicity_5cat, ethnicity_16cat, ethnicity_qrisk2, imd_decile, regstartdate, gp_end_date, death_date=reg_date_of_death, with_hes, hes_end_date) %>%
-  analysis$cached("non_ckd_cohort", unique_indexes="patid", indexes=c("gender", "dob"))
-
-  non_ckd_cohort %>% count()
-
-############################################################################################
+  matching_pool %>% count()

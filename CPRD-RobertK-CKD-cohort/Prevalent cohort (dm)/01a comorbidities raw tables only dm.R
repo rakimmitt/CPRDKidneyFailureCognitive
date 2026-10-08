@@ -61,7 +61,20 @@ comorbids <- c("acutepancreatitis",
                #"vitreoushemorrhage",
                "volume_depletion",
                "genital_infection",
-               "genital_infection_nonspec"
+               "genital_infection_nonspec",
+               "alldementia",
+               "alzheimers",
+               "ckd5_nokrt",
+               "delirium",
+               "haemodialysis",
+               "mci",
+               "peritoneal_dialysis",
+               "renalaccessinfection",
+               "transplant",
+               "vascular_dementia",
+               "uti",
+               "skininfection",
+               "respiratorytractinfection"
 )
 
 ############################################################################################
@@ -69,6 +82,20 @@ comorbids <- c("acutepancreatitis",
 analysis = cprd$analysis("all_patid")
 
 for (i in comorbids) {
+  
+  if (!i %in% c("alldementia",
+               "alzheimers",
+               "ckd5_nokrt",
+               "delirium",
+               "haemodialysis",
+               "mci",
+               "peritoneal_dialysis",
+               "renalaccessinfection",
+               "transplant",
+               "vascular_dementia",
+               "uti",
+               "skininfection",
+               "respiratorytractinfection")) {
      
     if (length(codes[[i]]) > 0) {
       print(paste("making", i, "medcode table"))
@@ -109,7 +136,79 @@ for (i in comorbids) {
       
     }
     
-  } 
+  } else {
+    
+codelist_root <- paste0(
+  "C:/Users/rk535/OneDrive/1 - PhD/Data Science/CPRD/",
+  "Github clone/CPRDKidneyFailureCognitive/CPRD-Codelists"
+)
+
+          if (file.exists(file.path(codelist_root, "Medcodes", paste0("exeter_medcodelist_", i, ".txt")))) 
+            {
+      print(paste("making", i, "medcode table"))
+      
+      raw_tablename <- paste0("raw_", i, "_medcodes")
+      
+      #placeholder variable that all other codelists have on server
+      empty_variable = paste0(i, "_cat")
+      
+      data <- cprd$tables$observation %>%
+        inner_join( readr::read_tsv(
+          here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\Medcodes\\exeter_medcodelist_", i, ".txt")),
+          col_types = cols(.default=col_character())) %>%
+            rename(medcodeid=MedCodeId) %>%
+            select(medcodeid) %>%
+            mutate(!!sym(empty_variable) := NA), 
+          by="medcodeid", copy = T) %>%
+        analysis$cached(raw_tablename, indexes=c("patid", "obsdate"))
+      
+      assign(raw_tablename, data)
+    }
+    
+            if (file.exists(file.path(codelist_root, "ICD10", paste0("exeter_icd10_", i, ".txt")))) 
+            {
+      print(paste("making", i, "ICD10 code table"))
+      
+      raw_tablename <- paste0("raw_", i, "_icd10")
+      empty_variable = paste0("icd10_", i, "_cat")
+      
+      data <- cprd$tables$hesDiagnosisEpi %>%
+        inner_join(
+          readr::read_tsv(
+            here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\ICD10\\exeter_icd10_", i, ".txt")),
+            col_types = cols(.default=col_character())) %>% 
+            rename(icd10 = ICD10) %>%
+            select(icd10) %>%
+            mutate(!!sym(empty_variable) := NA),
+          , sql_on="LHS.ICD LIKE CONCAT(icd10,'%')", copy = T) %>%
+        analysis$cached(raw_tablename, indexes=c("patid", "epistart"))
+      
+      assign(raw_tablename, data)
+            }
+
+            if (file.exists(file.path(codelist_root, "OPCS4", paste0("exeter_opcs4_", i, ".txt")))) 
+            {
+      print(paste("making", i, "OPCS4 code table"))
+      
+      raw_tablename <- paste0("raw_", i, "_opcs4")
+      empty_variable = paste0("_opcs4", i, "_cat")
+      
+      data <- cprd$tables$hesProceduresEpi %>%
+        inner_join(
+          readr::read_tsv(
+            here::here(paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\OPCS4\\exeter_opcs4_", i, ".txt")),
+            col_types = cols(.default=col_character())) %>% 
+            rename(opcs4 = OPCS4) %>%
+            select(opcs4) %>%
+            mutate(!!sym(empty_variable) := NA),
+          , sql_on="LHS.OPCS LIKE CONCAT(opcs4,'%')", copy = T) %>%
+        analysis$cached(raw_tablename, indexes=c("patid", "evdate"))
+      
+      assign(raw_tablename, data)
+      
+    }
+  }
+}
 
 ## Add to beginning of list so don't have to remake interim tables when add new comorbidity to end of above list
 # Make new primary cause hospitalisation for heart failure, incident MI, and incident stroke comorbidities

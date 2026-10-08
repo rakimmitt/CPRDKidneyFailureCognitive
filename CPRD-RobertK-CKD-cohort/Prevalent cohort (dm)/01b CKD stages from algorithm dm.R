@@ -42,7 +42,6 @@ clean_creatinine_blood_medcodes <- raw_creatinine_blood_medcodes %>%
   select(patid, date=obsdate, testvalue) %>%
   analysis$cached("clean_creatinine_blood_medcodes_test", indexes=c("patid", "date", "testvalue"))
 
-
 #clean_creatinine_blood_medcodes %>% count()
 #44,775,705
 
@@ -68,7 +67,6 @@ clean_egfr_medcodes <- clean_creatinine_blood_medcodes %>%
 
 #clean_egfr_medcodes %>% count()
 #44,775,286 - lose 419 rows for people with gender==3
-
 
 ################################################################################################################################
 
@@ -106,7 +104,6 @@ ckd_stages_from_algorithm <- ckd_stages_from_all_egfr %>%
   ungroup() %>%
   analysis$cached("ckd_stages_from_algorithm_interim_1", indexes=c("patid", "date", "patid_row_id"))
 
-
 #### For rows where there is a next test, use this as end date; for last row, use start date as end date
 
 ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
@@ -117,7 +114,6 @@ ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
          ckd_stage=ckd_stage.x) %>%
   select(patid, patid_row_id, ckd_stage, ckd_start, ckd_end) %>%
   analysis$cached("ckd_stages_from_algorithm_interim_2", indexes=c("patid", "ckd_stage", "patid_row_id"))
-
 
 ### B) Join together consecutive periods with the same ckd_stage
 
@@ -153,23 +149,16 @@ ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
 ckd_stages_from_algorithm %>% count()
 #6,080,681
 
-
 ################################################################################################################################
 
 # Combine with CKD5 medcodes/ICD10/OPCS4 codes
 
 ## Get raw CKD5 codes and clean
-### All are already in all_patid tables on MySQL from 4_mm_comorbidities script
+### All are already in all_patid tables on MySQL from 01a
 
-### Medcodes
 raw_ckd5_code_medcodes <- raw_ckd5_medcodes %>% analysis$cached("raw_ckd5_code_medcodes")
-
-### ICD10 codes
 raw_ckd5_code_icd10 <- raw_ckd5_icd10 %>% analysis$cached("raw_ckd5_code_icd10")
-
-### OPCS4 codes
 raw_ckd5_code_opcs4 <- raw_ckd5_opcs4 %>% analysis$cached("raw_ckd5_code_opcs4")
-
 
 ## Clean, find earliest date per person, and re-cache
 
@@ -194,7 +183,6 @@ ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
 
 ckd_stages_from_algorithm %>% count()        
 #6,123,490
-
 
 ################################################################################################################################
 
