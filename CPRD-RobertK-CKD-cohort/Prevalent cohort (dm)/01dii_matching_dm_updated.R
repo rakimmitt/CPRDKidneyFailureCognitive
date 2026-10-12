@@ -19,7 +19,8 @@ analysis = cprd$analysis("rk_ckd")
 matching_pool <- matching_pool %>%
   analysis$cached("matching_pool")
 
-age_penalty <- 0 # 0 reproduces original distance
+draft_suffix <- "_5_year_max"
+age_penalty <- 1 # 0 reproduces original distance
 match_with_replacement <- TRUE
 max_controls <- 4L
 max_age_gap_years <- Inf
@@ -315,7 +316,7 @@ if (nrow(matched_cohort) == 0L) {
 
 matched_cohort_db <- copy_to(
   dest = analysis$.con, df = matched_cohort,
-  name = dbplyr::in_schema(analysis$.analysisDb, "rk_ckd_matched_cohort"),
+  name = dbplyr::in_schema(analysis$.analysisDb, paste0("rk_ckd_matched_cohort", draft_suffix)),
   overwrite = TRUE, temporary = FALSE,
   unique_indexes = "match_record_id",
   indexes = c("patid", "is_case", "matched_case_patid", "index_date")
