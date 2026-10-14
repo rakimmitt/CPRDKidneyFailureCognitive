@@ -3,3 +3,7 @@
 dbplyr::remote_name(advanced_ckd_cohort)
 
 dplyr::show_query(non_ckd_cohort)
+
+# Updated caching table, once patid no longer unique_indexes
+
+comorbidities <- comorbidities %>% analysis$cached("comorbidities", unique_indexes=c("patid","index date"))

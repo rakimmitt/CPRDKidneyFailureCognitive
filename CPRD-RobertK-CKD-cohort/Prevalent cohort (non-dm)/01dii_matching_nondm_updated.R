@@ -19,11 +19,11 @@ analysis = cprd$analysis("rk_ckd")
 matching_pool <- matching_pool %>%
   analysis$cached("matching_pool")
 
-draft_suffix <- "_5_year_max" 
-age_penalty <- 0 # 0 reproduces original distance
+draft_suffix <-"pen1"
+age_penalty <- 1 # 0 reproduces original distance
 match_with_replacement <- TRUE
 max_controls <- 4L
-max_age_gap_years <- 5
+max_age_gap_years <- Inf
 min_registration_months <- 6L
 dementia_exclusion_months <- 3L
 case_date_cutoff <- as.Date("2008-01-01")

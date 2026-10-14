@@ -19,7 +19,7 @@ analysis = cprd$analysis("rk_ckd")
 matching_pool <- matching_pool %>%
   analysis$cached("matching_pool")
 
-draft_suffix <- "_5_year_max"
+draft_suffix <- "pen1"
 age_penalty <- 1 # 0 reproduces original distance
 match_with_replacement <- TRUE
 max_controls <- 4L
