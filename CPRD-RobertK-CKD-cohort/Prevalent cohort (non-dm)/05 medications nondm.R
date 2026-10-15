@@ -171,8 +171,8 @@ analysis = cprd$analysis("rk_ckd")
 #advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
 #advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
-matched_cohort <- matched_cohort %>% select(patid, index_date)
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1")
+cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
 
   for (i in meds) {
     
@@ -187,10 +187,10 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
         # filter(date>=min_dob & date<=gp_ons_end_date) %>%
         filter(date>=min_dob & date<=gp_end_date) %>%
         select(patid, date) %>%
-        inner_join(matched_cohort, by = "patid") %>%
+        inner_join(cohort_index_dates, by = "patid") %>%
         mutate(datediff=datediff(date, index_date)) %>%
         
-        analysis$cached(index_date_merge_tablename, indexes="patid")
+        analysis$cached(index_date_merge_tablename, indexes=list(c("patid", "index_date")))
       
       assign(index_date_merge_tablename, data)
       
@@ -201,8 +201,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
   
   # Find earliest pre-index date, latest pre-index date and first post-index date dates
   
-  medications <- cprd$tables$patient %>%
-    select(patid)
+  medications <- cohort_index_dates
   
   for (i in meds) {
     
@@ -216,7 +215,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     
     pre_index_date <- get(index_date_merge_tablename) %>%
       filter(date<=index_date) %>%
-      group_by(patid) %>%
+      group_by(patid, index_date) %>%
       summarise({{pre_index_date_earliest_date_variable}}:=min(date, na.rm=TRUE),
                 {{pre_index_date_latest_date_variable}}:=max(date, na.rm=TRUE)) %>%
       ungroup()
@@ -228,13 +227,13 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
       ungroup()
     
     medications <- medications %>%
-      left_join(pre_index_date, by="patid") %>%
-      left_join(post_index_date, by="patid") %>%
-      analysis$cached(interim_medications_table, unique_indexes="patid")
+      left_join(pre_index_date, by=c("patid", "index_date")) %>%
+      left_join(post_index_date, by=c("patid", "index_date")) %>%
+      analysis$cached(interim_medications_table, unique_indexes=list(c("patid", "index_date")))
     
   }
   
   # Cache final version
   
-  medications <- medications %>% analysis$cached(paste0("medications"), unique_indexes="patid")
+  medications <- medications %>% analysis$cached(paste0("medications"), unique_indexes=list(c("patid", "index_date")))
    

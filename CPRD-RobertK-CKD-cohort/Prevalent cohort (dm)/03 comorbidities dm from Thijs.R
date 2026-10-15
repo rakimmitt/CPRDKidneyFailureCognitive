@@ -390,7 +390,7 @@ for (i in comorbids) {
   ))
 
   index_date_merge_tablename <- paste0("full_", i, "_index_date_merge")
-  interim_comorbidity_table <- paste0("comorbidities_im_", i)
+  interim_comorbidity_table <- paste0("com_im_", i)
 
   earliest_var <- paste0("pre_index_date_earliest_", i)
   latest_var <- paste0("pre_index_date_latest_", i)

@@ -19,13 +19,13 @@ ckd_stages_from_algorithm <- ckd_stages_from_algorithm %>%
 analysis = cprd$analysis("rk_ckd")
 
 matched_cohort <- matched_cohort %>%
-  analysis$cached("matched_cohort")
+  analysis$cached("matched_cohort_pen1")
 
-index_dates <- matched_cohort %>%
-  select(patid, index_date)
+cohort_index_dates <- matched_cohort %>%
+  distinct(patid, index_date)
 
 # Join stage dates to each patient's index date.
-stage_at_index <- index_dates %>%
+stage_at_index <- cohort_index_dates %>%
   left_join(ckd_stages_from_algorithm, by = "patid") %>%
   mutate(
     index_date_ckd_stage = case_when(
@@ -41,8 +41,8 @@ stage_at_index <- index_dates %>%
 
 # Keep one stage per patient and cache.
 ckd_stages <- stage_at_index %>%
-  select(patid, index_date_ckd_stage) %>%
-  analysis$cached("ckd_stages", unique_indexes = "patid")
+  select(patid, index_date, index_date_ckd_stage) %>%
+  analysis$cached("ckd_stages", unique_indexes = list(c("patid", "index_date")))
 
 # Summarise.
 ckd_stages %>%

@@ -29,7 +29,7 @@ comorbids <- c("acutepancreatitis",
                "diabeticnephropathy",
                "dka",
                "falls",
-               "fh_diabetes", #note includes sibling, child, parents
+               #"fh_diabetes", #note includes sibling, child, parents
                "fh_premature_cvd", #family history of premature CVD - for QRISK2
                "frailty_simple",
                "haem_cancer",
@@ -114,9 +114,6 @@ comorbids <- c("acutepancreatitis",
                "skininfection",
                "respiratorytractinfection"
 )
-
-
-comorbids <- unique(c(comorbids, custom_comorbids))
 
 ############################################################################################
 
@@ -288,10 +285,10 @@ comorbids <- c("frailty_mild", "frailty_moderate", "frailty_severe", comorbids)
 
 # Separate family history by whether positive or negative
 ## Add to beginning of list so don't have to remake tables when add new comorbidity to end of above list
-raw_fh_diabetes_positive_medcodes <- raw_fh_diabetes_medcodes %>% filter(fh_diabetes_cat!="negative")
-raw_fh_diabetes_negative_medcodes <- raw_fh_diabetes_medcodes %>% filter(fh_diabetes_cat=="negative")
-comorbids <- setdiff(comorbids, "fh_diabetes")
-comorbids <- c("fh_diabetes_positive", "fh_diabetes_negative", comorbids)
+#raw_fh_diabetes_positive_medcodes <- raw_fh_diabetes_medcodes %>% filter(fh_diabetes_cat!="negative")
+#raw_fh_diabetes_negative_medcodes <- raw_fh_diabetes_medcodes %>% filter(fh_diabetes_cat=="negative")
+#comorbids <- setdiff(comorbids, "fh_diabetes")
+#comorbids <- c("fh_diabetes_positive", "fh_diabetes_negative", comorbids)
 
 ############################################################################################
 
@@ -309,9 +306,9 @@ cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
   
   for (i in comorbids) {
     
-    print(paste("merging index date ", d, " with", i, "code occurrences"))
+    print(paste("merging index date with", i, "code occurrences"))
     
-    index_date_merge_tablename <- paste0(d, "_full_", i, "_merge")
+    index_date_merge_tablename <- paste0("_full_", i, "_merge")
     
     medcode_tablename <- paste0("raw_", i, "_medcodes")
     icd10_tablename <- paste0("raw_", i, "_icd10")
