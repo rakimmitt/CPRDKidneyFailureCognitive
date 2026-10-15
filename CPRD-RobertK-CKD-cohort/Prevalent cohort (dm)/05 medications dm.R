@@ -103,7 +103,7 @@ meds <- c("ace_inhibitors",
           "thiazide_diuretics",
           "loop_diuretics",
           "ksparing_diuretics",
-          "definite_genital_infection_meds",
+          #"definite_genital_infection_meds",
           "topical_candidal_meds",
           "dementia_medications")
 
@@ -268,7 +268,7 @@ cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
     
     post_index_date <- get(index_date_merge_tablename) %>%
       filter(date>index_date) %>%
-      group_by(patid) %>%
+      group_by(patid,index_date) %>%
       summarise({{post_index_date_date_variable}}:=min(date, na.rm=TRUE)) %>%
       ungroup()
     

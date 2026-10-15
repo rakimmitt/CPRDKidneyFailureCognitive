@@ -72,8 +72,8 @@ analysis = cprd$analysis("rk_ckd")
 #advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
 #advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
-matched_cohort <- matched_cohort %>% select(patid, index_date)
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1")
+cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
   
   # Clean deficit data and combine with index dates
   for (deficit in efi_deficits) {
@@ -109,9 +109,9 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     
     # Merge with index info
     data <- medcodes_clean %>%
-      inner_join(matched_cohort, by = "patid") %>%
+      inner_join(cohort_index_dates, by = "patid") %>%
       mutate(datediff=datediff(date, index_date)) %>%
-      analysis$cached(index_date_m_tablename, index="patid")
+      analysis$cached(index_date_m_tablename, indexes = list(c("patid", "index_date")))
     
     rm(medcodes_clean)
     
@@ -125,9 +125,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
   # Find if there has been any instance of pre_index_date occurrence of deficit
   
   # Initialise efi table
-  efi <- cprd$tables$patient %>%
-    select(patid)
-  
+  efi <- cohort_index_dates
   
   for (deficit in efi_deficits) {
     
@@ -145,26 +143,24 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     # Get earliest date of pre_index_date occurrence
     pre_index_date <- get(index_date_m_tablename) %>%
       filter(date <= index_date) %>%
-      group_by(patid) %>%
+      group_by(patid, index_date) %>%
       summarise(
         !!pre_index_date_earliest_date_variable := min(date, na.rm = TRUE),
         .groups = "drop"
       ) %>%
       ungroup()
     
-    # Convert the earliest date variable to a symbol
-    pre_index_date_earliest_date_variable  <- sym(pre_index_date_earliest_date_variable)
-    
+
     # Merge pre_index_date data into the eFI table and create a boolean indicator (1 if 
     # there was ever an occurrence of this deficit on or before index date)
     efi <- efi %>%
-      left_join(pre_index_date, by = c("patid")) %>%
+      left_join(pre_index_date, by = c("patid", "index_date")) %>%
       mutate(
         !!pre_index_date_indicator := !is.na(!!pre_index_date_earliest_date_variable )
       ) %>%
       analysis$cached(
         interim_efi_table,
-        indexes = c("patid")
+        indexes = list(c("patid", "index_date"))
       )
   }
   
@@ -174,17 +170,16 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     select(-matches("^pre_index_date_earliest_"))
   
   
-  #   Fill all pre_index_date_diabetes occurrences with 1
+  #   Amended to not fill every diabetes with 1, as some have not yet developed diabetes
   # - Fill all pre_index_date_polypharmacy with 1 (assume every patient is on 5 or more medications for now).
   
   efi <- efi %>%
-    mutate(pre_index_date_efi_diabetes = 1L,
-           pre_index_date_efi_polypharmacy = 1L) %>%
+    mutate(pre_index_date_efi_polypharmacy = 1L) %>%
     analysis$cached(
       "efi_deficits",
-      indexes = c("patid")
+      unique_indexes = list(c("patid", "index_date"))
     )
-  
+
   
   # Sum deficits and calculate score
   
@@ -203,5 +198,5 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
              pre_index_date_efi_score >=0.36 ~ "severe" )) %>%
     analysis$cached(
       "efi",
-      indexes = c("patid")
+      unique_indexes = list(c("patid", "index_date"))
     )

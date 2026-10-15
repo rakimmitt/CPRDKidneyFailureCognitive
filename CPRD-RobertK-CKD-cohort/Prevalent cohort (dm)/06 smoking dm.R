@@ -53,7 +53,7 @@ cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
   #### If both non- and ex-smoker, use ex-smoker
   #### If conflicting categories (non- and active- / ex- and active-), treat as missing
   most_recent_code <- pre_index_date_smoking_codes %>%
-    distinct(patid, index_date, smoking_cat) %>%
+    distinct(patid, index_date, date, smoking_cat) %>%
     group_by(patid, index_date) %>%
     filter(date==max(date, na.rm=TRUE)) %>%
     ungroup() %>%
@@ -63,12 +63,12 @@ cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
     mutate(smoking_cat=ifelse(`Active smoker`==1 & `Non-smoker`==0 & `Ex-smoker`==0, "Active smoker",
                               ifelse(`Active smoker`==0 & `Ex-smoker`==1, "Ex-smoker",
                                      ifelse(`Active smoker`==0 & `Ex-smoker`==0 & `Non-smoker`==1, "Non-smoker", NA)))) %>%
-    select(patid, most_recent_code=smoking_cat) %>%
+    select(patid, index_date, most_recent_code=smoking_cat) %>%
     analysis$cached(paste0("smoking_im_1"), unique_indexes=list(c("patid", "index_date")))
   
   ### Find next recorded code (to use for those with conflicting categories on most recent date)
   next_most_recent_code <- pre_index_date_smoking_codes %>%
-    distinct(patid, index_date, smoking_cat) %>%
+    distinct(patid, index_date, date, smoking_cat) %>%
     group_by(patid, index_date) %>%
     filter(date!=max(date, na.rm=TRUE)) %>%
     filter(date==max(date, na.rm=TRUE)) %>%

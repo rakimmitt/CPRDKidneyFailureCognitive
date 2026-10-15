@@ -305,7 +305,7 @@ if (nrow(matched_cohort) == 0L) {
 
 matched_cohort_db <- copy_to(
   dest = analysis$.con, df = matched_cohort,
-  name = dbplyr::in_schema(analysis$.analysisDb, paste0("rk_ckd_matched_cohort", draft_suffix)),
+  name = dbplyr::in_schema(analysis$.analysisDb, paste0("rk_ckd_matched_cohort_", draft_suffix)),
   overwrite = TRUE, temporary = FALSE,
   unique_indexes = "match_record_id",
   indexes = c("patid", "is_case", "matched_case_patid", "index_date")
@@ -424,3 +424,14 @@ print(pair_quality, width = Inf)
 #   three months of observable follow-up. No such follow-up minimum is imposed.
 # - SMDs are descriptive. Zero case variance gives NA; inspect raw differences.
 # - These weights describe matched sets and are not a complete survival model.
+
+# Check the number of records and unique patients in each group
+
+matched_cohort %>%
+  group_by(is_case) %>%
+  summarise(
+    n_records = n(),
+    n_individuals = n_distinct(patid),
+    .groups = "drop"
+  ) %>%
+  collect()

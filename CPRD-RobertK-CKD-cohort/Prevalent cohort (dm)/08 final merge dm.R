@@ -53,19 +53,19 @@ efi <- efi %>% analysis$cached("efi")
 # Final merge of all datasets to create final cohort for analysis
   
   rk_final_merge <- matched_cohort %>%
-    left_join(ckd_stages, by="patid") %>%
-    left_join(diabetes_cohort %>% select(patid, dm_diag_date_all), by = "patid") %>%
-    left_join(baseline_biomarkers, by="patid") %>%
-    left_join(comorbidities, by="patid") %>%
-    left_join(smoking, by="patid") %>%
-    left_join(medications, by="patid") %>%
-    left_join(efi %>% select(patid, efi_n_deficits, pre_index_date_efi_score, pre_index_date_efi_cat), by = "patid") %>%
-    left_join(townsend_score %>% select(patid, tds_2011), by = "patid") %>%
-    left_join(death_causes, by = "patid") %>%
+    left_join(ckd_stages, by = c("patid", "index_date")) %>%
+    left_join(diabetes_cohort %>% select(patid, dm_diag_date_all), by = c("patid", "index_date")) %>%
+    left_join(baseline_biomarkers, by = c("patid", "index_date")) %>%
+    left_join(comorbidities, by = c("patid", "index_date")) %>%
+    left_join(smoking, by = c("patid", "index_date")) %>%
+    left_join(medications, by = c("patid", "index_date")) %>%
+    left_join(efi %>% select(patid, efi_n_deficits, pre_index_date_efi_score, pre_index_date_efi_cat), by = c("patid", "index_date")) %>%
+    left_join(townsend_score %>% select(patid, tds_2011), by = c("patid", "index_date")) %>%
+    left_join(death_causes, by = c("patid", "index_date")) %>%
     mutate(index_date_age=datediff(index_date, dob)/365.25,
            dm_dur_all=datediff(index_date, dm_diag_date_all)/365.25) %>%
     relocate(c(index_date_age), .before=gender) %>%
-    analysis$cached("rk_final_merge", unique_indexes="patid")
+    analysis$cached("rk_final_merge", unique_indexes=list(c("patid", "index_date")))
   
   ############################################################################################
   
