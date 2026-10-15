@@ -146,7 +146,7 @@ analysis = cprd$analysis("rk_ckd")
 #advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
 #advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1", unique_indexes=c("patid", "index_date"))
 matched_cohort <- matched_cohort %>% select(patid, index_date)
 
   for (i in biomarkers) {
@@ -215,7 +215,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
         
     baseline_biomarkers <- baseline_biomarkers %>%
       left_join(data, by="patid") %>%
-      analysis$cached(interim_baseline_biomarker_table, unique_indexes="patid")
+      analysis$cached(interim_baseline_biomarker_table, unique_indexes=c("patid","index_date"))
     
   }
     
@@ -231,4 +231,4 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
   
   baseline_biomarkers <- baseline_biomarkers %>%
     left_join(baseline_height, by="patid") %>%
-    analysis$cached("baseline_biomarkers", unique_indexes="patid")
+    analysis$cached("baseline_biomarkers", unique_indexes=c("patid", "index_date"))

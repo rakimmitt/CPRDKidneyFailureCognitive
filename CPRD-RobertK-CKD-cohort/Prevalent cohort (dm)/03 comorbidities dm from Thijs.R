@@ -276,7 +276,7 @@ analysis = cprd$analysis("rk_ckd")
 #advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
 #advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1", unique_indexes=c("patid", "index_date"))
 matched_cohort <- matched_cohort %>% select(patid, index_date)
   
 ## Clean comorbidity data and combine with index date
@@ -412,7 +412,7 @@ for (i in comorbids) {
     left_join(pre_index_date, by="patid") %>%
     mutate({{pre_index_date_variable}}:=!is.na(pre_index_date_earliest_date_variable)) %>%
     left_join(post_index_date, by="patid") %>%
-    analysis$cached(interim_comorbidity_table, unique_indexes="patid")
+    analysis$cached(interim_comorbidity_table, unique_indexes=c("patid", "index_date"))
 }
 
-comorbidities <- comorbidities %>% analysis$cached("comorbidities", unique_indexes="patid")
+comorbidities <- comorbidities %>% analysis$cached("comorbidities", unique_indexes=c("patid", "index_date"))
