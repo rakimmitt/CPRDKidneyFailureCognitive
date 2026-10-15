@@ -146,8 +146,8 @@ analysis = cprd$analysis("rk_ckd")
 #advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
 #advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1", unique_indexes=c("patid", "index_date"))
-matched_cohort <- matched_cohort %>% select(patid, index_date)
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1")
+cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
 
   for (i in biomarkers) {
     
@@ -155,7 +155,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     index_date_merge_tablename <- paste0("full_", i, "_merge")
     
     data <- get(clean_tablename) %>%
-      inner_join(matched_cohort, by="patid") %>%
+      inner_join(cohort_index_dates, by="patid") %>%
       mutate(datediff=datediff(date, index_date))
     
     assign(index_date_merge_tablename, data)
@@ -170,8 +170,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
   ## May be multiple values; use minimum test result, except for eGFR - use maximum
   ## Can get duplicates where person has identical results on the same day/days equidistant from the index date - choose first row when ordered by datediff
   
-  baseline_biomarkers <- cprd$tables$patient %>%
-    select(patid)
+  baseline_biomarkers <- cohort_index_dates
   
   ## For all except height: between 2 years prior and 7 days after index date
   
@@ -190,7 +189,7 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     data <- get(index_date_merge_tablename) %>%
       filter(datediff<=7 & datediff>=-730) %>%
       
-      group_by(patid) %>%
+      group_by(patid, index_date) %>%
       
       mutate(min_timediff=min(abs(datediff), na.rm=TRUE)) %>%
       filter(abs(datediff)==min_timediff) %>%
@@ -214,21 +213,23 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
       select(-c(testvalue, min_timediff))
         
     baseline_biomarkers <- baseline_biomarkers %>%
-      left_join(data, by="patid") %>%
-      analysis$cached(interim_baseline_biomarker_table, unique_indexes=c("patid","index_date"))
-    
+      left_join(data, by=c("patid","index_date")) %>%
+      analysis$cached(
+        interim_baseline_biomarker_table, 
+        unique_indexes = list(c("patid", "index_date"))
+      )
   }
     
   ## Height - only keep readings at/post-index date, and find mean
   
-  table_name = paste0("full_height_merge")
+  table_name = "full_height_merge"
   
   baseline_height <- get(table_name) %>%
     filter(datediff>=0) %>%
-    group_by(patid) %>%
+    group_by(patid, index_date) %>%
     summarise(height=mean(testvalue, na.rm=TRUE)) %>%
     ungroup()
   
   baseline_biomarkers <- baseline_biomarkers %>%
-    left_join(baseline_height, by="patid") %>%
-    analysis$cached("baseline_biomarkers", unique_indexes=c("patid", "index_date"))
+    left_join(baseline_height, by= c("patid", "index_date")) %>%
+    analysis$cached("baseline_biomarkers", unique_indexes = list(c("patid", "index_date")))

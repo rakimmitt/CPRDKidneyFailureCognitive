@@ -276,8 +276,8 @@ analysis = cprd$analysis("rk_ckd")
 #advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
 #advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1", unique_indexes=c("patid", "index_date"))
-matched_cohort <- matched_cohort %>% select(patid, index_date)
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1")
+cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
   
 ## Clean comorbidity data and combine with index date
 
@@ -363,9 +363,10 @@ for (i in comorbids) {
   rm(all_codes)
   
   data <- all_codes_clean %>%
-    inner_join(matched_cohort, by="patid") %>%
+    inner_join(cohort_index_dates, by="patid") %>%
     mutate(datediff=datediff(date, index_date)) %>%
-    analysis$cached(index_date_merge_tablename, index="patid")
+    analysis$cached(index_date_merge_tablename, 
+    indexes= list(c("patid", "index_date")))
   
   rm(all_codes_clean)
   
@@ -377,42 +378,53 @@ for (i in comorbids) {
 
 ############################################################################################
 
-# Find earliest pre-index date, latest pre-index date and first post-index date dates
+# Find diagnosis dates separately for each patient and index date
 
-comorbidities <- cprd$tables$patient %>%
-  select(patid)
+comorbidities <- cohort_index_dates
 
 for (i in comorbids) {
-  
-  print(paste("working out pre- and post-index date code occurrences for ", i))
-  
+
+  print(paste(
+    "working out pre- and post-index date code occurrences for",
+    i
+  ))
+
   index_date_merge_tablename <- paste0("full_", i, "_index_date_merge")
   interim_comorbidity_table <- paste0("comorbidities_im_", i)
-  pre_index_date_earliest_date_variable <- paste0("pre_index_date_earliest_", i)
-  pre_index_date_latest_date_variable <- paste0("pre_index_date_latest_", i)
-  pre_index_date_variable <- paste0("pre_index_date_", i)
-  post_index_date_date_variable <- paste0("post_index_date_first_", i)
-  
+
+  earliest_var <- paste0("pre_index_date_earliest_", i)
+  latest_var <- paste0("pre_index_date_latest_", i)
+  indicator_var <- paste0("pre_index_date_", i)
+  post_var <- paste0("post_index_date_first_", i)
+
   pre_index_date <- get(index_date_merge_tablename) %>%
-    filter(date<=index_date) %>%
-    group_by(patid) %>%
-    summarise({{pre_index_date_earliest_date_variable}}:=min(date, na.rm=TRUE),
-              {{pre_index_date_latest_date_variable}}:=max(date, na.rm=TRUE)) %>%
-    ungroup()
-  
+    filter(date <= index_date) %>%
+    group_by(patid, index_date) %>%
+    summarise(
+      !!earliest_var := min(date, na.rm = TRUE),
+      !!latest_var := max(date, na.rm = TRUE),
+      .groups = "drop"
+    )
+
   post_index_date <- get(index_date_merge_tablename) %>%
-    filter(date>index_date) %>%
-    group_by(patid,) %>%
-    summarise({{post_index_date_date_variable}}:=min(date, na.rm=TRUE)) %>%
-    ungroup()
-  
-  pre_index_date_earliest_date_variable <- as.symbol(pre_index_date_earliest_date_variable)
-  
+    filter(date > index_date) %>%
+    group_by(patid, index_date) %>%
+    summarise(
+      !!post_var := min(date, na.rm = TRUE),
+      .groups = "drop"
+    )
+
   comorbidities <- comorbidities %>%
-    left_join(pre_index_date, by="patid") %>%
-    mutate({{pre_index_date_variable}}:=!is.na(pre_index_date_earliest_date_variable)) %>%
-    left_join(post_index_date, by="patid") %>%
-    analysis$cached(interim_comorbidity_table, unique_indexes=c("patid", "index_date"))
+    left_join(pre_index_date, by = c("patid", "index_date")
+    ) %>%
+    mutate(!!indicator_var := !is.na(.data[[earliest_var]])) %>%
+    left_join(post_index_date, by = c("patid", "index_date")
+    ) %>%
+    analysis$cached(interim_comorbidity_table,
+      unique_indexes = list(c("patid", "index_date"))
+    )
 }
 
-comorbidities <- comorbidities %>% analysis$cached("comorbidities", unique_indexes=c("patid", "index_date"))
+comorbidities <- comorbidities %>%
+  analysis$cached("comorbidities",unique_indexes = list(c("patid", "index_date"))
+  )
