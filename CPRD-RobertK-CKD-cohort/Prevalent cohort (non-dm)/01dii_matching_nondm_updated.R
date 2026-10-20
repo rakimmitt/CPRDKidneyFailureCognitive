@@ -303,14 +303,46 @@ if (nrow(matched_cohort) == 0L) {
   stop("No matched sets were produced; the existing output table was not replaced.")
 }
 
-matched_cohort_db <- copy_to(
-  dest = analysis$.con, df = matched_cohort,
-  name = dbplyr::in_schema(analysis$.analysisDb, paste0("rk_ckd_matched_cohort_", draft_suffix)),
-  overwrite = TRUE, temporary = FALSE,
+# Save the completed matching data locally - often server has disconnected by this point
+
+local_file <- file.path(
+  "C:\\Users\\rk535\\OneDrive - University of Exeter\\CPRD\\2024\\Raw data",
+  paste0("matched_cohort_nondm_", draft_suffix, ".rds")
+)
+
+saveRDS(matched_cohort, file = local_file)
+
+### Upload to server after reconnecting to server and re-initialising analysis 
+# Specify the saved version to upload.
+draft_suffix <- "pen1"
+
+local_file <- file.path(
+  "C:\\Users\\rk535\\OneDrive - University of Exeter\\CPRD\\2024\\Raw data",
+  paste0("matched_cohort_nondm_", draft_suffix, ".rds")
+)
+
+# Read the data back into R
+matched_cohort <- readRDS(local_file)
+
+# Upload to the database
+matched_cohort_db <- copy_to(dest = analysis$.con, df = matched_cohort,
+    name = dbplyr::in_schema(analysis$.analysisDb,
+    paste0("rk_ckd_matched_cohort_", draft_suffix)
+  ),
+  overwrite = TRUE,
+  temporary = FALSE,
   unique_indexes = "match_record_id",
   indexes = c("patid", "is_case", "matched_case_patid", "index_date")
 )
-# Wait for copy_to() to finish; an interrupted client upload may be incomplete.
+
+### Or, if the data is already in R, upload it directly without reading from disk.
+#matched_cohort_db <- copy_to(
+#  dest = analysis$.con, df = matched_cohort,
+#  name = dbplyr::in_schema(analysis$.analysisDb, paste0("rk_ckd_matched_cohort_", draft_suffix)),
+#  overwrite = TRUE, temporary = FALSE,
+#  unique_indexes = "match_record_id",
+#  indexes = c("patid", "is_case", "matched_case_patid", "index_date")
+#)
 
 # Balance summary statistics
 

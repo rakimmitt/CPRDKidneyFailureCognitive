@@ -8,7 +8,7 @@ rm(list=ls())
 
 cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
 codesets = cprd$codesets()
-codes_2024 = codesets$getAllCodeSetVersion(v = "01/06/2024")
+codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
 analysis_prefix = "rk_ckd"
 
@@ -25,7 +25,7 @@ townsend_score <- townsend_score %>%
   townsend_analysis$cached("townsend_score")
 
 analysis = cprd$analysis(analysis_prefix)
-matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1")
 
 # create empty dataframe for counts of total population / subset with CKD
 counts <- data.frame()
@@ -44,28 +44,27 @@ smoking <- smoking %>% analysis$cached("smoking")
 ## Medications
 medications <- medications %>% analysis$cached("medications")
 
-# EFI
-
+## EFI
 efi <- efi %>% analysis$cached("efi")
-  
+
 ############################
-  
+
 # Final merge of all datasets to create final cohort for analysis
-  
+
   rk_final_merge <- matched_cohort %>%
     left_join(ckd_stages, by = c("patid", "index_date")) %>%
-    left_join(diabetes_cohort %>% select(patid, dm_diag_date_all), by = c("patid", "index_date")) %>%
+    left_join(diabetes_cohort %>% select(patid, diabetes_diagnosis_date = dm_diag_date_all), by = "patid") %>%
     left_join(baseline_biomarkers, by = c("patid", "index_date")) %>%
     left_join(comorbidities, by = c("patid", "index_date")) %>%
     left_join(smoking, by = c("patid", "index_date")) %>%
     left_join(medications, by = c("patid", "index_date")) %>%
-    left_join(efi %>% select(patid, efi_n_deficits, pre_index_date_efi_score, pre_index_date_efi_cat), by = c("patid", "index_date")) %>%
-    left_join(townsend_score %>% select(patid, tds_2011), by = c("patid", "index_date")) %>%
-    left_join(death_causes, by = c("patid", "index_date")) %>%
+    left_join(efi %>% select(patid, index_date, efi_n_deficits, pre_index_date_efi_score, pre_index_date_efi_cat), by = c("patid", "index_date")) %>%
+    left_join(townsend_score %>% select(patid, tds_2011), by = "patid") %>%
+    left_join(death_causes, by = "patid") %>%
     mutate(index_date_age=datediff(index_date, dob)/365.25,
-           dm_dur_all=datediff(index_date, dm_diag_date_all)/365.25) %>%
+           dm_dur_all=datediff(index_date, diabetes_diagnosis_date)/365.25) %>%
     relocate(c(index_date_age), .before=gender) %>%
-    analysis$cached("rk_final_merge", unique_indexes=list(c("patid", "index_date")))
+    analysis$cached("rk_final_merge", unique_indexes=list(c("match_record_id")))
   
   ############################################################################################
   
