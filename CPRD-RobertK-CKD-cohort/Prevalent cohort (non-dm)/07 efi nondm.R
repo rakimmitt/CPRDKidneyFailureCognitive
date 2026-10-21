@@ -150,7 +150,7 @@ cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
     efi <- efi %>%
       left_join(pre_index_date, by = c("patid", "index_date")) %>%
       mutate(
-        !!pre_index_date_indicator := !is.na(!!pre_index_date_earliest_date_variable_sym)
+        !!pre_index_date_indicator := !is.na(!!pre_index_date_earliest_date_variable)
       ) %>%
       analysis$cached(
         interim_efi_table,

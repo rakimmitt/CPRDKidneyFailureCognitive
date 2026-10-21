@@ -86,8 +86,6 @@ advanced_ckd_summary_data %>%
 
   summary(advanced_ckd_summary_data$index_date)
 
-
-
 advanced_ckd_summary_data %>%
   summarise(
     n_patients = n(),
@@ -102,8 +100,6 @@ advanced_ckd_summary_data %>%
   ) %>%
   mutate(across(where(is.double), ~ round(.x, 1))) %>%
   print(width = Inf)
-
-
 
 advanced_ckd_summary_data %>%
   mutate(index_year = lubridate::year(index_date)) %>%

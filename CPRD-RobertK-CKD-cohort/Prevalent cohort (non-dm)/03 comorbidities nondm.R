@@ -295,7 +295,7 @@ analysis = cprd$analysis("rk_ckd")
 #advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
 #advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
+matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1", unique_indexes="patid")
 matched_cohort <- matched_cohort %>% select(patid, index_date)
   
   ## Clean comorbidity data and combine with index date

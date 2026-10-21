@@ -105,7 +105,7 @@ meds <- c("ace_inhibitors",
           "thiazide_diuretics",
           "loop_diuretics",
           "ksparing_diuretics",
-          "definite_genital_infection_meds",
+          #"definite_genital_infection_meds",
           "topical_candidal_meds",
           "dementia_medications")
 
