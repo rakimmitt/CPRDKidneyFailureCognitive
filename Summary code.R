@@ -3,38 +3,18 @@ library(tidyverse)
 library(aurum)
 library(EHRBiomarkr)
 library(ggplot2)
+library(cmprsk)
 rm(list=ls())
 
-loaded_file <- load("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/05102026_matched_ckd_cohort_dm.Rda")
+loaded_file <- load("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/20102026_matched_ckd_cohort_dm.Rda")
 
 diabetes_2024 <- get(loaded_file[1])
-
-# Identify the patient IDs of cases aged under 18
-patid_under_18 <- diabetes_2024 %>%
-  filter(is_case == 1, index_date_age < 18) %>%
-  pull(patid)
-
-# Remove under-18 individuals and controls matched to under-18 cases
-diabetes_2024 <- diabetes_2024 %>%
-  filter(
-    index_date_age >= 18,
-    !(is_case == 0 & matched_case_patid %in% patid_under_18)
-  )
-
-# Keep individuals aged 18 or over - this will remove any controls <18 matched to cases >18
-diabetes_2024 <- diabetes_2024 %>%
-  filter(index_date_age >= 18)
 
 dim(diabetes_2024)
 names(diabetes_2024)
 head(diabetes_2024)
 View(diabetes_2024)
 summary(diabetes_2024)
-
-# Column names containing "ckd", regardless of capitalisation
-names(diabetes_2024)[
-  grepl("ckd", names(diabetes_2024), ignore.case = TRUE)
-]
 
 diabetes_2024 %>%
   select(patid, index_date_age, gender, dob, pracid, dm_dur_all, index_date_ckd_dur_all, preckdstage, pre_index_date_earliest_ckd5_code, post_index_date_first_ckd5_code) %>% 
@@ -47,13 +27,39 @@ sort(colSums(is.na(diabetes_2024)), decreasing = TRUE)
 summary(diabetes_2024$index_date_age)
 summary(diabetes_2024$index_date)
 summary(diabetes_2024$dm_dur_all)
+summary(diabetes_2024$preegfr)
+
+diabetes_2024 %>%
+filter(is_case ==0) %>%
+summary(preegfr)
+
+diabetes_2024 <- diabetes_2024 %>%
+  mutate(
+    registration_duration_days = as.numeric(
+      difftime(gp_end_date, regstartdate, units = "days")
+    )
+  )
+
+# Create a follow-up end date and look at follow-up duration (in years)
+diabetes_2024 <- diabetes_2024 %>%
+  mutate(
+    follow_up_end_date = pmin(
+      gp_end_date, death_date, hes_end_date,
+      na.rm = TRUE
+    ),
+    follow_up_length = as.numeric(
+      difftime(follow_up_end_date, index_date, units = "days")
+    ),
+    follow_up_years = follow_up_length / 365.25
+  )
+summary(diabetes_2024$follow_up_years)
 
 diabetes_2024 %>%
   summarise(
     n_observed = sum(!is.na(index_date)),
     n_missing = sum(is.na(index_date)),
-    mean_age = mean(index_date, na.rm = TRUE),
-    sd_age = sd(index_date, na.rm = TRUE),
+    mean_age = mean(index_date_age, na.rm = TRUE),
+    sd_age = sd(index_date_age, na.rm = TRUE),
     median_age = median(index_date, na.rm = TRUE),
     iqr_age = IQR(index_date, na.rm = TRUE)
   )
@@ -80,8 +86,23 @@ diabetes_2024 %>%
 
   diabetes_2024 %>%
     filter(is_case == 0) %>%
-    summarise(index_date_age = mean(index_date_age, na.rm = TRUE)) %>%
+    summarise(preegfr = mean(preegfr, na.rm = TRUE)) %>%
     #mutate(percent = round(100 * n / sum(n), 1))
+
+    column_name <- "preegfr"
+
+diabetes_2024 %>%
+filter(is_case == 0) %>%
+  summarise(
+    n_observed = sum(!is.na(.data[[column_name]])),
+    n_missing = sum(is.na(.data[[column_name]])),
+    mean = mean(.data[[column_name]], na.rm = TRUE),
+    sd = sd(.data[[column_name]], na.rm = TRUE),
+    median = median(.data[[column_name]], na.rm = TRUE),
+    iqr = IQR(.data[[column_name]], na.rm = TRUE),
+    max = max(.data[[column_name]], na.rm = TRUE),
+    min = min(.data[[column_name]], na.rm = TRUE)
+  )
 
   diabetes_2024 %>%
     filter(is_case == 0) %>%

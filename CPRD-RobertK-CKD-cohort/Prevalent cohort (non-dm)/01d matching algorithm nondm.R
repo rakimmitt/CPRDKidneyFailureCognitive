@@ -19,7 +19,14 @@ analysis = cprd$analysis("rk_ckd")
 matching_pool <- matching_pool %>%
   analysis$cached("matching_pool")
 
-draft_suffix <-"pen1"
+analysis = cprd$analysis("all_patid")
+
+egfr_db <- clean_egfr_medcodes %>%
+  analysis$cached("clean_egfr_medcodes")
+
+analysis = cprd$analysis("rk_ckd")
+
+draft_suffix <-"pen1_eGFR60+"
 age_penalty <- 1 # 0 reproduces original distance
 match_with_replacement <- TRUE
 max_controls <- 4L
@@ -104,8 +111,32 @@ stopifnot(!anyDuplicated(cases$patid), !anyDuplicated(controls$patid))
 
 empty_pairs <- tibble(matched_case_patid = character(), patid = character())
 
+# Ensure all controls have most recent eGFR >=60
+  latest_prior_egfr <- function(history, index_dates) {
+  
+  result <- rep(NA_real_, length(index_dates))
+
+  if (is.null(history) || nrow(history) == 0L) {
+    return(result)
+  }
+
+  # history must be sorted by egfr_day.
+  # latest eGFR on or before the index date.
+  position <- findInterval(
+    as.numeric(index_dates),
+    history$egfr_day
+  )
+
+  has_prior_test <- position > 0L
+
+  result[has_prior_test] <-
+    history$egfr_value[position[has_prior_test]]
+
+  result
+}
+
 # Match within a practice
-match_practice <- function(ca, co) {
+match_practice <- function(ca, co, egfr_history) {
   ca <- ca %>% drop_na(pracid, dob, gender, index_date)
   if (!nrow(ca) || is.null(co) || !nrow(co)) return(empty_pairs)
 
@@ -115,6 +146,35 @@ match_practice <- function(ca, co) {
   
   # define dementia status at case index date
   case_day <- as.numeric(ca$index_date)
+
+ # Split this practice's test histories by patient.
+  history_by_patient <- split(
+    egfr_history,
+    egfr_history$patid
+  )
+
+  # Rows = cases; columns = potential controls.
+  # Each cell is that control's latest eGFR strictly before that case date.
+  latest_egfr_matrix <- matrix(
+    vapply(
+      co$patid,
+      function(id) {
+        latest_prior_egfr(
+         history = history_by_patient[[id]],
+         index_dates = ca$index_date
+       )
+     },
+     FUN.VALUE = numeric(nrow(ca))
+    ),
+  nrow = nrow(ca),
+  ncol = nrow(co)
+)
+
+# Missing prior results and results <=60 cannot qualify.
+  renal_eligible <-
+    !is.na(latest_egfr_matrix) &
+    latest_egfr_matrix >= 60
+
   dementia_cutoff <- as.numeric(
     ca$index_date %m+% months(dementia_exclusion_months)
   )
@@ -126,6 +186,7 @@ match_practice <- function(ca, co) {
     outer(case_day, as.numeric(co$adult_date), `>=`) &   # at least 18
     outer(dementia_cutoff, co$dementia_day, `<`) &       # no early dementia
     outer(case_day, co$control_stop_day, `<`) &          # before renal cut-off
+    renal_eligible &                                     # latest prior eGFR >60
     (abs(outer(as.numeric(ca$dob), as.numeric(co$dob), `-`)) <=
        max_age_gap_years * 365.25)
   eligible[is.na(eligible)] <- FALSE
@@ -200,7 +261,43 @@ for (i in seq_along(case_groups)) {
   ca <- cases[case_groups[[i]], , drop = FALSE]
   rows <- control_groups[[practice]]
   co <- controls[if (is.null(rows)) integer() else rows, , drop = FALSE]
-  pair_list[[i]] <- match_practice(ca, co)
+
+if (nrow(co) == 0L) {
+    pair_list[[i]] <- empty_pairs
+    next
+  }
+
+  control_ids <- co$patid
+  latest_case_date <- max(ca$index_date)
+
+practice_egfr <- egfr_db %>%
+    filter(
+      patid %in% !!control_ids,
+      date < !!latest_case_date,
+      !is.na(date),
+      !is.na(testvalue)
+    ) %>%
+    select(patid, date, testvalue) %>%
+    collect() %>%
+    mutate(
+      patid = as.character(patid),
+      egfr_day = as.numeric(as.Date(date)),
+      egfr_value = as.numeric(testvalue)
+    ) %>%
+    filter(
+      is.finite(egfr_day),
+      is.finite(egfr_value)
+    ) %>%
+    select(patid, egfr_day, egfr_value) %>%
+    arrange(patid, egfr_day)
+
+      stopifnot(
+    !anyDuplicated(
+      practice_egfr[c("patid", "egfr_day")]
+    )
+  )
+
+  pair_list[[i]] <- match_practice(ca, co, egfr_history = practice_egfr)
   if (i %% 100L == 0L) message("Processed ", i, " practices")
 }
 pairs <- bind_rows(empty_pairs, bind_rows(pair_list))

@@ -12,6 +12,7 @@ codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
 analysis_prefix = "all_patid"
+draft_suffix <- "pen1_eGFR60+"
 
 ############################################################################################
 
@@ -72,7 +73,7 @@ analysis = cprd$analysis("rk_ckd")
 #advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
 #advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1")
+matched_cohort <- matched_cohort %>% analysis$cached(paste0("matched_cohort", draft_suffix))
 cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
   
   # Clean deficit data and combine with index dates

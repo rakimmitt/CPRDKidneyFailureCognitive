@@ -7,7 +7,6 @@ library(EHRBiomarkr)
 rm(list=ls())
 
 cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\.aurum.yaml")
-
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
@@ -222,7 +221,7 @@ cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
     
     post_index_date <- get(index_date_merge_tablename) %>%
       filter(date>index_date) %>%
-      group_by(patid) %>%
+      group_by(patid,index_date) %>%
       summarise({{post_index_date_date_variable}}:=min(date, na.rm=TRUE)) %>%
       ungroup()
     

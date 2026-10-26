@@ -11,6 +11,8 @@ cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\O
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
+draft_suffix <- "pen1_eGFR60+"
+
 ############################################################################################
 
 comorbids <- c("acutepancreatitis",
@@ -276,7 +278,7 @@ analysis = cprd$analysis("rk_ckd")
 #advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
 #advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
-matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1")
+matched_cohort <- matched_cohort %>% analysis$cached(paste0("matched_cohort", draft_suffix))
 cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
   
 ## Clean comorbidity data and combine with index date
