@@ -10,6 +10,8 @@ cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
+draft_suffix <- "pen1_eGFR60+"
+
 # Read dementia-medication product-code lists locally
 
 dementia_meds_directory <- paste0(
@@ -167,10 +169,7 @@ raw_dementia_medications_prodcodes %>%
 
 analysis = cprd$analysis("rk_ckd")
 
-#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
-#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
-
-matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1")
+matched_cohort <- matched_cohort %>% analysis$cached(paste0("matched_cohort_", draft_suffix))
 cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
 
   for (i in meds) {

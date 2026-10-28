@@ -24,7 +24,7 @@ townsend_score <- townsend_score %>% analysis$cached("townsend_score")
 analysis = cprd$analysis(analysis_prefix)
 ckd_causes <- ckd_causes %>% analysis$cached("ckd_causes")
 
-matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort", unique_indexes="patid")
+matched_cohort <- matched_cohort %>% analysis$cached(paste0("matched_cohort_", draft_suffix))
 
 # create empty dataframe for counts of total population / subset with CKD
 counts <- data.frame()
@@ -64,7 +64,7 @@ efi <- efi %>% analysis$cached("efi")
     mutate(index_date_age=datediff(index_date, dob)/365.25,
            index_date = index_date) %>%
     relocate(c(index_date_age), .before=gender) %>%
-    analysis$cached("rk_final_merge", unique_indexes=list(c("patid", "index_date")))
+    analysis$cached("rk_final_merge", unique_indexes=list(c("match_record_id")))
   
   ############################################################################################
   

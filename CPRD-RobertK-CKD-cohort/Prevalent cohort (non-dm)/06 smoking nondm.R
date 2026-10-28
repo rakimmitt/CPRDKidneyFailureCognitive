@@ -11,6 +11,7 @@ codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
 analysis_prefix <- "rk_ckd"
+draft_suffix <- "pen1_eGFR60+"
 
 ############################################################################################
 # Pull out all raw code instances and cache with 'all_patid' prefix
@@ -46,10 +47,7 @@ clean_smoking_medcodes <- raw_smoking_medcodes %>%
 
 analysis = cprd$analysis(analysis_prefix)
 
-#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
-#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
-
-matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1")
+matched_cohort <- matched_cohort %>% analysis$cached(paste0("matched_cohort_", draft_suffix))
 cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
   
 ## Join with smoking codes on patid and retain codes before index date or up to 7 days after

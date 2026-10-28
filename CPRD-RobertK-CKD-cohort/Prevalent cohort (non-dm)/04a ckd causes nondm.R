@@ -26,6 +26,7 @@ codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
 analysis_prefix <- "rk_ckd"
+draft_suffix <- "pen1_eGFR60+"
 
 codepath <- "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\CKD causes\\"
 

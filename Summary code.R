@@ -89,10 +89,9 @@ diabetes_2024 %>%
     summarise(preegfr = mean(preegfr, na.rm = TRUE)) %>%
     #mutate(percent = round(100 * n / sum(n), 1))
 
-    column_name <- "preegfr"
-
-diabetes_2024 %>%
-filter(is_case == 0) %>%
+column_name <- "preegfr"
+diabetes_summary %>%
+filter(is_case == 1) %>%
   summarise(
     n_observed = sum(!is.na(.data[[column_name]])),
     n_missing = sum(is.na(.data[[column_name]])),
@@ -173,3 +172,30 @@ filter(is_case == 0) %>%
     geom_boxplot() +
     labs(x = "CKD stage", y = "Age (years)") +
     theme_minimal()
+
+
+
+
+
+
+
+
+
+diabetes_summary %>%
+filter(is_case ==0) %>%
+summary(preegfr)
+
+
+low_egfr_controls <- diabetes_2024 %>%
+  filter(is_case == 0, !is.na(preegfr), preegfr < 60) %>%
+  select(
+    any_of(c(
+      "match_record_id", "patid", "matched_case_patid",
+      "index_date", "preegfr", "preegfrdate", "preegfrdatediff",
+      "index_date_ckd_stage",
+      "ckd_stage_3_start_date", "advanced_ckd_index_date"
+    ))
+  ) %>%
+  arrange(preegfr)
+
+View(low_egfr_controls)

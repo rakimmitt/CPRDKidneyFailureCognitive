@@ -5,7 +5,7 @@ library(EHRBiomarkr)
 library(ggplot2)
 rm(list=ls())
 
-loaded_file <- load("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/20102026_matched_ckd_cohort_dm.Rda")
+loaded_file <- load("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/28102026_matched_ckd_cohort_dm.Rda")
 
 diabetes_2024 <- get(loaded_file[1])
 

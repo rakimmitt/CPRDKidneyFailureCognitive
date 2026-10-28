@@ -264,19 +264,16 @@ comorbids <- c("frailty_mild", "frailty_moderate", "frailty_severe", comorbids)
 
 # Separate family history by whether positive or negative
 ## Add to beginning of list so don't have to remake tables when add new comorbidity to end of above list
-raw_fh_diabetes_positive_medcodes <- raw_fh_diabetes_medcodes %>% filter(fh_diabetes_cat!="negative")
-raw_fh_diabetes_negative_medcodes <- raw_fh_diabetes_medcodes %>% filter(fh_diabetes_cat=="negative")
-comorbids <- setdiff(comorbids, "fh_diabetes")
-comorbids <- c("fh_diabetes_positive", "fh_diabetes_negative", comorbids)
+#raw_fh_diabetes_positive_medcodes <- raw_fh_diabetes_medcodes %>% filter(fh_diabetes_cat!="negative")
+#raw_fh_diabetes_negative_medcodes <- raw_fh_diabetes_medcodes %>% filter(fh_diabetes_cat=="negative")
+#comorbids <- setdiff(comorbids, "fh_diabetes")
+#comorbids <- c("fh_diabetes_positive", "fh_diabetes_negative", comorbids)
 
 ############################################################################################
 
 ## Get index date
 
 analysis = cprd$analysis("rk_ckd")
-
-#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
-#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
 matched_cohort <- matched_cohort %>% analysis$cached(paste0("matched_cohort", draft_suffix))
 cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
@@ -287,7 +284,7 @@ for (i in comorbids) {
   
   print(paste("merging index date with", i, "code occurrences"))
   
-  index_date_merge_tablename <- paste0("full_", i, "_index_date_merge")
+  index_date_merge_tablename <- paste0("f_", i, "_id_merge")
   
   medcode_tablename <- paste0("raw_", i, "_medcodes")
   icd10_tablename <- paste0("raw_", i, "_icd10")
@@ -391,7 +388,7 @@ for (i in comorbids) {
     i
   ))
 
-  index_date_merge_tablename <- paste0("full_", i, "_index_date_merge")
+  index_date_merge_tablename <- paste0("f_", i, "_id_merge")
   interim_comorbidity_table <- paste0("com_im_", i)
 
   earliest_var <- paste0("pre_index_date_earliest_", i)

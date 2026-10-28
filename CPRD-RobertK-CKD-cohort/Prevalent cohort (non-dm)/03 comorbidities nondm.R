@@ -11,6 +11,8 @@ cprd = CPRDData$new(cprdEnv = "nondiabetes-jun2024",cprdConf = "C:\\Users\\rk535
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
+draft_suffix <- "pen1_eGFR60+"
+
 ############################################################################################
 
 comorbids <- c("acutepancreatitis",
@@ -292,11 +294,8 @@ comorbids <- c("fh_diabetes_positive", "fh_diabetes_negative", comorbids)
 
 analysis = cprd$analysis("rk_ckd")
 
-#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
-#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
-
-matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1", unique_indexes="patid")
-matched_cohort <- matched_cohort %>% select(patid, index_date)
+matched_cohort <- matched_cohort %>% analysis$cached(paste0("matched_cohort_", draft_suffix))
+cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
   
   ## Clean comorbidity data and combine with index date
   
@@ -384,9 +383,10 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     rm(all_codes)
     
     data <- all_codes_clean %>%
-      inner_join(matched_cohort, by="patid") %>%
+      inner_join(cohort_index_dates, by="patid") %>%
       mutate(datediff=datediff(date, index_date)) %>%
-      analysis$cached(index_date_merge_tablename, indexes="patid")
+      analysis$cached(index_date_merge_tablename, 
+    indexes= list(c("patid", "index_date")))
     
     rm(all_codes_clean)
     
@@ -430,11 +430,16 @@ matched_cohort <- matched_cohort %>% select(patid, index_date)
     
     pre_index_date_earliest_date_variable <- as.symbol(pre_index_date_earliest_date_variable)
     
-    comorbidities <- comorbidities %>%
-      left_join(pre_index_date, by="patid") %>%
-      mutate({{pre_index_date_variable}}:=!is.na(!!pre_index_date_earliest_date_variable)) %>%
-      left_join(post_index_date, by="patid") %>%
-      analysis$cached(interim_comorbidity_table, unique_indexes="patid")
-  }
+  comorbidities <- comorbidities %>%
+    left_join(pre_index_date, by = c("patid", "index_date")
+    ) %>%
+    mutate(!!indicator_var := !is.na(.data[[earliest_var]])) %>%
+    left_join(post_index_date, by = c("patid", "index_date")
+    ) %>%
+    analysis$cached(interim_comorbidity_table,
+      unique_indexes = list(c("patid", "index_date"))
+    )
+}
   
-  comorbidities <- comorbidities %>% analysis$cached("comorbidities", unique_indexes="patid")
+comorbidities <- comorbidities %>%
+  analysis$cached("comorbidities",unique_indexes = list(c("patid", "index_date"))

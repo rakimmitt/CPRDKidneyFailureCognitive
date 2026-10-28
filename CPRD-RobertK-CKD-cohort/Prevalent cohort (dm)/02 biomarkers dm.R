@@ -11,7 +11,7 @@ cprd = CPRDData$new(cprdEnv = "diabetes-jun2024",cprdConf = "C:\\Users\\rk535\\O
 codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
-analysis_prefix <- "ckd"
+analysis_prefix <- "rk_ckd"
 draft_suffix <- "pen1_eGFR60+"
 
 ############################################################################################
@@ -143,9 +143,6 @@ biomarkers <- c("acr_from_separate", biomarkers)
 analysis = cprd$analysis("rk_ckd")
 
 # get index date
-
-#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
-#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
 
 matched_cohort <- matched_cohort %>% analysis$cached(paste0("matched_cohort", draft_suffix))
 cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)

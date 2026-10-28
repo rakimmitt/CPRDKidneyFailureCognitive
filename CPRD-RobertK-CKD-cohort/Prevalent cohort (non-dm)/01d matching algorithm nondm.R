@@ -26,7 +26,7 @@ egfr_db <- clean_egfr_medcodes %>%
 
 analysis = cprd$analysis("rk_ckd")
 
-draft_suffix <-"pen1_eGFR60+"
+draft_suffix <-"_pen1_eGFR60+"
 age_penalty <- 1 # 0 reproduces original distance
 match_with_replacement <- TRUE
 max_controls <- 4L
@@ -273,7 +273,7 @@ if (nrow(co) == 0L) {
 practice_egfr <- egfr_db %>%
     filter(
       patid %in% !!control_ids,
-      date < !!latest_case_date,
+      date <= !!latest_case_date,
       !is.na(date),
       !is.na(testvalue)
     ) %>%
@@ -411,7 +411,6 @@ saveRDS(matched_cohort, file = local_file)
 
 ### Upload to server after reconnecting to server and re-initialising analysis 
 # Specify the saved version to upload.
-draft_suffix <- "pen1"
 
 local_file <- file.path(
   "C:\\Users\\rk535\\OneDrive - University of Exeter\\CPRD\\2024\\Raw data",

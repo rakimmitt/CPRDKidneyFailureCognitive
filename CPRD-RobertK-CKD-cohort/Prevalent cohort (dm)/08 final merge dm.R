@@ -11,6 +11,7 @@ codesets = cprd$codesets()
 codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
 analysis_prefix = "rk_ckd"
+draft_suffix <- "pen1_eGFR60+"
 
 ############################################################################################
 
@@ -25,7 +26,7 @@ townsend_score <- townsend_score %>%
   townsend_analysis$cached("townsend_score")
 
 analysis = cprd$analysis(analysis_prefix)
-matched_cohort <- matched_cohort %>% analysis$cached("matched_cohort_pen1")
+matched_cohort <- matched_cohort %>% analysis$cached(paste0("matched_cohort", draft_suffix))
 
 # create empty dataframe for counts of total population / subset with CKD
 counts <- data.frame()
