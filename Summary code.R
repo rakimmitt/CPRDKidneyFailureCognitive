@@ -6,7 +6,7 @@ library(ggplot2)
 library(cmprsk)
 rm(list=ls())
 
-loaded_file <- load("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/20102026_matched_ckd_cohort_dm.Rda")
+loaded_file <- load("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/03112026_matched_ckd_cohort_dm.Rda")
 
 diabetes_2024 <- get(loaded_file[1])
 
@@ -199,3 +199,179 @@ low_egfr_controls <- diabetes_2024 %>%
   arrange(preegfr)
 
 View(low_egfr_controls)
+
+
+
+continuous_vars <- c("age_at_index", "dm_dur_all", "prebmi")
+categorical_vars <- c("gender", "smoking_cat", "imd_decile", "ethnicity_5cat")
+
+# Separate histograms for continuous variables
+for (v in continuous_vars) {
+  p <- ggplot(diabetes_2024, aes(x = .data[[v]])) +
+    geom_histogram(
+      bins = 30,
+      fill = "steelblue",
+      colour = "white",
+      na.rm = TRUE
+    ) +
+    labs(
+      title = v,
+      subtitle = paste("Missing:", sum(is.na(diabetes_2024[[v]]))),
+      x = v,
+      y = "Number of patients"
+    ) +
+    theme_minimal()
+
+  print(p)
+}
+
+# Separate bar charts for categorical variables
+# Missing values appear as an NA category
+for (v in categorical_vars) {
+  p <- ggplot(diabetes_2024, aes(x = factor(.data[[v]]))) +
+    geom_bar(fill = "steelblue") +
+    scale_x_discrete(na.translate = TRUE) +
+    labs(
+      title = v,
+      x = v,
+      y = "Number of patients"
+    ) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+  print(p)
+}
+
+
+
+
+# Dementia medication concordance
+
+dementia_check <- diabetes_2024 %>%
+  transmute(
+    diagnosis_date = as.Date(post_index_date_first_alldementia),
+    medication_date = as.Date(post_index_date_first_dementia_medications),
+
+    diagnosis_present = !is.na(diagnosis_date),
+    medication_present = !is.na(medication_date),
+
+    # Positive = medication recorded AFTER diagnosis
+    # Negative = medication recorded BEFORE diagnosis
+    gap_days = as.numeric(medication_date - diagnosis_date),
+
+    concordance_group = case_when(
+      diagnosis_present & medication_present  ~ "Both",
+      diagnosis_present & !medication_present ~ "Diagnosis only",
+      !diagnosis_present & medication_present ~ "Medication only",
+      TRUE                                   ~ "Neither"
+    )
+  )
+
+
+# 2 × 2 table
+with(
+  dementia_check,
+  table(
+    Diagnosis = factor(
+      diagnosis_present,
+      levels = c(FALSE, TRUE),
+      labels = c("Absent", "Present")
+    ),
+    Medication = factor(
+      medication_present,
+      levels = c(FALSE, TRUE),
+      labels = c("Absent", "Present")
+    )
+  )
+)
+
+# Counts and percentages in each group
+dementia_check %>%
+  count(concordance_group, name = "n") %>%
+  mutate(percent = round(100 * n / sum(n), 1))
+
+# Returns NA if the denominator is zero
+pct <- function(numerator, denominator) {
+  if (denominator == 0) return(NA_real_)
+  round(100 * numerator / denominator, 1)
+}
+
+dementia_check %>%
+  summarise(
+    n_patients = n(),
+    n_diagnosis = sum(diagnosis_present),
+    n_medication = sum(medication_present),
+    n_both = sum(diagnosis_present & medication_present),
+    n_either = sum(diagnosis_present | medication_present),
+
+    overall_agreement_pct = pct(
+      sum(diagnosis_present == medication_present), n()
+    ),
+
+    # Among patients with a diagnosis, how many have medication?
+    medication_among_diagnosed_pct = pct(n_both, n_diagnosis),
+
+    # Among patients with medication, how many have a diagnosis?
+    diagnosis_among_medicated_pct = pct(n_both, n_medication),
+
+    # Overlap among patients with either marker
+    both_among_either_pct = pct(n_both, n_either)
+  )
+
+  both_dates <- dementia_check %>%
+  filter(diagnosis_present & medication_present)
+
+# Numerical summary; only run if there are paired dates
+if (nrow(both_dates) > 0) {
+
+  gap_summary <- both_dates %>%
+    summarise(
+      n = n(),
+      median_gap_days = median(gap_days),
+      q1_gap_days = unname(quantile(gap_days, 0.25)),
+      q3_gap_days = unname(quantile(gap_days, 0.75)),
+      min_gap_days = min(gap_days),
+      max_gap_days = max(gap_days),
+      median_absolute_gap_days = median(abs(gap_days)),
+      within_30_days_pct = pct(sum(abs(gap_days) <= 30), n()),
+      within_90_days_pct = pct(sum(abs(gap_days) <= 90), n()),
+      within_365_days_pct = pct(sum(abs(gap_days) <= 365), n())
+    )
+
+  print(gap_summary)
+
+  # Direction of the gap
+  timing_summary <- both_dates %>%
+    mutate(
+      timing = case_when(
+        gap_days < 0 ~ "Medication before diagnosis",
+        gap_days == 0 ~ "Same day",
+        gap_days > 0 ~ "Medication after diagnosis"
+      )
+    ) %>%
+    count(timing, name = "n") %>%
+    mutate(percent = round(100 * n / sum(n), 1))
+
+  print(timing_summary)
+
+  # Distribution of signed time gaps
+  p <- ggplot(both_dates, aes(x = gap_days)) +
+    geom_histogram(
+      bins = 50,
+      fill = "steelblue",
+      colour = "white"
+    ) +
+    geom_vline(xintercept = 0, linetype = "dashed") +
+    labs(
+      title = "Time between first recorded dementia diagnosis and medication",
+      subtitle = "Patients with both post-index dates",
+      x = "Days: medication date minus diagnosis date",
+      y = "Number of patients"
+    ) +
+    theme_minimal()
+
+  print(p)
+
+} else {
+  message("No patients have both dates.")
+}

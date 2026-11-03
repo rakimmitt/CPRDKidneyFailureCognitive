@@ -48,6 +48,10 @@ medications <- medications %>% analysis$cached("medications")
 ## EFI
 efi <- efi %>% analysis$cached("efi")
 
+## Alcohol 
+
+alcohol <- alcohol %>% analysis$cached("alcohol")
+
 ############################
 
 # Final merge of all datasets to create final cohort for analysis
@@ -58,6 +62,7 @@ efi <- efi %>% analysis$cached("efi")
     left_join(baseline_biomarkers, by = c("patid", "index_date")) %>%
     left_join(comorbidities, by = c("patid", "index_date")) %>%
     left_join(smoking, by = c("patid", "index_date")) %>%
+    left_join(alcohol, by = c("patid","index_date")) %>%
     left_join(medications, by = c("patid", "index_date")) %>%
     left_join(efi %>% select(patid, index_date, efi_n_deficits, pre_index_date_efi_score, pre_index_date_efi_cat), by = c("patid", "index_date")) %>%
     left_join(townsend_score %>% select(patid, tds_2011), by = "patid") %>%
@@ -90,4 +95,5 @@ save(prev_cohort, file = paste0("C:/Users/rk535/OneDrive - University of Exeter/
   rm(comorbidities)
   rm(ckd_stages)
   rm(smoking)
+  rm(alcohol)
   rm(rk_final_merge)

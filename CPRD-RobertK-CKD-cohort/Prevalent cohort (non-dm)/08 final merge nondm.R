@@ -45,6 +45,10 @@ medications <- medications %>% analysis$cached("medications")
 # EFI
 
 efi <- efi %>% analysis$cached("efi")
+
+## Alcohol 
+
+alcohol <- alcohol %>% analysis$cached("alcohol")
   
   
 ############################################################################################
@@ -57,6 +61,7 @@ efi <- efi %>% analysis$cached("efi")
     left_join(comorbidities, by = c("patid", "index_date")) %>%
     left_join(ckd_causes, by = c("patid", "index_date")) %>%
     left_join(smoking, by = c("patid", "index_date")) %>%
+    left_join(alcohol, by = c("patid","index_date")) %>%
     left_join(medications, by = c("patid", "index_date")) %>%
     left_join(townsend_score %>% select(patid, tds_2011), by = c("patid", "index_date")) %>% 
     left_join(efi %>% select(patid, efi_n_deficits, pre_index_date_efi_score, pre_index_date_efi_cat), by = c("patid", "index_date")) %>%
