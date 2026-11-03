@@ -1,5 +1,5 @@
 ICD10	Term_description
-S06.0  Concussion
+S06.0	Concussion
 S06.1	Traumatic cerebral oedema
 S06.2	Diffuse brain injury
 S06.3	Focal brain injury
