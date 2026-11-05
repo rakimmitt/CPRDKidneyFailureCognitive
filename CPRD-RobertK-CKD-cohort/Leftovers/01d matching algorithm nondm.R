@@ -34,7 +34,6 @@ max_age_gap_years <- Inf
 min_registration_months <- 6L
 dementia_exclusion_months <- 3L
 case_date_cutoff <- as.Date("2008-01-01")
-stopifnot(isTRUE(match_with_replacement)) # match_practice() amended so no longer works without replacement
 set.seed(123)
 
 stopifnot(max_controls >= 1L, max_controls == as.integer(max_controls),
@@ -136,18 +135,6 @@ empty_pairs <- tibble(matched_case_patid = character(), patid = character())
   result
 }
 
-# Use a dedicated folder for this exact set of inputs and settings.
-checkpoint_dir <- file.path(
-  "C:\\Users\\rk535\\OneDrive - University of Exeter\\CPRD\\2024\\Raw data",
-  paste0("matching_checkpoints_nondm_", draft_suffix)
-)
-
-dir.create(checkpoint_dir, recursive = TRUE, showWarnings = FALSE)
-
-if (!dir.exists(checkpoint_dir)) {
-  stop("Could not create checkpoint directory: ", checkpoint_dir)
-}
-
 # Match within a practice
 match_practice <- function(ca, co, egfr_history) {
   ca <- ca %>% drop_na(pracid, dob, gender, index_date)
@@ -167,7 +154,7 @@ match_practice <- function(ca, co, egfr_history) {
   )
 
   # Rows = cases; columns = potential controls.
-  # Each cell is that control's latest eGFR on or before that case date.
+  # Each cell is that control's latest eGFR strictly before that case date.
   latest_egfr_matrix <- matrix(
     vapply(
       co$patid,
@@ -183,7 +170,7 @@ match_practice <- function(ca, co, egfr_history) {
   ncol = nrow(co)
 )
 
-# Missing prior results and results <60 cannot qualify.
+# Missing prior results and results <=60 cannot qualify.
   renal_eligible <-
     !is.na(latest_egfr_matrix) &
     latest_egfr_matrix >= 60
@@ -199,7 +186,7 @@ match_practice <- function(ca, co, egfr_history) {
     outer(case_day, as.numeric(co$adult_date), `>=`) &   # at least 18
     outer(dementia_cutoff, co$dementia_day, `<`) &       # no early dementia
     outer(case_day, co$control_stop_day, `<`) &          # before renal cut-off
-    renal_eligible &                                     # latest prior eGFR >= 60
+    renal_eligible &                                     # latest prior eGFR >60
     (abs(outer(as.numeric(ca$dob), as.numeric(co$dob), `-`)) <=
        max_age_gap_years * 365.25)
   eligible[is.na(eligible)] <- FALSE
@@ -251,31 +238,17 @@ distances <- distances + age_penalty * age_gap_years
   stopifnot(all(is.finite(distances)))
   distances[!eligible] <- Inf
 
-  stopifnot(isTRUE(match_with_replacement))
-
-  selected <- lapply(seq_len(nrow(ca)), function(i) {
-
-    d <- distances[i, ]
-    candidates <- which(is.finite(d))
-
-    if (!length(candidates)) {
-      return(empty_pairs)
-    }
-
-    # Ascending distance; ties resolved by existing control order.
-    ranked <- candidates[
-      order(d[candidates], candidates)
-    ]
-
-    chosen <- head(ranked, max_controls)
-
-    tibble(
-      matched_case_patid = ca$patid[i],
-      patid = co$patid[chosen]
-    )
-  })
-
-  bind_rows(empty_pairs, bind_rows(selected))
+  fit <- MatchIt::matchit(
+    form, data = dat, method = "nearest", distance = distances,
+    ratio = min(max_controls, nrow(co)), replace = match_with_replacement, m.order = "random"
+  )
+  mm <- fit$match.matrix
+  if (is.null(mm) || !length(mm)) return(empty_pairs)
+  tibble(case_key = rep(rownames(mm), each = ncol(mm)),
+         control_key = as.vector(t(mm))) %>%
+    filter(!is.na(control_key)) %>%
+    transmute(matched_case_patid = ca$patid[match(case_key, case_keys)],
+              patid = co$patid[match(control_key, control_keys)])
 }
 
 # Each practice has its own distance matrix, enforcing exact pracid.
@@ -285,26 +258,6 @@ control_groups <- split(seq_len(nrow(controls)), controls$pracid)
 pair_list <- vector("list", length(case_groups))
 for (i in seq_along(case_groups)) {
   practice <- names(case_groups)[i]
-
-  checkpoint_file <- file.path(
-  checkpoint_dir,
-  paste0("practice_", practice, ".rds")
-)
-
-if (file.exists(checkpoint_file)) {
-  saved <- readRDS(checkpoint_file)
-
-  stopifnot(identical(saved$practice, practice))
-  pair_list[[i]] <- saved$pairs
-
-  message(
-    "Loaded checkpoint ", i, "/", length(case_groups),
-    ": ", practice
-  )
-
-  next
-}
-
   ca <- cases[case_groups[[i]], , drop = FALSE]
   rows <- control_groups[[practice]]
   co <- controls[if (is.null(rows)) integer() else rows, , drop = FALSE]
@@ -345,32 +298,8 @@ practice_egfr <- egfr_db %>%
   )
 
   pair_list[[i]] <- match_practice(ca, co, egfr_history = practice_egfr)
-
-# mistaken for a completed checkpoint.
-temporary_file <- paste0(checkpoint_file, ".tmp")
-
-saveRDS(
-  list(
-    practice = practice,
-    pairs = pair_list[[i]]
-  ),
-  file = temporary_file,
-  compress = FALSE
-)
-
-if (!file.rename(temporary_file, checkpoint_file)) {
-  stop("Could not save checkpoint for practice ", practice)
+  if (i %% 100L == 0L) message("Processed ", i, " practices")
 }
-
-message(
-  "Completed practice ", i, "/", length(case_groups),
-  ": ", practice
-)
-
-  if (i %% 100L == 0L) { message("Processed ", i, " practices")
-    }
-}
-
 pairs <- bind_rows(empty_pairs, bind_rows(pair_list))
 
 #   Outputs: preserve every matched episode 
@@ -475,7 +404,7 @@ if (nrow(matched_cohort) == 0L) {
 
 local_file <- file.path(
   "C:\\Users\\rk535\\OneDrive - University of Exeter\\CPRD\\2024\\Raw data",
-  paste0("matched_cohort_nondm", draft_suffix, ".rds")
+  paste0("matched_cohort_nondm_", draft_suffix, ".rds")
 )
 
 saveRDS(matched_cohort, file = local_file)
@@ -485,7 +414,7 @@ saveRDS(matched_cohort, file = local_file)
 
 local_file <- file.path(
   "C:\\Users\\rk535\\OneDrive - University of Exeter\\CPRD\\2024\\Raw data",
-  paste0("matched_cohort_nondm", draft_suffix, ".rds")
+  paste0("matched_cohort_nondm_", draft_suffix, ".rds")
 )
 
 # Read the data back into R
@@ -494,7 +423,7 @@ matched_cohort <- readRDS(local_file)
 # Upload to the database
 matched_cohort_db <- copy_to(dest = analysis$.con, df = matched_cohort,
     name = dbplyr::in_schema(analysis$.analysisDb,
-    paste0("rk_ckd_matched_cohort", draft_suffix)
+    paste0("rk_ckd_matched_cohort_", draft_suffix)
   ),
   overwrite = TRUE,
   temporary = FALSE,
@@ -503,13 +432,13 @@ matched_cohort_db <- copy_to(dest = analysis$.con, df = matched_cohort,
 )
 
 ### Or, if the data is already in R, upload it directly without reading from disk.
-matched_cohort_db <- copy_to(
-  dest = analysis$.con, df = matched_cohort,
-  name = dbplyr::in_schema(analysis$.analysisDb, paste0("rk_ckd_matched_cohort", draft_suffix)),
-  overwrite = TRUE, temporary = FALSE,
-  unique_indexes = "match_record_id",
-  indexes = c("patid", "is_case", "matched_case_patid", "index_date")
-)
+#matched_cohort_db <- copy_to(
+#  dest = analysis$.con, df = matched_cohort,
+#  name = dbplyr::in_schema(analysis$.analysisDb, paste0("rk_ckd_matched_cohort_", draft_suffix)),
+#  overwrite = TRUE, temporary = FALSE,
+#  unique_indexes = "match_record_id",
+#  indexes = c("patid", "is_case", "matched_case_patid", "index_date")
+#)
 
 # Balance summary statistics
 
