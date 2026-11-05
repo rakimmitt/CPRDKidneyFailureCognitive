@@ -38,7 +38,6 @@ clean_smoking_medcodes <- raw_smoking_medcodes %>%
   distinct() %>%
   analysis$cached("clean_smoking_medcodes", indexes=c("patid", "date", "smoking_cat", "qrisk2_smoking_cat"))
 
-
 ############################################################################################
 
 # Find smoking status according to both algorithms at index date

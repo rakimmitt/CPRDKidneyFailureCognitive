@@ -441,5 +441,4 @@ cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
     )
 }
   
-comorbidities <- comorbidities %>%
-  analysis$cached("comorbidities",unique_indexes = list(c("patid", "index_date"))
+comorbidities <- comorbidities %>% analysis$cached("comorbidities",unique_indexes = list(c("patid", "index_date")))
