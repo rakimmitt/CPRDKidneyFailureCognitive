@@ -31,7 +31,7 @@ comorbids <- c("acutepancreatitis",
                "diabeticnephropathy",
                "dka",
                "falls",
-               "fh_diabetes", #note includes sibling, child, parents
+               #"fh_diabetes", #note includes sibling, child, parents
                "fh_premature_cvd", #family history of premature CVD - for QRISK2
                "frailty_simple",
                "haem_cancer",
@@ -274,19 +274,19 @@ comorbids <- c("primary_hhf", "primary_incident_mi", "primary_incident_stroke", 
 
 # Separate frailty by severity into three different categories
 ## Add to beginning of list so don't have to remake tables when add new comorbidity to end of above list
-raw_frailty_mild_medcodes <- raw_frailty_simple_medcodes %>% filter(frailty_simple_cat=="Mild")
-raw_frailty_moderate_medcodes <- raw_frailty_simple_medcodes %>% filter(frailty_simple_cat=="Moderate")
-raw_frailty_severe_medcodes <- raw_frailty_simple_medcodes %>% filter(frailty_simple_cat=="Severe")
-comorbids <- setdiff(comorbids, "frailty_simple")
-comorbids <- c("frailty_mild", "frailty_moderate", "frailty_severe", comorbids)
+#raw_frailty_mild_medcodes <- raw_frailty_simple_medcodes %>% filter(frailty_simple_cat=="Mild")
+#raw_frailty_moderate_medcodes <- raw_frailty_simple_medcodes %>% filter(frailty_simple_cat=="Moderate")
+#raw_frailty_severe_medcodes <- raw_frailty_simple_medcodes %>% filter(frailty_simple_cat=="Severe")
+#comorbids <- setdiff(comorbids, "frailty_simple")
+#comorbids <- c("frailty_mild", "frailty_moderate", "frailty_severe", comorbids)
 
 
 # Separate family history by whether positive or negative
 ## Add to beginning of list so don't have to remake tables when add new comorbidity to end of above list
-raw_fh_diabetes_positive_medcodes <- raw_fh_diabetes_medcodes %>% filter(fh_diabetes_cat!="negative")
-raw_fh_diabetes_negative_medcodes <- raw_fh_diabetes_medcodes %>% filter(fh_diabetes_cat=="negative")
-comorbids <- setdiff(comorbids, "fh_diabetes")
-comorbids <- c("fh_diabetes_positive", "fh_diabetes_negative", comorbids)
+#raw_fh_diabetes_positive_medcodes <- raw_fh_diabetes_medcodes %>% filter(fh_diabetes_cat!="negative")
+#raw_fh_diabetes_negative_medcodes <- raw_fh_diabetes_medcodes %>% filter(fh_diabetes_cat=="negative")
+#comorbids <- setdiff(comorbids, "fh_diabetes")
+#comorbids <- c("fh_diabetes_positive", "fh_diabetes_negative", comorbids)
 
 ############################################################################################
 
@@ -401,34 +401,34 @@ cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
   
   # Find earliest pre-index date, latest pre-index date and first post-index date dates
   
-  comorbidities <- cprd$tables$patient %>%
-    select(patid)
+  comorbidities <- cohort_index_dates %>%
+  distinct(patid, index_date)
   
   for (i in comorbids) {
     
     print(paste("working out pre- and post-index date code occurrences for ", i))
     
     index_date_merge_tablename <- paste0("full_", i, "_merge")
-    interim_comorbidity_table <- paste0("comorbidities_im_", i)
-    pre_index_date_earliest_date_variable <- paste0("pre_index_date_earliest_", i)
-    pre_index_date_latest_date_variable <- paste0("pre_index_date_latest_", i)
-    pre_index_date_variable <- paste0("pre_index_date_", i)
-    post_index_date_date_variable <- paste0("post_index_date_first_", i)
+    interim_comorbidity_table <- paste0("com_im_", i)
+    earliest_var <- paste0("pre_index_date_earliest_", i)
+    latest_var <- paste0("pre_index_date_latest_", i)
+    indicator_var <- paste0("pre_index_date_", i)
+    post_var <- paste0("post_index_date_first_", i)
     
     pre_index_date <- get(index_date_merge_tablename) %>%
       filter(date<=index_date) %>%
-      group_by(patid) %>%
-      summarise({{pre_index_date_earliest_date_variable}}:=min(date, na.rm=TRUE),
-                {{pre_index_date_latest_date_variable}}:=max(date, na.rm=TRUE)) %>%
-      ungroup()
+      group_by(patid, index_date) %>%
+      summarise(      
+      !!earliest_var := min(date, na.rm = TRUE),
+      !!latest_var := max(date, na.rm = TRUE),
+      .groups = "drop"
+    )
     
     post_index_date <- get(index_date_merge_tablename) %>%
       filter(date>index_date) %>%
-      group_by(patid) %>%
-      summarise({{post_index_date_date_variable}}:=min(date, na.rm=TRUE)) %>%
-      ungroup()
-    
-    pre_index_date_earliest_date_variable <- as.symbol(pre_index_date_earliest_date_variable)
+      group_by(patid, index_date) %>%
+      summarise(!!post_var := min(date, na.rm=TRUE),
+      .groups = "drop")
     
   comorbidities <- comorbidities %>%
     left_join(pre_index_date, by = c("patid", "index_date")
