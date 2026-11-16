@@ -1,0 +1,150 @@
+#Setup
+library(tidyverse)
+library(aurum)
+library(EHRBiomarkr)
+library(ggplot2)
+library(survival)
+
+rm(list=ls())
+
+loaded_file <- load("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/12112026_matched_ckd_cohort_nondm.Rda")
+
+nondiabetes_2024 <- get(loaded_file[1])
+
+##########
+
+# Exclude those receiving dementia diagnosis or medications prior to index date (only the former are filtered by matching)
+nondiabetes_summary <- nondiabetes_2024 %>%
+  filter(is.na(pre_index_date_earliest_alldementia) & is.na(pre_index_date_latest_dementia_medications))
+
+# Show how many records were excluded
+tibble(
+  original_records = nrow(nondiabetes_2024),
+  included_records = nrow(nondiabetes_summary),
+  excluded_records = nrow(nondiabetes_2024) - nrow(nondiabetes_summary)
+)
+
+nondiabetes_summary <- nondiabetes_summary %>%
+  mutate(
+    post_index_first_alldementia = pmin(
+      post_index_date_first_alldementia,
+      post_index_date_first_dementia_medications,
+      na.rm = TRUE
+    ),
+    post_index_alldementia = as.integer(!is.na(post_index_first_alldementia)),
+    follow_up_end_date = pmin(gp_end_date, death_date, hes_end_date, na.rm = TRUE),
+    follow_up_years = as.numeric(
+      difftime(follow_up_end_date, index_date, units = "days")
+    ) / 365.25,
+    time_to_dementia = as.numeric(
+      difftime(
+        post_index_first_alldementia,
+        index_date,
+        units = "days"
+      ) / 365.25),
+      pre_index_visual_impairment = as.integer(!is.na(pre_index_date_efi_visual_impairment)),
+      harmful_alcohol = as.integer(!is.na(alcohol_cat) & alcohol_cat == "Harmful"),
+      pre_index_date_stroke_TIA = as.integer(pre_index_date_stroke ==1 | pre_index_date_tia == 1),
+      pre_index_hearing_impairment = as.integer(!is.na(pre_index_date_efi_hearing_impairment)),
+    )
+
+#### Look at competing risk
+
+competing_data <- nondiabetes_summary %>%
+  mutate(
+    across(
+      c(index_date, earliest_all_dementia, death_date,
+        gp_end_date, hes_end_date),
+      as.Date
+    ),
+
+    # Require both follow-up end dates to be known.
+    censor_date = pmin(gp_end_date, hes_end_date),
+
+    # Treat these predictors as categorical.
+    is_case = factor(is_case, levels = c(0, 1)),
+    gender = factor(gender),
+  ) %>%
+  filter(
+    !is.na(index_date),
+    !is.na(censor_date),
+
+    # Exclude prevalent dementia, including diagnoses on index date.
+    is.na(earliest_all_dementia) |
+      earliest_all_dementia > index_date,
+
+    # Exclude deaths on/before index date.
+    is.na(death_date) | death_date > index_date,
+
+    censor_date > index_date
+  ) %>%
+  mutate(
+    # censor_date is non-missing, so every row has an end date.
+    end_date = pmin(
+      earliest_all_dementia,
+      death_date,
+      censor_date,
+      na.rm = TRUE
+    ),
+
+    event_status = case_when(
+      !is.na(earliest_all_dementia) &
+        earliest_all_dementia == end_date ~ 1L,
+
+      !is.na(death_date) &
+        death_date == end_date ~ 2L,
+
+      TRUE ~ 0L
+    ),
+
+    follow_up_years = as.numeric(end_date - index_date) / 365.25
+  )
+
+# Explicit complete-case analysis for the predictors.
+model_data <- competing_data %>%
+  filter(
+    if_all(
+      all_of(c("index_date_age", "is_case", "gender", "pre_index_date_hypertension", "pre_index_hearing_impairment", "pre_index_visual_impairment", "pre_index_date_stroke_TIA", "ethnicity_5cat", "imd_decile", "harmful_alcohol", "qrisk2_smoking_cat")),
+      ~ !is.na(.x)
+    )
+  )
+
+# Check exclusions.
+tibble(
+  original_records = nrow(nondiabetes_summary),
+  eligible_follow_up_records = nrow(competing_data),
+  complete_case_records = nrow(model_data)
+)
+
+# Check outcomes within each group.
+model_data %>%
+  count(is_case, event_status, name = "n")
+
+  dementia_cox <- coxph(
+  Surv(follow_up_years, event_status == 1) ~
+    index_date_age + is_case + gender + pre_index_date_hypertension + pre_index_hearing_impairment + pre_index_visual_impairment + pre_index_date_stroke_TIA + ethnicity_5cat + imd_decile + harmful_alcohol + qrisk2_smoking_cat,
+  data = model_data,
+  cluster = patid,
+  robust = TRUE,
+  ties = "efron",
+  x = TRUE
+)
+
+summary(dementia_cox)
+
+cox_summary <- summary(dementia_cox)
+
+cox_results <- tibble(
+  predictor = rownames(cox_summary$coefficients),
+  hazard_ratio = cox_summary$conf.int[, "exp(coef)"],
+  lower_95_CI = cox_summary$conf.int[, "lower .95"],
+  upper_95_CI = cox_summary$conf.int[, "upper .95"],
+  p_value = cox_summary$coefficients[, "Pr(>|z|)"]
+)
+
+cox_results %>%
+  print(width = Inf)
+
+ph_check <- cox.zph(dementia_cox)
+print(ph_check)
+plot(ph_check)

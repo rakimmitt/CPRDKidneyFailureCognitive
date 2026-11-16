@@ -65,7 +65,7 @@ alcohol <- alcohol %>% analysis$cached("alcohol")
     left_join(alcohol, by = c("patid","index_date")) %>%
     left_join(medications, by = c("patid", "index_date")) %>%
     left_join(townsend_score %>% select(patid, tds_2011), by = "patid") %>% 
-    left_join(efi %>% select(patid, efi_n_deficits, pre_index_date_efi_score, pre_index_date_efi_cat), by = c("patid", "index_date")) %>%
+    left_join(efi, by = c("patid", "index_date")) %>%
     left_join(death_causes, by = "patid") %>%
     mutate(index_date_age=datediff(index_date, dob)/365.25,
            index_date = index_date) %>%
