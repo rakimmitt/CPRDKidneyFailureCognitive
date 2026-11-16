@@ -21,4 +21,4 @@ medcodelist_tbi <- medcodelist_tbi %>% filter(!grepl("labyrinthine|tooth|questio
 
 View(medcodelist_tbi)
 
-save(medcodelist_tbi, file = paste0("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\Medcodes\\exeter_medcodelist_tbi.txt"))
+readr::write_tsv(medcodelist_tbi, "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\Medcodes\\exeter_medcodelist_tbi.txt")

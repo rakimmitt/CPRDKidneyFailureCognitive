@@ -178,3 +178,10 @@ cox_results %>%
 ph_check <- cox.zph(dementia_cox)
 print(ph_check)
 plot(ph_check)
+
+
+load("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\Medcodes\\exeter_medcodelist_tbi.txt")
+
+View(medcodelist_tbi)
+
+readr::write_tsv(medcodelist_tbi, "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\Medcodes\\exeter_medcodelist_tbi.txt")
