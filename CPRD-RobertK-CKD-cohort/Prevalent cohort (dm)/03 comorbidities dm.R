@@ -15,7 +15,8 @@ draft_suffix <- "pen1_eGFR60+"
 
 ############################################################################################
 
-comorbids <- c("acutepancreatitis",
+comorbids <- c("rdd",
+               "acutepancreatitis",
                "af",
                "angina",
                "anxiety_disorders",
@@ -110,7 +111,8 @@ analysis = cprd$analysis("all_patid")
 
 for (i in comorbids) {
   
-  if (!i %in% c("alldementia",
+  if (!i %in% c("tbi",
+               "alldementia",
                "alzheimers",
                "ckd5_nokrt",
                "delirium",

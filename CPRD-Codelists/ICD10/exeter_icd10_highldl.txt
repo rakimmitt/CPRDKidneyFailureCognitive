@@ -1,0 +1,5 @@
+ICD10   Term_description
+E78.0   Pure hypercholesterolaemia
+E78.2   Mixed hyperlipidaemia
+E78.4   Other hyperlipidaemia
+E78.5   Hyperlipidaemia, unspecified
