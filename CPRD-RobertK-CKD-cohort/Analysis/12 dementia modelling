@@ -5,26 +5,23 @@ library(EHRBiomarkr)
 library(ggplot2)
 library(survival)
 
-rm(list=ls())
-
-loaded_file <- load("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/12112026_matched_ckd_cohort_nondm.Rda")
-
-nondiabetes_2024 <- get(loaded_file[1])
+loaded_file <- load("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/18112026_combined_ckd_cohort_dm.Rda")
+combined_2024 <- get(loaded_file[1])
 
 ##########
 
 # Exclude those receiving dementia diagnosis or medications prior to index date (only the former are filtered by matching)
-nondiabetes_summary <- nondiabetes_2024 %>%
+combined_summary <- combined_2024 %>%
   filter(is.na(pre_index_date_earliest_alldementia) & is.na(pre_index_date_latest_dementia_medications))
 
 # Show how many records were excluded
 tibble(
-  original_records = nrow(nondiabetes_2024),
-  included_records = nrow(nondiabetes_summary),
-  excluded_records = nrow(nondiabetes_2024) - nrow(nondiabetes_summary)
+  original_records = nrow(combined_2024),
+  included_records = nrow(combined_summary),
+  excluded_records = nrow(combined_2024) - nrow(combined_summary)
 )
 
-nondiabetes_summary <- nondiabetes_summary %>%
+combined_summary <- combined_summary %>%
   mutate(
     post_index_first_alldementia = pmin(
       post_index_date_first_alldementia,
@@ -50,7 +47,7 @@ nondiabetes_summary <- nondiabetes_summary %>%
 
 #### Look at competing risk
 
-competing_data <- nondiabetes_summary %>%
+competing_data <- combined_summary %>%
   mutate(
     across(
       c(index_date, earliest_all_dementia, death_date,
@@ -104,14 +101,14 @@ competing_data <- nondiabetes_summary %>%
 model_data <- competing_data %>%
   filter(
     if_all(
-      all_of(c("index_date_age", "is_case", "gender", "pre_index_date_hypertension", "pre_index_hearing_impairment", "pre_index_visual_impairment", "pre_index_date_stroke_TIA", "ethnicity_5cat", "imd_decile", "harmful_alcohol", "qrisk2_smoking_cat")),
+      all_of(c("index_date_age", "is_case", "gender", "pre_index_date_hypertension", "pre_index_hearing_impairment", "pre_index_visual_impairment", "pre_index_date_stroke_TIA", "ethnicity_5cat", "imd_decile", "harmful_alcohol", "qrisk2_smoking_cat", "diabetes_duration_cat")),
       ~ !is.na(.x)
     )
   )
 
 # Check exclusions.
 tibble(
-  original_records = nrow(nondiabetes_summary),
+  original_records = nrow(combined_summary),
   eligible_follow_up_records = nrow(competing_data),
   complete_case_records = nrow(model_data)
 )
@@ -122,7 +119,7 @@ model_data %>%
 
   dementia_cox <- coxph(
   Surv(follow_up_years, event_status == 1) ~
-    index_date_age + is_case + gender + pre_index_date_hypertension + pre_index_hearing_impairment + pre_index_visual_impairment + pre_index_date_stroke_TIA + ethnicity_5cat + imd_decile + harmful_alcohol + qrisk2_smoking_cat,
+    index_date_age + is_case + gender + pre_index_date_hypertension + pre_index_hearing_impairment + pre_index_visual_impairment + pre_index_date_stroke_TIA + ethnicity_5cat + imd_decile + harmful_alcohol + qrisk2_smoking_cat + diabetes_duration_cat,
   data = model_data,
   cluster = patid,
   robust = TRUE,

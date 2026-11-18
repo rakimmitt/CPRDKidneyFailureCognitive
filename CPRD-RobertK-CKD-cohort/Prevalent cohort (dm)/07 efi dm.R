@@ -70,9 +70,6 @@ assign(raw_tablename, data)
 
 analysis = cprd$analysis("rk_ckd")
 
-#advanced_ckd_ids <- advanced_ckd_ids %>% analysis$cached("advanced_ckd_ids", unique_indexes="patid")
-#advanced_ckd_ids <- advanced_ckd_ids %>% select(patid, index_date)
-
 matched_cohort <- matched_cohort %>% analysis$cached(paste0("matched_cohort", draft_suffix))
 cohort_index_dates <- matched_cohort %>% distinct(patid, index_date)
   

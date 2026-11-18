@@ -1,4 +1,4 @@
-############################################################################################
+#############################################
 
 # Setup
 library(tidyverse)
@@ -13,9 +13,10 @@ codes = codesets$getAllCodeSetVersion(v = "01/06/2024")
 
 draft_suffix <- "pen1_eGFR60+"
 
-############################################################################################
+#############################################
 
-comorbids <- c("acutepancreatitis",
+comorbids <- c("rdd",
+               "acutepancreatitis",
                "af",
                "angina",
                "anxiety_disorders",
@@ -111,7 +112,9 @@ comorbids <- c("acutepancreatitis",
                "vascular_dementia",
                "uti",
                "skininfection",
-               "respiratorytractinfection"
+               "respiratorytractinfection",
+               "highldl",
+                "tbi"
 )
 
 ############################################################################################
@@ -125,7 +128,9 @@ analysis = cprd$analysis("all_patid")
 
 for (i in comorbids) {
   
-  if (!i %in% c("alldementia",
+  if (!i %in% c("highldl",
+               "tbi",
+               "alldementia",
                "alzheimers",
                "ckd5_nokrt",
                "delirium",

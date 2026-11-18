@@ -96,8 +96,9 @@ comorbids <- c("rdd",
                "vascular_dementia",
                "uti",
                "skininfection",
-               "respiratorytractinfection"
-               
+               "respiratorytractinfection",
+               "highldl",
+                "tbi"
 )
 
 ############################################################################################
@@ -112,6 +113,7 @@ analysis = cprd$analysis("all_patid")
 for (i in comorbids) {
   
   if (!i %in% c("tbi",
+               "highldl",
                "alldementia",
                "alzheimers",
                "ckd5_nokrt",

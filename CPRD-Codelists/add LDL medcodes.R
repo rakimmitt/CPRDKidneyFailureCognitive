@@ -14,11 +14,11 @@ library(dplyr)
                           )
 
 #include anything matching these strings:
-medcodelist_high_LDL <- medcodelist %>% filter(grepl("hypercholesterolaemia|hyperlipidaemia|hypercholesterolemia|hyperlipidemia|high cholesterol|cholesterol high|cholesterol very high|high LDL|lipids abnormal|lipids high|dyslipid|low-density lipoproteinaemia|low density lipoproteinaemia|low-density lipoproteinemia|low density lipoproteinemia|familial xanthomatosis|xanthomatosis, familial|hyperbetalipoproteinaemia|lipidaemia|hyperlipoproteinaemia", Term, ignore.case = T))
+medcodelist_highldl <- medcodelist %>% filter(grepl("hypercholesterolaemia|hyperlipidaemia|hypercholesterolemia|hyperlipidemia|high cholesterol|cholesterol high|cholesterol very high|high LDL|lipids abnormal|lipids high|dyslipid|low-density lipoproteinaemia|low density lipoproteinaemia|low-density lipoproteinemia|low density lipoproteinemia|familial xanthomatosis|xanthomatosis, familial|hyperbetalipoproteinaemia|lipidaemia|hyperlipoproteinaemia", Term, ignore.case = T))
 
 #exclude entries if matching any of these strings:
-medcodelist_high_LDL <- medcodelist_high_LDL %>% filter(!grepl("high density lipoprotein below|hypolipidaemia|retinalis|provision|uncertain significance|not detected|CGI|genotyping|drugs|criteria|lung function|behaviour|assessment|ratio|test|screen|electrop|level|gallbladder|measurement|FH|family history", Term, ignore.case = T))
+medcodelist_highldl <- medcodelist_highldl %>% filter(!grepl("high density lipoprotein below|hypolipidaemia|retinalis|provision|uncertain significance|not detected|CGI|genotyping|drugs|criteria|lung function|behaviour|assessment|test|screen|electrop|gallbladder|FH|family history", Term, ignore.case = T))
 
-View(medcodelist_high_LDL)
+View(medcodelist_highldl)
 
-readr::write_tsv(medcodelist_high_LDL, "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\Medcodes\\exeter_medcodelist_high_LDL.txt")
+readr::write_tsv(medcodelist_high_LDL, "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\Medcodes\\exeter_medcodelist_highldl.txt")

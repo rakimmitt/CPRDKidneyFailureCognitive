@@ -5,15 +5,16 @@ library(EHRBiomarkr)
 library(ggplot2)
 rm(list=ls())
 
-loaded_file <- load("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/12112026_matched_ckd_cohort_nondm.Rda")
+# Load in combined cohort (NB may need to update cohort names if the files are updated)
 
-nondiabetes_2024 <- get(loaded_file[1])
+loaded_file <- load("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/18112026_combined_ckd_cohort_dm.Rda")
+combined_2024 <- get(loaded_file[1])
 
 ##########
 
 # Check for pre-index dementia (this should have been excluded prior to matching)
 
-pre_dementia_check <- nondiabetes_2024 %>%
+pre_dementia_check <- combined_2024 %>%
   group_by(is_case) %>%
   summarise(
     n_records = n(),
@@ -24,32 +25,19 @@ pre_dementia_check <- nondiabetes_2024 %>%
 
 print(pre_dementia_check)
 
-# Check for pre-index dementia medication
-
-pre_dementia_check <- nondiabetes_2024 %>%
-  group_by(is_case) %>%
-  summarise(
-    n_records = n(),
-    n_pre_index_dementia =
-      sum(!is.na(pre_index_date_latest_dementia_medications)),
-    .groups = "drop"
-  )
-
-print(pre_dementia_check)
-
-nondiabetes_summary <- nondiabetes_2024 %>%
+combined_summary <- combined_2024 %>%
   filter(is.na(pre_index_date_earliest_alldementia) & is.na(pre_index_date_latest_dementia_medications))
 
 # Show how many records were excluded
 tibble(
-  original_records = nrow(nondiabetes_2024),
-  included_records = nrow(nondiabetes_summary),
-  excluded_records = nrow(nondiabetes_2024) - nrow(nondiabetes_summary)
+  original_records = nrow(combined_2024),
+  included_records = nrow(combined_summary),
+  excluded_records = nrow(combined_2024) - nrow(combined_summary)
 )
 
 # Create dementia, duration and follow-up variables
 
-nondiabetes_summary <- nondiabetes_summary %>%
+combined_summary <- combined_summary %>%
   mutate(
     post_index_alldementia =
       as.integer(!is.na(post_index_date_first_alldementia) | !(is.na(post_index_date_first_dementia_medications))),
@@ -65,7 +53,7 @@ nondiabetes_summary <- nondiabetes_summary %>%
 
 # Prepare variables for the summary table
 
-summary_data <- nondiabetes_summary %>%
+summary_data <- combined_summary %>%
   mutate(
     cohort = case_when(
       is_case == 1 ~ "Advanced CKD",

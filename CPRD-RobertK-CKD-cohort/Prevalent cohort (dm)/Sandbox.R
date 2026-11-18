@@ -17,10 +17,10 @@ diabetes_2024 %>% count(ethnicity_5cat)
 
 ###
 
-column_name <- "preegfr""
+column_name <- "dm_dur_all"
 
 diabetes_2024 %>%
-filter(is_case == 0) %>%
+#filter(is_case == 0) %>%
   summarise(
     n_observed = sum(!is.na(.data[[column_name]])),
     n_missing = sum(is.na(.data[[column_name]])),

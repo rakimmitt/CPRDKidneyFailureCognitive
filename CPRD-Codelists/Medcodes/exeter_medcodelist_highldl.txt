@@ -1,5 +1,4 @@
 MedCodeId	Observations	OriginalReadCode	CleansedReadCode	Term	SnomedCTConceptId	SnomedCTDescriptionId	Release	EmisCodeCategoryId
-26027016	20	C325-1	C325.11	Tangier disease	15346004	26026013	NA	32
 201018013	168	C3273-1	C327311	Primary familial xanthomatosis	82500001	201018013	NA	32
 259212014	192859	44O4	44O4.00	Serum lipids high	166816003	259212014	NA	34
 259215011	84064	44O6	44O6.00	Lipids abnormal	166818002	259215011	NA	34
@@ -17,7 +16,6 @@ MedCodeId	Observations	OriginalReadCode	CleansedReadCode	Term	SnomedCTConceptId	
 398852019	3223606	C320	C320.00	Pure hypercholesterolaemia	267432004	398852019	NA	32
 398856016	659156	C322	C322.00	Mixed hyperlipidaemia	267434003	398856016	NA	32
 475418015	397821	C329	C329.00	Hypercholesterolaemia	13644009	475418015	NA	32
-505109013	19	C3273	C327300	Wolman disease	82500001	505109013	NA	32
 1216379016	6791	ZV653-7	ZV65317	Dietary surveillance in hypercholesterolaemia	804641000000101	1798831000000116	NA	32
 1773186016	164561	C3200	C320000	Familial hypercholesterolaemia	398036000	1773186016	NA	32
 2469357012	1984	8CR3	8CR3.00	Hyperlipidaemia clinical management plan	736285004	3517024018	NA	32
@@ -82,7 +80,6 @@ MedCodeId	Observations	OriginalReadCode	CleansedReadCode	Term	SnomedCTConceptId	
 7510441000006119	1	^ESCTSU751044	NA	Suspected heterozygous familial hypercholesterolemia	698600006	2974977017	NA	27
 7966561000006111	69	^ESCTMI796656	NA	Mixed hyperlipidaemia due to type 2 diabetes mellitus	701000119103	3014148013	NA	32
 7969211000006115	12	^ESCTMI796921	NA	Mixed hyperlipidaemia due to type 1 diabetes mellitus	1571000119104	3013050012	NA	32
-8035211000006110	1	^ESCTDY803521	NA	Dyslipidemia with high density lipoprotein below reference range and triglyceride above reference range due to type 2 diabetes mellitus	111231000119109	3011558015	NA	31
 8036201000006119	30	^ESCTHY803620	NA	Hyperlipidaemia caused by steroid	114831000119107	3288754018	NA	32
 8043301000006116	406	^ESCTHY804330	NA	Hyperlipidaemia due to type 2 diabetes mellitus	137931000119102	3013435012	NA	32
 8043321000006114	58	^ESCTHY804332	NA	Hyperlipidaemia due to type 1 diabetes mellitus	137941000119106	3013242014	NA	32
