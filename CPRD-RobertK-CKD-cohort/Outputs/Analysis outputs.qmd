@@ -1,0 +1,22 @@
+---
+title: "Baseline table"
+format: html
+echo: false
+---
+
+## Baseline characteristics
+
+Here is the baseline characteristics table by advanced CKD and dementia status. The table is generated from the summary data saved in the RDS file at the end of 10 baseline characteristics updated.R.
+
+```{r}
+#| label: tbl-baseline
+#| tbl-cap: "Baseline characteristics by advanced CKD and dementia status"
+#| echo: false
+#| warning: false
+#| message: false
+
+readRDS("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/18112026_baseline_characteristics_summary.rds") |>
+  flextable::flextable() |>
+  flextable::theme_booktabs() |>
+  flextable::autofit()
+```

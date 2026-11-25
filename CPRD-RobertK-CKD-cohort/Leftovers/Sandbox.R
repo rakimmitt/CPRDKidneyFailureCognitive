@@ -185,3 +185,85 @@ load("C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPR
 View(medcodelist_tbi)
 
 readr::write_tsv(medcodelist_tbi, "C:\\Users\\rk535\\OneDrive\\1 - PhD\\Data Science\\CPRD\\Github clone\\CPRDKidneyFailureCognitive\\CPRD-Codelists\\Medcodes\\exeter_medcodelist_tbi.txt")
+
+
+
+
+
+library(tidyverse)
+
+ggplot(mtcars, aes(x = wt, y = mpg, colour = factor(cyl))) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  facet_wrap(~cyl, scales = "free_x") +
+  labs(title = "Scatter plot of MPG vs Weight",
+       x = "Weight (1000 lbs)",
+       y = "Miles per Gallon") +
+  theme_minimal()
+
+glimpse(penguins)
+
+ggplot(penguins,
+       aes(x = flipper_len, y = body_mass)) +
+  geom_point(aes(colour = species)) +
+  geom_smooth(method = "lm") +
+  facet_wrap(~island, scales = "fixed")
+
+ggplot(penguins,
+       aes(x = body_mass, bins = 10)) +
+       geom_histogram()
+
+ggplot(penguins,
+        aes(x = species, y = body_mass)) +  
+        geom_boxplot()  
+
+ggplot(penguins, 
+       aes(x = fct_infreq(species))) +
+       geom_bar()
+
+
+penguins %>%
+  filter(!is.na(sex)) %>%
+  mutate(sex = fct_recode(sex, "Male" = "male", "Female" = "female")) %>%
+ggplot() +
+aes(x = species, fill = sex) +
+       geom_bar(position = "dodge") +
+       labs(title = "Count of penguins by species and sex",
+            x = "Species",
+            y = "Count",
+            fill = "Sex") +
+            theme_minimal()
+
+penguins |>
+     ggplot() +
+     aes(x = flipper_len, y = body_mass, colour = species) +
+     geom_point() +
+     geom_smooth(method = "lm")
+
+
+# [55] "qrisk2_smoking_cat"                               
+# [56] "qrisk2_smoking_cat_uncoded"                       
+# [57] "regstartdate"                                     
+# [58] "smoking_cat" 
+
+Sys.setenv(QUARTO_PATH = paths[file.exists(paths)][1])
+quarto::quarto_version()
+quarto::quarto_render("baseline_table.qmd")
+
+dementia_concordance <- with(
+  combined_2024,
+  table(
+    `Post-index dementia code` = factor(
+      !is.na(post_index_date_first_alldementia),
+      levels = c(FALSE, TRUE),
+      labels = c("Absent", "Present")
+    ),
+    `Post-index dementia medication` = factor(
+      !is.na(post_index_date_first_dementia_medications),
+      levels = c(FALSE, TRUE),
+      labels = c("Absent", "Present")
+    )
+  )
+)
+
+dementia_concordance

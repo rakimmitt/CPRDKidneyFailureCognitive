@@ -3,6 +3,8 @@ library(tidyverse)
 library(aurum)
 library(EHRBiomarkr)
 library(ggplot2)
+library(quarto)
+library(flextable)
 rm(list=ls())
 
 # Load in combined cohort (NB may need to update cohort names if the files are updated)
@@ -285,6 +287,10 @@ summary_table <- group_statistics %>%
 print(summary_table, n = Inf, width = Inf)
 
 View(summary_table)
+saveRDS(summary_table, "C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Raw data/18112026_baseline_characteristics_summary.rds")
+
+quarto::quarto_render("C:/Users/rk535/OneDrive - University of Exeter/CPRD/2024/Outputs/Analysis outputs.qmd")
+
 
 # Report missing data separately
 

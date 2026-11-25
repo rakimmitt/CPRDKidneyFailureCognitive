@@ -140,7 +140,7 @@ cox_results <- tibble(
 )
 
 cox_results %>%
-  print(width = Inf)
+  print(width = Inf, n=Inf)
 
 ph_check <- cox.zph(dementia_cox)
 print(ph_check)

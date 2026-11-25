@@ -1,0 +1,12 @@
+---
+title: "Quarto practice"
+author: "Robert Kimmitt"
+format: html
+---
+
+
+
+
+``` {r}
+1+1
+```
